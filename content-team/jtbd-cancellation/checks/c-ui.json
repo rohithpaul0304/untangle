@@ -1,0 +1,433 @@
+{
+  "url": "http://127.0.0.1:8176/candidates/c/deck.html",
+  "viewport": [
+    390,
+    844
+  ],
+  "routeCount": 12,
+  "allEnded": true,
+  "screens": [
+    {
+      "line": "You’re my adviser. Why did Mira cancel? Pick a first hunch; no score.",
+      "visual": "Mira\n★★★★★\nFive-star review. Subscription cancelled.\nSubscription cancelled\nA fictional interview-practice app",
+      "choices": [
+        "Maybe she found other help. Ask her.",
+        "Maybe she’s finished preparing. Ask her.",
+        "We don’t know yet. Ask what changed."
+      ]
+    },
+    {
+      "line": "You sent me to check for other help. Here’s Mira’s reply.",
+      "visual": "FOX ASKED\nDid you cancel because you found other help?\nMIRA REPLIED\nI accepted an offer. I have no more interviews planned, so I don’t need preparation now.",
+      "choices": [
+        "Rewind to before her interview"
+      ]
+    },
+    {
+      "line": "Rewind: before that interview. What should I have set up first?",
+      "visual": "The interview\n\nTwo-minute project answer, then questions. Mira wanted to show why her experience suited the role.\n\nHer recording\n\nAccurate in relaxed conversation. In rehearsal, her main result came after two minutes.\n\nHer evening\n\nShe worked late; friends were rarely free to practise.\n\nA past reconstruction. You choose preparation, not the hiring decision.",
+      "choices": [
+        "See the help I can give her"
+      ]
+    },
+    {
+      "line": "Her result missed the limit. Tell me which help to open first, and why.",
+      "visual": "Structured rehearsal\n\nRecord the same project answer; stop at two minutes. Replay, organise opening/evidence/result, retry.\n\nNo unexpected questions.\n\nFollow-up rehearsal\n\nRecord and replay answers to varied, unseen project questions.\n\nNo complete timed opening answer or organising support.\n\nBoth work privately in her free time. No price or duration advantage. Combining them later is allowed.",
+      "choices": [
+        "Structured: help her fit the project answer into two minutes.",
+        "Follow-ups: help her handle questions after the project answer."
+      ]
+    },
+    {
+      "line": "You asked for a timed answer. I opened it. Her result is beyond the stop.",
+      "visual": "Fox opened structured rehearsal\nStarting recording • stopped at 2:00\nOpening\nEvidence\nMain result\nThe main result isn’t in this recording.\nReplay → reorganise → retry the same answer\nUnexpected follow-ups remain untested.",
+      "choices": [
+        "What was the practice for?"
+      ]
+    },
+    {
+      "line": "Practice served a purpose. Once that need ended, five stars and cancellation fit together.",
+      "visual": "Jobs to Be Done\n\nThe progress someone seeks in a situation. Mira needed to present relevant experience clearly under interview limits, without a practice partner. “Job” means progress.",
+      "choices": [
+        "Change one thing in the past"
+      ]
+    },
+    {
+      "line": "Same earlier interview. Her opening now fits; an unexpected question makes her lose her thread. What should I open first?",
+      "visual": "Structured rehearsal\n\nRepeat, replay and organise the two-minute opening. No unexpected questions.\n\nFollow-up rehearsal\n\nRecord and replay replies to unseen questions. No timed opening attempt or organising help.\n\nAlternate past. Same deadline, late evenings and aim. Both tools still work privately, with the same capabilities.",
+      "choices": [
+        "Structured: refine her prepared opening answer.",
+        "Follow-ups: work on replies when the conversation changes."
+      ]
+    },
+    {
+      "line": "You asked to refine the opening. I opened it. Her result fits; no unexpected question appears.",
+      "visual": "Fox opened structured rehearsal\nStarting recording • main point within 2:00\nOpening\nEvidence\nMain result\nUnexpected responses remain untested.\nReplay → refine → retry the prepared answer\nMaintains the opening; leaves the changed gap.",
+      "choices": [
+        "Switch me to follow-up rehearsal"
+      ]
+    },
+    {
+      "line": "Switched. A fresh question; a response to review and retry.",
+      "visual": "Fox opened follow-up rehearsal\nUnseen follow-up\nWhat would you change if you did the project again?\nOther questions and the real interview remain untested.\nFresh response recorded → review → retry\nThis exercises the changed gap.",
+      "choices": [
+        "Keep the useful question"
+      ]
+    },
+    {
+      "line": "Before recommending help: what is this person trying to do, and what’s stopping them now?",
+      "visual": "Next: spot the progress behind a feature request.",
+      "choices": []
+    },
+    {
+      "line": "You sent me to check whether preparation was over. Here’s Mira’s reply.",
+      "visual": "FOX ASKED\nDid you cancel because you’d finished preparing?\nMIRA REPLIED\nI accepted an offer. I have no more interviews planned, so I don’t need preparation now.",
+      "choices": [
+        "Rewind to before her interview"
+      ]
+    },
+    {
+      "line": "You left the reason open. I asked what changed.",
+      "visual": "FOX ASKED\nWhat changed that led you to cancel?\nMIRA REPLIED\nI accepted an offer. I have no more interviews planned, so I don’t need preparation now.",
+      "choices": [
+        "Rewind to before her interview"
+      ]
+    },
+    {
+      "line": "You asked for follow-ups. I opened one. Her complete opening answer stays untested.",
+      "visual": "Fox opened follow-up rehearsal\nUnseen follow-up\nWhy did you choose that approach?\nOpening answer: main result still beyond 2:00.\nNew response recorded → replay available\nNo complete opening-answer attempt in this mode.",
+      "choices": [
+        "What would target the first gap?"
+      ]
+    },
+    {
+      "line": "For that late result, start here: replay the cutoff, reorganise, retry.",
+      "visual": "Worked path: structured rehearsal\nStarting recording • stopped at 2:00\nOpening\nEvidence\nMain result\nThe main result isn’t in this recording.\nReplay → reorganise → retry the same answer\nUnexpected follow-ups remain untested.",
+      "choices": [
+        "What was the practice for?"
+      ]
+    },
+    {
+      "line": "You sent me to the new gap. This unseen question gives her a fresh response to review.",
+      "visual": "Fox opened follow-up rehearsal\nUnseen follow-up\nWhat would you change if you did the project again?\nOther questions and the real interview remain untested.\nFresh response recorded → review → retry\nThis exercises the changed gap.",
+      "choices": [
+        "Keep the useful question"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe she found other help. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Structured: help her fit the project answer into two minutes.",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Structured: refine her prepared opening answer.",
+        "Switch me to follow-up rehearsal",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe she’s finished preparing. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Structured: help her fit the project answer into two minutes.",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Structured: refine her prepared opening answer.",
+        "Switch me to follow-up rehearsal",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "We don’t know yet. Ask what changed.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Structured: help her fit the project answer into two minutes.",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Structured: refine her prepared opening answer.",
+        "Switch me to follow-up rehearsal",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe she found other help. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Follow-ups: help her handle questions after the project answer.",
+        "What would target the first gap?",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Structured: refine her prepared opening answer.",
+        "Switch me to follow-up rehearsal",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe she found other help. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Structured: help her fit the project answer into two minutes.",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Follow-ups: work on replies when the conversation changes.",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe she’s finished preparing. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Follow-ups: help her handle questions after the project answer.",
+        "What would target the first gap?",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Structured: refine her prepared opening answer.",
+        "Switch me to follow-up rehearsal",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe she’s finished preparing. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Structured: help her fit the project answer into two minutes.",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Follow-ups: work on replies when the conversation changes.",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "We don’t know yet. Ask what changed.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Follow-ups: help her handle questions after the project answer.",
+        "What would target the first gap?",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Structured: refine her prepared opening answer.",
+        "Switch me to follow-up rehearsal",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "We don’t know yet. Ask what changed.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Structured: help her fit the project answer into two minutes.",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Follow-ups: work on replies when the conversation changes.",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe she found other help. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Follow-ups: help her handle questions after the project answer.",
+        "What would target the first gap?",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Follow-ups: work on replies when the conversation changes.",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe she’s finished preparing. Ask her.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Follow-ups: help her handle questions after the project answer.",
+        "What would target the first gap?",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Follow-ups: work on replies when the conversation changes.",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "We don’t know yet. Ask what changed.",
+        "Rewind to before her interview",
+        "See the help I can give her",
+        "Follow-ups: help her handle questions after the project answer.",
+        "What would target the first gap?",
+        "What was the practice for?",
+        "Change one thing in the past",
+        "Follow-ups: work on replies when the conversation changes.",
+        "Keep the useful question"
+      ],
+      "ended": true,
+      "final": "Before recommending help: what is this person trying to do, and what’s stopping them now?"
+    }
+  ],
+  "issues": []
+}

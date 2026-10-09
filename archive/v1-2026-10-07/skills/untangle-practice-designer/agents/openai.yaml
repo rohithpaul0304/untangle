@@ -1,0 +1,4 @@
+interface:
+  display_name: "Untangle Practice Designer"
+  short_description: "Build checked practice and targeted correction paths"
+  default_prompt: "Use $untangle-practice-designer to create fresh practice and correction paths for an approved learning goal."

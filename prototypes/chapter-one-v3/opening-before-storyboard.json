@@ -1,0 +1,477 @@
+{
+  "start": {
+    "title": "Who benefits from the ban?",
+    "line": "Cigarette ads get banned. Bad news for cigarette companies\u2026 or could it help them?",
+    "dialogue": [
+      "Cigarette ads get banned. Bad news for cigarette companies\u2026 or could it help them?"
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": false,
+      "history": true,
+      "investigator": true,
+      "phase": ""
+    },
+    "choices": [
+      {
+        "label": "Sounds bad for them",
+        "next": "expect_harm"
+      },
+      {
+        "label": "Could help them",
+        "next": "expect_help"
+      },
+      {
+        "label": "Let\u2019s find out",
+        "next": "expect_unsure"
+      }
+    ],
+    "mood": "thinking"
+  },
+  "expect_harm": {
+    "title": "Investigate the same question",
+    "line": "That\u2019s a reasonable guess. But their competitors lose ads too. Let\u2019s investigate what that changes.",
+    "dialogue": [
+      "That\u2019s a reasonable guess. But their competitors lose ads too. Let\u2019s investigate what that changes."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": false,
+      "history": true,
+      "investigator": true,
+      "phase": ""
+    },
+    "choices": [
+      {
+        "label": "Compare two fictional companies",
+        "next": "baseline"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "expect_help": {
+    "title": "Investigate the same question",
+    "line": "Maybe. Let\u2019s investigate how losing the same option could help competitors.",
+    "dialogue": [
+      "Maybe. Let\u2019s investigate how losing the same option could help competitors."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": false,
+      "history": true,
+      "investigator": true,
+      "phase": ""
+    },
+    "choices": [
+      {
+        "label": "Compare two fictional companies",
+        "next": "baseline"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "expect_unsure": {
+    "title": "Investigate the same question",
+    "line": "Let\u2019s investigate. We\u2019ll compare one company stopping with both companies stopping.",
+    "dialogue": [
+      "Let\u2019s investigate. We\u2019ll compare one company stopping with both companies stopping."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": false,
+      "history": true,
+      "investigator": true,
+      "phase": ""
+    },
+    "choices": [
+      {
+        "label": "Compare two fictional companies",
+        "next": "baseline"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "baseline": {
+    "title": "Before either stops",
+    "line": "Two rivals. The same customers. Let\u2019s follow one day\u2019s money.",
+    "dialogue": [
+      "Two rivals. The same customers. Let\u2019s follow one day\u2019s money."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": true,
+      "b": true,
+      "investigator": true,
+      "phase": "Before the ban \u00b7 two fictional competitors",
+      "rule": "A and B compete for the same customers."
+    },
+    "choices": [
+      {
+        "label": "Watch the money",
+        "next": "starting_money"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "alone": {
+    "title": "Only A stops",
+    "line": "A keeps less: 40. Its ad bill vanished\u2014but customers paid B instead.",
+    "dialogue": [
+      "A keeps less: 40. Its ad bill vanished\u2014but customers paid B instead."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": true,
+      "investigator": true,
+      "phase": "Fictional comparison \u00b7 Company A and Company B",
+      "rule": "Same total spending. Ads change who gets the customers.",
+      "money": 40,
+      "receipt": "A receives 40 \u2212 spends 0 on ads = 40 left"
+    },
+    "choices": [
+      {
+        "label": "Then the ban arrives",
+        "next": "ban_arrives"
+      }
+    ],
+    "mood": "surprised"
+  },
+  "both_after_alone": {
+    "title": "B stops too",
+    "line": "Back to 100! Customers split evenly again. This time, neither company has an ad bill.",
+    "dialogue": [
+      "Back to 100! Customers split evenly again. This time, neither company has an ad bill."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": false,
+      "investigator": true,
+      "phase": "Fictional comparison \u00b7 Company A and Company B",
+      "rule": "Same total spending. Ads change who gets the customers.",
+      "money": 100,
+      "receipt": "A receives 100 \u2212 spends 0 on ads = 100 left"
+    },
+    "choices": [
+      {
+        "label": "Compare the two results",
+        "next": "compare"
+      }
+    ],
+    "mood": "surprised"
+  },
+  "together": {
+    "title": "Both stop",
+    "line": "Both stop. No ad bills. Now try letting only B advertise.",
+    "dialogue": [
+      "Both stop. No ad bills. Now try letting only B advertise."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": false,
+      "investigator": true,
+      "phase": "Fictional comparison \u00b7 Company A and Company B",
+      "rule": "Same total spending. Ads change who gets the customers.",
+      "money": 100,
+      "receipt": "A receives 100 \u2212 spends 0 on ads = 100 left"
+    },
+    "choices": [
+      {
+        "label": "Test A off, B on",
+        "next": "alone_after_both"
+      }
+    ],
+    "mood": "surprised"
+  },
+  "alone_after_both": {
+    "title": "B can advertise again",
+    "line": "B\u2019s ads return. Watch the customers\u2014and their payments\u2014shift.",
+    "dialogue": [
+      "B\u2019s ads return. Watch the customers\u2014and their payments\u2014shift."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": true,
+      "investigator": true,
+      "phase": "Fictional comparison \u00b7 Company A and Company B",
+      "rule": "Same total spending. Ads change who gets the customers.",
+      "money": 40,
+      "receipt": "A receives 40 \u2212 spends 0 on ads = 40 left"
+    },
+    "choices": [
+      {
+        "label": "Compare the two results",
+        "next": "compare"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "compare": {
+    "title": "One change explains the difference",
+    "line": "A\u2019s ads are off in both pictures. What changed its money?",
+    "dialogue": [
+      "A\u2019s ads are off in both pictures. What changed its money?"
+    ],
+    "visual": {
+      "type": "compare",
+      "cards": [
+        [
+          "Only A stops",
+          "A keeps 40"
+        ],
+        [
+          "Both stop",
+          "A keeps 100"
+        ]
+      ],
+      "caption": "Same company \u00b7 same choice \u00b7 different competitor action"
+    },
+    "choices": [
+      {
+        "label": "B\u2019s advertising changes",
+        "next": "concept"
+      },
+      {
+        "label": "A saves its ad bill only once",
+        "next": "clarify"
+      }
+    ],
+    "mood": "thinking"
+  },
+  "clarify": {
+    "title": "A saved its bill in both tests",
+    "line": "A pays zero for ads in both. The difference is whether B can still advertise.",
+    "dialogue": [
+      "A pays zero for ads in both. The difference is whether B can still advertise."
+    ],
+    "visual": {
+      "type": "compare",
+      "cards": [
+        [
+          "Only A stops",
+          "A\u2019s ad bill: 0"
+        ],
+        [
+          "Both stop",
+          "A\u2019s ad bill: 0"
+        ]
+      ]
+    },
+    "choices": [
+      {
+        "label": "It depends on B too",
+        "next": "concept"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "concept": {
+    "title": "Strategic interdependence",
+    "line": "A\u2019s result depends on B\u2019s choice too. That\u2019s strategic interdependence. Looking at A alone misses half the story.",
+    "dialogue": [
+      "A\u2019s result depends on B\u2019s choice too. That\u2019s strategic interdependence. Looking at A alone misses half the story."
+    ],
+    "visual": {
+      "type": "compare",
+      "cards": [
+        [
+          "A\u2019s choice",
+          "Ads OFF"
+        ],
+        [
+          "B\u2019s choice",
+          "Changes A\u2019s result"
+        ]
+      ]
+    },
+    "choices": [
+      {
+        "label": "So could the ban help?",
+        "next": "resolve"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "resolve": {
+    "title": "Return to the opening question",
+    "line": "Yes, it could. Stopping together can help where stopping alone hurts. Our example shows how\u2014not what the real companies earned.",
+    "dialogue": [
+      "Yes, it could. Stopping together can help where stopping alone hurts. Our example shows how\u2014not what the real companies earned."
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": false,
+      "investigator": true,
+      "phase": "Fictional comparison \u00b7 Company A and Company B",
+      "rule": "Same total spending. Ads change who gets the customers.",
+      "money": 100,
+      "receipt": "A receives 100 \u2212 spends 0 on ads = 100 left"
+    },
+    "choices": [
+      {
+        "label": "What did the real evidence show?",
+        "next": "evidence"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "evidence": {
+    "title": "The real case",
+    "line": "Stock-market evidence suggested investors expected established tobacco companies to benefit. Harder entry for new brands was another possible reason.",
+    "dialogue": [
+      "Stock-market evidence suggested investors expected established tobacco companies to benefit. Harder entry for new brands was another possible reason."
+    ],
+    "visual": {
+      "type": "brands",
+      "known": true
+    },
+    "choices": [
+      {
+        "label": "Save this discovery",
+        "next": "finish"
+      },
+      {
+        "label": "Why would new brands struggle?",
+        "next": "entry"
+      },
+      {
+        "label": "When could our result change?",
+        "next": "limit"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "entry": {
+    "title": "Recognition matters",
+    "line": "Established brands were already familiar. New brands lost a way to get noticed. Other advertising channels remained.",
+    "dialogue": [
+      "Established brands were already familiar. New brands lost a way to get noticed. Other advertising channels remained."
+    ],
+    "visual": {
+      "type": "brands",
+      "known": true
+    },
+    "choices": [
+      {
+        "label": "Save this discovery",
+        "next": "finish"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "limit": {
+    "title": "The assumption matters",
+    "line": "Our example held total spending fixed. If customers bought much less, lost income could outweigh the saved ad bills.",
+    "dialogue": [
+      "Our example held total spending fixed. If customers bought much less, lost income could outweigh the saved ad bills."
+    ],
+    "visual": {
+      "type": "cards",
+      "cards": [
+        [
+          "Saved ad costs",
+          "Compare with lost income"
+        ]
+      ]
+    },
+    "choices": [
+      {
+        "label": "Save this discovery",
+        "next": "finish"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "starting_money": {
+    "title": "They start in the same position",
+    "line": "Only A stops its ads. B keeps advertising. Will A keep more or less than its current 60 coins?",
+    "dialogue": [
+      "Only A stops its ads. B keeps advertising. Will A keep more or less than its current 60 coins?"
+    ],
+    "visual": {
+      "type": "ads",
+      "a": true,
+      "b": true,
+      "investigator": true,
+      "phase": "Starting point \u00b7 fictional coins",
+      "money": 60,
+      "bothMoney": true,
+      "receipt": "Each: 100 received \u2212 40 on ads = 60 left",
+      "rule": "Total spending stays fixed in this example.",
+      "predict": true
+    },
+    "choices": [
+      {
+        "label": "A keeps more than 60",
+        "next": "alone",
+        "set": {
+          "firstPrediction": "more"
+        }
+      },
+      {
+        "label": "A keeps less than 60",
+        "next": "alone",
+        "set": {
+          "firstPrediction": "less"
+        }
+      },
+      {
+        "label": "I\u2019m not sure",
+        "next": "alone",
+        "set": {
+          "firstPrediction": "unsure"
+        }
+      }
+    ],
+    "mood": "thinking"
+  },
+  "ban_arrives": {
+    "title": "The ban arrives",
+    "line": "Now B must stop advertising too. Will A\u2019s money recover?",
+    "dialogue": [
+      "Now B must stop advertising too. Will A\u2019s money recover?"
+    ],
+    "visual": {
+      "type": "ads",
+      "a": false,
+      "b": true,
+      "investigator": true,
+      "phase": "Fictional comparison \u00b7 Company A and Company B",
+      "rule": "Same total spending. Ads change who gets the customers.",
+      "money": 40,
+      "receipt": "A receives 40 \u2212 spends 0 on ads = 40 left"
+    },
+    "choices": [
+      {
+        "label": "Yes, it will",
+        "next": "both_after_alone",
+        "set": {
+          "secondPrediction": "yes"
+        }
+      },
+      {
+        "label": "No, it won\u2019t",
+        "next": "both_after_alone",
+        "set": {
+          "secondPrediction": "no"
+        }
+      },
+      {
+        "label": "Show me",
+        "next": "both_after_alone",
+        "set": {
+          "secondPrediction": "unsure"
+        }
+      }
+    ],
+    "mood": "thinking"
+  }
+}

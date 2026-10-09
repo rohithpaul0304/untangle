@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Untangle · Learn anything through play</title>
+<meta name="description" content="Five-minute lessons you play, not scroll. Big ideas as small games, starting with game theory. Chapter one is free in your browser.">
+<style>
+__FONTS__
+:root{
+  --paper:#FFFCF2;--ink:#10233F;--ink2:#4F5B6E;--line:#EDE6D3;
+  --lime:#FFD84D;--lime-deep:#F4C321;--peri:#1F4FFF;--peri-soft:#DCEFD6;--orange:#1F4FFF;--peach:#FFD9D6;
+  --sand:#F1EBD8;--olive:#6D8D5D;--mint:#FFFCF2;--sky:#D8E6FF;--plum:#10233F;
+  --font:"Bricolage Grotesque",Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:17px;line-height:1.45;-webkit-font-smoothing:antialiased}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{margin:0;line-height:.98;letter-spacing:-.03em;font-weight:800}
+h1{font-size:clamp(40px,5.6vw,76px)}
+h2{font-size:clamp(36px,6.4vw,80px)}
+p{margin:0}
+.wrap{max-width:1240px;margin:0 auto;padding:0 20px}
+.pill{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:12px 20px;font-weight:700;text-decoration:none;border:0;cursor:pointer;font:700 15px var(--font);transition:transform .15s}
+.pill:active{transform:scale(.97)}
+.pill.ink{background:var(--ink);color:#fff}
+.pill.lime{background:var(--lime);color:var(--ink)}
+.pill.ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+.pill .arr{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.18)}
+.pill.lime .arr,.pill.ghost .arr{background:var(--ink);color:#fff}
+
+/* ---- cinematic entry ---- */
+#cine{position:relative;height:calc(var(--n,4)*100vh + 40vh);background:var(--ink);color:var(--paper);z-index:1}
+#cine .stage{position:sticky;top:0;height:100vh;overflow:hidden;user-select:none;-webkit-user-select:none}
+#cine.off{display:none}
+#cine .scene{position:absolute;inset:0;display:grid;place-items:center;opacity:0;transition:opacity .6s;pointer-events:none}
+#cine .scene.on{opacity:1}
+#cine .bg{position:absolute;inset:0;transition:background .8s}
+#cine .art{position:relative;max-width:min(420px,60vw);max-height:36vh;margin-bottom:26vh;object-fit:contain;filter:drop-shadow(0 30px 60px rgba(0,0,0,.45));transform:scale(.92);transition:transform 1.2s cubic-bezier(.2,.8,.2,1)}
+#cine .scene.on .art{transform:scale(1)}
+#cine .faces{display:flex;gap:40px;position:relative}
+#cine .faces img{width:min(220px,34vw);height:min(220px,34vw);border-radius:28px;object-fit:cover;border:4px solid rgba(255,255,255,.12)}
+#cine .line{position:absolute;left:50%;bottom:22vh;transform:translateX(-50%);width:min(760px,90vw);text-align:center;font-size:clamp(24px,3.6vw,44px);font-weight:600;line-height:1.15;letter-spacing:-.02em;text-shadow:0 2px 20px rgba(0,0,0,.4)}
+#cine .line em{font-style:normal;color:var(--lime);font-weight:800}
+#cine .line.solo{bottom:auto;top:50%;transform:translate(-50%,-50%);font-size:clamp(26px,4vw,48px)}
+#cine .line.big{font-size:clamp(40px,7vw,96px);font-weight:800;letter-spacing:-.04em;line-height:.95;bottom:auto;top:50%;transform:translate(-50%,-50%)}
+#cine .xp{position:absolute;top:22px;right:24px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:999px;padding:8px 14px;font-weight:700;font-size:14px;backdrop-filter:blur(8px)}
+#cine .xp i{color:var(--lime);font-style:normal;margin-right:4px}
+#cine .brand{position:absolute;top:24px;left:24px;font-weight:800;font-size:20px;letter-spacing:-.03em}
+#cine .skip{position:absolute;top:22px;left:50%;transform:translateX(-50%);background:none;border:0;color:rgba(255,255,255,.6);font:600 13px var(--font);cursor:pointer;letter-spacing:.06em;text-transform:uppercase}
+#cine .hint{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.7);transition:opacity .4s;z-index:5}
+#cine .hint i{width:1.5px;height:28px;background:linear-gradient(var(--lime),transparent);animation:hintdrop 1.6s ease-in-out infinite}
+@keyframes hintdrop{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+#cine.moved .hint{opacity:0}
+#cine .hold{position:absolute;left:50%;bottom:9vh;transform:translateX(-50%);width:76px;height:76px;border-radius:50%;display:grid;place-items:center;cursor:pointer}
+#cine .hold svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+#cine .hold circle{fill:none;stroke-width:3}
+#cine .hold .track{stroke:rgba(255,255,255,.18)}
+#cine .hold .fill{stroke:var(--lime);stroke-dasharray:226;stroke-dashoffset:226;transition:stroke-dashoffset .05s linear}
+#cine .hold span{font-size:9px;font-weight:800;letter-spacing:.12em;text-align:center;line-height:1.2;color:rgba(255,255,255,.85)}
+#cine .hold.pulse{animation:holdpulse 1.6s ease-in-out infinite}
+@keyframes holdpulse{50%{transform:translateX(-50%) scale(1.06)}}
+#cine .bar{position:absolute;top:0;left:0;height:3px;background:var(--lime);width:0;transition:width .5s}
+#cine .gain{position:absolute;top:60px;right:28px;color:var(--lime);font-weight:800;font-size:18px;opacity:0;transform:translateY(8px);transition:all .4s}
+#cine .gain.on{opacity:1;transform:translateY(0)}
+#cine .scene.film{display:block}
+#cine .brand,#cine .skip,#cine .xp,#cine .gain,#cine .hold,#cine .unroll,#cine .bar{z-index:5}
+#cine .bgimg{position:absolute;inset:-4%;width:108%;height:108%;object-fit:cover;transform-origin:50% 50%;will-change:transform;filter:saturate(1.05)}
+#cine .glow{position:absolute;width:70vmax;height:70vmax;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,216,77,.28) 0,rgba(255,216,77,.08) 30%,transparent 62%);mix-blend-mode:screen;pointer-events:none}
+#cine .vig{position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,21,38,.55) 0,rgba(11,21,38,0) 28%,rgba(11,21,38,0) 55%,rgba(11,21,38,.78) 100%),linear-gradient(90deg,rgba(11,21,38,.55) 0,rgba(11,21,38,0) 45%)}
+#cmotes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;mix-blend-mode:screen}
+#cine .copy{position:absolute;left:max(24px,6vw);bottom:20vh;}
+#cine .scene.last .copy{bottom:22vh}
+#cine .copy{width:min(720px,86vw);will-change:transform;text-align:left}
+#cine .copy .cwords{font-size:clamp(26px,3.6vw,46px);font-weight:600;line-height:1.14;letter-spacing:-.02em;text-shadow:0 2px 24px rgba(0,0,0,.55)}
+#cine .copy.big .cwords{font-size:clamp(44px,7.2vw,104px);font-weight:800;line-height:.95;letter-spacing:-.04em}
+#cine .copy .w{display:inline-block;opacity:0;transform:translateY(14px);filter:blur(6px)}
+#cine .scene.on .copy .w{animation:wordin .7s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(.25s + var(--i)*.055s)}
+@keyframes wordin{to{opacity:1;transform:none;filter:blur(0)}}
+#cine .copy .w.hi{color:var(--lime);font-weight:800}
+#cine .scene.film .bar{display:none}
+#cine .scene.film.on{transition:opacity .9s}
+#cine .petal{position:absolute;width:10px;height:10px;border-radius:50% 0;background:var(--lime);opacity:.5;animation:fall linear infinite}
+@keyframes fall{from{transform:translateY(-10vh) rotate(0)}to{transform:translateY(110vh) rotate(540deg)}}
+#cine .unroll{position:absolute;left:max(24px,6vw);bottom:7vh;display:flex;flex-direction:row;align-items:center;gap:16px;opacity:0;transition:opacity .5s;pointer-events:none;z-index:6}
+#cine .unroll.on{opacity:1;pointer-events:auto}
+@media (prefers-reduced-motion:reduce){#cine{display:none}}
+body.locked{overflow:hidden}
+/* intro */
+#intro{display:none;position:fixed;inset:0;background:var(--peri);display:grid;place-items:center;z-index:50;transition:clip-path .9s cubic-bezier(.7,0,.3,1)}
+#intro.off{clip-path:inset(0 0 100% 0);pointer-events:none}
+#intro .mark{width:120px;height:120px;border-radius:50%;border:8px solid var(--paper);display:grid;place-items:center;animation:pop .6s cubic-bezier(.2,.9,.3,1.4) both}
+#intro .mark b{font-size:56px;color:var(--paper);letter-spacing:-.06em}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+/* nav */
+nav{position:sticky;top:0;z-index:40;padding:14px 0;background:transparent}
+nav .wrap{display:flex;align-items:center;gap:10px}
+nav .logo{display:flex;align-items:baseline;gap:8px;text-decoration:none;font-weight:800;font-size:24px;letter-spacing:-.03em;margin-right:auto}
+nav .logo small{font-size:10px;font-weight:700;letter-spacing:.12em;line-height:1;text-transform:uppercase;color:var(--ink2)}
+nav .links{display:flex;gap:8px;background:rgba(255,251,248,.85);backdrop-filter:blur(10px);border-radius:999px;padding:6px}
+nav .links a{text-decoration:none;font-weight:600;font-size:15px;padding:9px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--line)}
+nav .links a.cta{background:var(--lime);border-color:var(--lime);white-space:nowrap}
+@media(max-width:760px){nav .links a:not(.cta){display:none}nav .logo small{display:none}}
+/* hero */
+.hero{background:var(--lime);border-radius:0 0 48px 48px;position:relative;overflow:hidden;padding:40px 0 0}
+.hero .blob{position:absolute;inset:auto -10% -40% -10%;height:70%;background:var(--lime-deep);border-radius:50% 50% 0 0;opacity:.6}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:30px;align-items:end;min-height:640px}
+.hero h1{margin-bottom:18px;font-size:clamp(38px,5.4vw,72px)}
+.hero h1 .tilt{display:inline-block;transform:rotate(-6deg) translateY(6px);color:var(--plum);font-weight:600;letter-spacing:-.02em}
+.hero p.sub{font-size:19px;max-width:38ch;margin-bottom:26px;color:#2b2b2b}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+.hero .note{font-size:13px;color:#3b3b3b;margin-top:-30px;margin-bottom:40px}
+.phone{justify-self:center;width:min(340px,92vw);aspect-ratio:9/19;border:10px solid var(--ink);border-radius:46px;background:var(--paper);box-shadow:0 30px 60px rgba(31,31,31,.25);overflow:hidden;position:relative;transform:rotate(3deg) translateY(30px)}
+.phone:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:110px;height:28px;background:var(--ink);border-radius:0 0 18px 18px;z-index:2}
+.phone iframe{width:100%;height:100%;border:0;display:block}
+.sticker{position:absolute;background:var(--orange);color:#fff;font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:14px 10px;border-radius:50%;width:92px;height:92px;display:grid;place-items:center;text-align:center;transform:rotate(-12deg);clip-path:polygon(50% 0%,61% 12%,76% 6%,80% 21%,96% 24%,92% 39%,100% 50%,92% 61%,96% 76%,80% 79%,76% 94%,61% 88%,50% 100%,39% 88%,24% 94%,20% 79%,4% 76%,8% 61%,0% 50%,8% 39%,4% 24%,20% 21%,24% 6%,39% 12%)}
+.hero .sticker{right:6%;top:16%}
+.hand{font-family:"Caveat","Bradley Hand","Segoe Script",cursive;color:var(--plum);font-size:18px;transform:rotate(-5deg);display:inline-block}
+.fox-hero{position:absolute;left:46%;bottom:-6px;width:190px;transform:rotate(-4deg)}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr;min-height:0}.phone{transform:none;margin:10px auto 0}.fox-hero{display:none}.hero .sticker{right:12px;top:12px;width:76px;height:76px;font-size:11px}}
+/* sections */
+section{padding:92px 0}
+.block{border-radius:48px;padding:72px 0}
+.block.peri{background:var(--peri-soft)}
+.block.peach{background:var(--peach)}
+.block.sky{background:var(--sky)}
+.block.plum{background:var(--plum);color:#fff}
+.block.mint{background:var(--mint)}
+.kicker{font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin-bottom:14px}
+.plum .kicker{color:#E6C9DE}
+.lead{font-size:20px;max-width:52ch;color:var(--ink2);margin-top:16px}
+.plum .lead{color:#F3E5EE}
+/* unbox: scroll-driven Three.js board game box */
+.unbox{height:320vh;padding:0;position:relative}
+.unbox .pin{position:sticky;top:0;height:100vh;background:var(--mint);display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.unbox .top{text-align:center;padding-top:72px;transition:opacity .3s;position:relative;z-index:2;pointer-events:none}
+.unbox .top h2{font-size:clamp(34px,5vw,64px)}
+.unbox.open .top{opacity:0}
+.unbox .scene{position:absolute;inset:0}
+#boxgl{position:absolute;inset:0;width:100%;height:100%;display:block}
+.boxcta{position:absolute;left:50%;bottom:28px;transform:translate(-50%,16px);opacity:0;transition:opacity .4s,transform .4s;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;z-index:3}
+.boxcta small:last-child{font-size:13px;color:var(--ink2)}
+.storebadge{height:52px;width:auto;border-radius:8px;opacity:.95}
+.unbox.done .boxcta{opacity:1;transform:translate(-50%,0)}
+@media(max-width:760px){.unbox .top{padding-top:48px}}
+@media(prefers-reduced-motion:reduce){.unbox{height:100vh}}
+/* renaissance */
+.ren{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+.ren h2{font-size:clamp(36px,5vw,64px)}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.vs .col{border-radius:24px;padding:26px 22px 30px;border:1.5px solid var(--line);position:relative;min-height:300px;display:flex;flex-direction:column}
+.vs .scroll{background:var(--sand);color:var(--ink2)}
+.vs .learn{background:var(--lime);color:var(--ink);overflow:hidden}
+.vs .t{font-weight:700;font-size:14px;letter-spacing:.02em}
+.vs .big{font-size:clamp(84px,12vw,150px);font-weight:800;line-height:1;letter-spacing:-.05em;margin:18px 0 6px;font-variant-numeric:tabular-nums}
+.vs .s{font-size:15px;max-width:14ch}
+.vs .learn img{position:absolute;right:-18px;bottom:-14px;width:104px;transform:rotate(-8deg)}
+@media(max-width:860px){.ren{grid-template-columns:1fr;gap:32px}.vs .col{min-height:240px}.vs .learn img{width:76px}}
+/* next subjects */
+.next{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.nx{border:1.5px dashed var(--ink);border-radius:20px;padding:22px 24px}
+.nx .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;border:1.5px solid var(--line);border-radius:999px;padding:5px 10px;background:#fff;margin-bottom:12px}
+.nx h3{font-size:22px;letter-spacing:-.02em;margin-bottom:6px}
+.nx p{color:var(--ink2);font-size:15px}
+@media(max-width:860px){.next{grid-template-columns:1fr}}
+/* how it works */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.step{background:#fff;border-radius:28px;padding:26px;position:relative;transform:rotate(var(--r));transition:transform .3s}
+.step:hover{transform:rotate(0) translateY(-4px)}
+.step .n{font-family:"Caveat","Bradley Hand",cursive;font-size:30px;color:var(--plum);margin-bottom:6px}
+.step h3{font-size:26px;margin-bottom:8px}
+.step p{color:var(--ink2)}
+.step img{height:120px;object-fit:contain;margin:12px auto 0}
+@media(max-width:800px){.steps{grid-template-columns:1fr}.step{transform:none}}
+/* chapters */
+.chaps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;margin-top:40px}
+.chap{background:#fff;border-radius:28px;padding:22px;border:1.5px solid var(--line);position:relative;min-height:300px;display:flex;flex-direction:column}
+.chap .art{height:150px;border-radius:18px;background:var(--sand);display:grid;place-items:center;overflow:hidden;margin-bottom:16px}
+.chap .art img{height:100%;object-fit:cover;width:100%}
+.chap .art.faces{display:flex;align-items:center;justify-content:center;gap:10px;padding:10px}
+.chap .art.faces img{width:96px;height:96px;border-radius:50%;object-fit:cover}
+.chap .art .big{font-size:64px}
+.chap h3{font-size:24px}
+.chap p{color:var(--ink2);margin-top:6px;flex:1}
+.chap .tag{position:absolute;top:14px;left:14px;background:var(--lime);border-radius:999px;padding:5px 10px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.chap.lock .tag{background:var(--ink);color:#fff}
+.chap .foot{margin-top:16px;display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--ink2)}
+/* big words */
+.words{text-align:center}
+.words h2{font-size:clamp(40px,9vw,120px);line-height:.95}
+.words h2 span{display:block}
+.words h2 .alt{color:var(--plum)}
+.words .hand{font-size:22px;margin-bottom:10px}
+/* why */
+.why{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.why ul{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:14px}
+.why li{display:flex;gap:14px;align-items:flex-start;font-size:18px}
+.why li b{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--lime);color:var(--ink);flex:none;font-size:14px}
+.why .ring{position:relative;width:min(380px,80vw);aspect-ratio:1;margin:0 auto}
+.why .ring svg{position:absolute;inset:0;width:100%;height:100%;animation:spin 22s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.why .ring img{position:absolute;inset:18%;width:64%;height:64%;object-fit:contain}
+@media(max-width:860px){.why{grid-template-columns:1fr}}
+/* faq */
+.faq{max-width:760px;margin:40px auto 0;display:grid;gap:10px}
+details{background:#fff;border-radius:18px;border:1.5px solid var(--line)}
+summary{cursor:pointer;list-style:none;padding:18px 22px;font-weight:700;font-size:18px;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:24px;font-weight:400}
+details[open] summary:after{content:"–"}
+details p{padding:0 22px 20px;color:var(--ink2)}
+/* app */
+.app{text-align:center}
+.app .badges{display:flex;gap:12px;justify-content:center;margin-top:28px;flex-wrap:wrap}
+.badge{display:inline-flex;align-items:center;gap:10px;background:var(--ink);color:#fff;border-radius:14px;padding:12px 18px;text-decoration:none;font-weight:700}
+.badge small{display:block;font-size:11px;font-weight:500;opacity:.7;text-align:left}
+.badge span{text-align:left;line-height:1.1}
+footer{padding:40px 0 60px;color:var(--ink2);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+/* floating cta */
+#float{position:fixed;left:50%;bottom:18px;transform:translate(-50%,120px);transition:transform .35s;z-index:30}
+#float.on{transform:translate(-50%,0)}
+.marq{overflow:hidden;white-space:nowrap;border-top:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);padding:12px 0;font-weight:700;font-size:18px}
+.marq div{display:inline-block;animation:marq 28s linear infinite}
+.marq span{margin:0 28px}
+@keyframes marq{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}#intro{display:none}}
+.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
+.js .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div id="cine" role="region" aria-label="Opening story"><div class="stage">
+  <div class="bg" id="cbg"></div>
+  <div class="bar" id="cbar"></div>
+  <div class="brand">Untangle</div>
+  <button class="skip" id="cskip">Skip intro</button>
+  <div class="xp" id="cxp"><i>✦</i><span>0</span> XP</div>
+  <div class="gain" id="cgain">+20 XP</div>
+  <div id="cscenes"></div>
+  <canvas id="cmotes" aria-hidden="true"></canvas>
+  <div class="hint" id="chint"><span>Scroll</span><i></i></div>
+  <div class="unroll" id="cunroll"><a class="pill lime" href="#play" id="cplay">Play chapter one <span class="arr">→</span></a><span style="font-size:13px;color:rgba(255,255,255,.6)">About two minutes. No sign-up.</span></div>
+</div></div>
+
+
+<nav><div class="wrap">
+  <a class="logo" href="#">Untangle <small>learn anything through play</small></a>
+  <div class="links">
+    <a href="#renaissance">Why play</a><a href="#how">How it works</a><a href="#chapters">Chapters</a><a href="#app">The app</a><a class="cta" href="#play">Play free</a>
+  </div>
+</div></nav>
+
+<header class="hero">
+  <div class="blob"></div>
+  <div class="wrap">
+    <div>
+      <h1>Learn things you'll <span class="tilt">actually</span> use. In the time you'd spend scrolling.</h1>
+      <p class="sub">Five-minute games that leave an idea behind. Start with game theory, the rules behind every deal, argument and group chat, and you will start seeing the game everywhere. Chapter one is free, right here.</p>
+      <div class="ctas"><a class="pill ink" href="#play">Play chapter one <span class="arr">→</span></a></div>
+      <p class="note">No sign-up. Works in this tab. About two minutes.</p>
+      <img class="fox-hero" src="__FOX_CELEB__" alt="">
+    </div>
+    <div id="play" class="phone"><iframe src="lesson.html?web=1" title="Untangle chapter one: One switch" loading="eager"></iframe></div>
+    <div class="sticker">Free to play</div>
+  </div>
+</header>
+
+<div class="marq" aria-hidden="true"><div><span>Chapter one is free</span>·<span>No account, no install</span>·<span>Five minutes, not five hours</span>·<span>Play it before you name it</span>·<span>Game theory now, behavioural economics next</span>·<span>Built for the bus, the queue and the lift</span>·<span>Chapter one is free</span>·<span>No account, no install</span>·<span>Five minutes, not five hours</span>·<span>Play it before you name it</span>·<span>Game theory now, behavioural economics next</span>·<span>Built for the bus, the queue and the lift</span>·</div></div>
+
+<section id="renaissance"><div class="wrap">
+  <div class="ren">
+    <div>
+      <p class="kicker">Why play</p>
+      <h2>Curious people used to learn everything by doing.</h2>
+      <p class="lead">Leonardo learned anatomy by cutting, music by playing and engineering by building. Nobody handed him a syllabus. Then learning became reading about things, and now it is mostly scrolling past them.</p>
+      <p class="lead">Untangle brings the doing back. One idea becomes one small game. You poke it, it answers, and the idea sticks because your hands were on it. Game theory is the first subject. Behavioural economics, probability and everyday economics are next, built the same way.</p>
+    </div>
+    <div class="vs reveal">
+      <div class="col scroll"><div class="t">Forty minutes on Instagram</div><div class="big">0</div><div class="s">ideas you can use tonight</div></div>
+      <div class="col learn"><div class="t">Five minutes on Untangle</div><div class="big">1</div><div class="s">idea you can use tonight</div><img src="__FOX_THINK__" alt=""></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap"><div class="block peri"><div class="wrap">
+  <p class="kicker">How it works</p>
+  <h2>Play first.<br>Names later.</h2>
+  <p class="lead">Every lesson is the same shape, borrowed from how people actually learn games: you make a move, you watch what it does, you make a bigger one. The word for the idea arrives only after you have already used it.</p>
+  <div class="steps">
+    <div class="step reveal" style="--r:-2deg"><div class="n">Step 1</div><h3>Make a move</h3><p>Stay silent, or talk. One tap, and the night plays out in front of you.</p><img src="__RAVI__" alt=""></div>
+    <div class="step reveal" style="--r:1.5deg"><div class="n">Step 2</div><h3>Watch it bite</h3><p>The other player answers tomorrow. The move that won tonight costs you by morning.</p><img src="__MEERA__" alt=""></div>
+    <div class="step reveal" style="--r:-1deg"><div class="n">Step 3</div><h3>See it in the world</h3><p>Same idea, real names. A price war, a law, a company that closed. You leave able to spot it around you.</p><img src="__FOX_SPEAK__" alt=""></div>
+  </div>
+</div></div></div></section>
+
+
+
+<section id="chapters"><div class="wrap">
+  <p class="kicker">Subject one: game theory</p>
+  <h2>One game.<br>Many disguises.</h2>
+  <p class="lead">Chapter one is free, right here. Finish it and the next ones open in the app, one after another.</p>
+  <div class="chaps">
+    <div class="chap reveal"><span class="tag">Free · play now</span><div class="art"><img src="__JEWEL__" alt=""></div><h3>1 · One switch</h3><p>Two suspects, one offer. The prisoner's dilemma, then Jio 2016.</p><div class="foot"><span>2 min</span><a class="pill lime" href="#play" style="padding:8px 14px;font-size:13px">Play</a></div></div>
+    <div class="chap lock reveal"><span class="tag">Unlocks after chapter one</span><div class="art faces"><img src="__RAVI_C__" alt=""><img src="__MEERA_F__" alt=""></div><h3>2 · The café</h3><p>Same game, five days, real money. Meet tit for tat.</p><div class="foot"><span>3 min</span><span>In the app</span></div></div>
+    <div class="chap lock reveal"><span class="tag">In the app</span><div class="art"><span class="big">📺</span></div><h3>3 · The ad ban</h3><p>Why cigarette brands quietly cheered a law against their own ads.</p><div class="foot"><span>3 min</span><span>In the app</span></div></div>
+    <div class="chap lock reveal"><span class="tag">In the app</span><div class="art"><span class="big">🏆</span></div><h3>4 · The tournament</h3><p>Your strategy against the grudge, the coin and the shark.</p><div class="foot"><span>5 min</span><span>In the app</span></div></div>
+  </div>
+  <p class="kicker" style="margin-top:40px">Next subjects</p>
+  <div class="next reveal">
+    <div class="nx"><span class="tag">Subject two · coming</span><h3>Behavioural economics</h3><p>Why you bought it. Anchors, timers that say "expires in 10 minutes", and the course you paid for and never finished.</p></div>
+    <div class="nx"><span class="tag">Subject three · coming</span><h3>Probability and risk</h3><p>What the odds really were. Fantasy leagues, lotteries, a 30% chance of rain, and a test result less certain than it looks.</p></div>
+    <div class="nx"><span class="tag">Subject four · coming</span><h3>Everyday economics</h3><p>Why the price moved. Onion prices, surge pricing, a ₹500 note that buys less each year, and interest that compounds while you sleep.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap"><div class="block peach words"><div class="wrap">
+  <p class="hand">We've got a game for every kind of mess</p>
+  <h2><span>Price wars</span><span class="alt">Group projects</span><span>Salary talks</span><span class="alt">Who books the tickets</span><span>Ceasefires</span><span class="alt">Auctions</span><span>and more.</span></h2>
+</div></div></div></section>
+
+
+
+<section id="faq"><div class="wrap"><div class="block sky"><div class="wrap">
+  <h2 style="text-align:center">Common questions</h2>
+  <div class="faq">
+    <details><summary>Is it free?</summary><p>Chapter one is free, here, with no account and nothing to install. The app carries the rest of the course. Pricing, if any, will be said plainly before you pay for anything.</p></details>
+    <details><summary>Is this for kids?</summary><p>It is built for adults who are curious and short on time: students, people in their first jobs, anyone who has started a course and not finished it. A sharp fourteen-year-old will be fine too.</p></details>
+    <details><summary>How is this different from a YouTube video?</summary><p>A video explains and you nod. Here you make the move, the world answers, and the idea arrives because you felt it. Nothing is named before you have used it.</p></details>
+    <details><summary>Will I actually remember anything?</summary><p>That is the point of playing instead of reading. Every chapter ends with a quick skill check and a real case, so you leave able to spot the idea around you, not just recognise its name.</p></details>
+    <details><summary>Is it really game theory, though?</summary><p>Yes, the real thing: the prisoner's dilemma, repeated games, tit for tat, Nash equilibrium. Then behavioural economics, probability and risk, and everyday economics, built the same way.</p></details>
+  </div>
+</div></div></div></section>
+
+<section id="app" class="unbox"><div class="pin">
+  <div class="wrap top"><p class="kicker">The app</p><h2>Keep playing.<br>Keep learning.</h2><p class="lead" style="margin:10px auto 0;text-align:center">iPhone first. Keep scrolling to open the box.</p></div>
+  <div class="scene"><canvas id="boxgl" aria-label="A board game box opening to show what is in the app" role="img"></canvas>
+    <div class="boxcta"><img class="storebadge" src="__APPSTORE__" alt="Download on the App Store (coming soon)"><small>Coming first to iPhone. Finish chapter one here; your progress carries over.</small></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap"><span>© Untangle. Made in Bengaluru.</span><span>Jio, Airtel, Vi and Reliance Communications are trademarks of their owners, used to describe a real event. 3D fox model: PixelMannen (CC0), rig and animation by tomkranis (CC BY 4.0), glTF conversion by AsoboStudio and scurest (CC BY 4.0).</span></div></footer>
+
+<a id="float" class="pill ink" href="#app">The rest is in the app <span class="arr">→</span></a>
+
+<script>__BOXJS__</script>
+<script>
+document.documentElement.classList.add('js');
+/* ---- cinematic entry ---- */
+(function(){
+  const C=document.getElementById('cine');if(!C||matchMedia('(prefers-reduced-motion:reduce)').matches){if(C)C.style.display='none';return;}
+  const AS=__CINE_ASSETS__;
+  const scenes=[
+    {bg:'#0B1526',film:'beat1',pos:'62% 50%',mpos:'58% 40%',light:[82,30],words:'Leonardo never sat an exam.',big:true,xp:0},
+    {bg:'#0B1526',film:'beat2',pos:'55% 50%',mpos:'72% 35%',light:[78,22],words:'He cut, built, played and drew. Curious people learned everything by <em>doing</em>. Then learning became reading about things.',xp:20},
+    {bg:'#0B1526',film:'beat3',pos:'60% 50%',mpos:'58% 42%',light:[62,45],words:'Untangle puts your hands back on the idea. Five minutes a day, and the world starts looking <em>rigged in your favour</em>.',xp:20},
+    {bg:'#0B1526',film:'beat4',pos:'55% 50%',mpos:'52% 45%',light:[66,18],flicker:true,words:'You are a suspect. Your friend is too. Each of you can talk or stay silent. How many years you serve in jail <em>depends on both answers</em>.',xp:20,last:true}
+  ];
+  const wrap=document.getElementById('cscenes');
+  scenes.forEach((sc,i)=>{const d=document.createElement('div');d.className='scene';d.id='sc'+i;
+    if(sc.film){const marked=sc.words.replace(/<em>(.*?)<\/em>/g,(m,t)=>t.split(' ').map(w=>'\u0001'+w).join(' '));const words=marked.split(' ').map((w,i)=>`<span class="w${w.startsWith('\u0001')?' hi':''}" style="--i:${i}">${w.replace('\u0001','')}</span>`).join(' ');
+      d.classList.add('film');d._flicker=!!sc.flicker;if(sc.last)d.classList.add('last');d.innerHTML=`<img class="bgimg" src="${AS[sc.film]}" alt="" style="object-position:${innerWidth<760&&sc.mpos?sc.mpos:sc.pos}"><div class="glow" style="left:${sc.light[0]}%;top:${sc.light[1]}%"></div><div class="vig"></div><div class="copy ${sc.big?'big':''}"><div class="cwords">${words}</div></div>`;}
+    else if(sc.big)d.innerHTML=`<div class="line big">${sc.big}</div>`;
+    else if(!sc.img)d.innerHTML=`<div class="line solo">${sc.line}</div>`;
+    else if(sc.faces)d.innerHTML=`<div class="faces"><img src="${AS[sc.faces[0]]}" alt="Ravi"><img src="${AS[sc.faces[1]]}" alt="Meera"></div><div class="line">${sc.line}</div>`;
+    else d.innerHTML=`<img class="art" src="${AS[sc.img]}" alt="" style="${sc.round?'border-radius:50%;width:min(300px,56vw);height:min(300px,56vw);object-fit:cover':''}"><div class="line">${sc.line}</div>`;
+    wrap.appendChild(d);});
+  for(let i=0;i<0;i++){const p=document.createElement('i');p.className='petal';p.style.left=Math.random()*100+'%';p.style.animationDuration=(7+Math.random()*8)+'s';p.style.animationDelay=(-Math.random()*10)+'s';p.style.opacity=.15+Math.random()*.3;C.appendChild(p);}
+  let i=0,xp=0,local=0;C.style.setProperty('--n',scenes.length);const seen=new Set([0]);
+  const bg=document.getElementById('cbg'),bar=document.getElementById('cbar'),xpEl=document.querySelector('#cxp span'),gain=document.getElementById('cgain'),unroll=document.getElementById('cunroll');
+  function show(k){document.querySelectorAll('#cine .scene').forEach(s=>s.classList.remove('on'));const el=document.getElementById('sc'+k);el.classList.add('on');el._t0=(performance.now()-t0)/1000;bg.style.background=scenes[k].bg;bar.style.width=((k+1)/scenes.length*100)+'%';
+    unroll.classList.toggle('on',!!scenes[k].last);}
+  /* parallax */
+  let px=0,py=0,tx=0,ty=0;
+  C.addEventListener('pointermove',e=>{tx=(e.clientX/innerWidth-.5);ty=(e.clientY/innerHeight-.5);},{passive:true});
+  addEventListener('deviceorientation',e=>{if(e.gamma!=null){tx=Math.max(-.5,Math.min(.5,e.gamma/45));ty=Math.max(-.5,Math.min(.5,(e.beta-45)/60));}},{passive:true});
+  /* dust motes */
+  const mc=document.getElementById('cmotes'),mx=mc.getContext('2d');let motes=[];
+  function sizeMotes(){mc.width=innerWidth*Math.min(devicePixelRatio,2);mc.height=innerHeight*Math.min(devicePixelRatio,2);motes=Array.from({length:Math.round(innerWidth/14)},()=>({x:Math.random()*mc.width,y:Math.random()*mc.height,r:(0.6+Math.random()*1.8)*Math.min(devicePixelRatio,2),vx:(0.08+Math.random()*0.18)*Math.min(devicePixelRatio,2),vy:(-0.05+Math.random()*0.1)*Math.min(devicePixelRatio,2),a:0.15+Math.random()*0.5,ph:Math.random()*6.28}));}
+  sizeMotes();addEventListener('resize',sizeMotes);
+  let t0=performance.now();
+  function loop(now){if(scrollY>C.offsetHeight){requestAnimationFrame(loop);return;}const t=(now-t0)/1000;px+=(tx-px)*.06;py+=(ty-py)*.06;
+    const sc=document.querySelector('#cine .scene.on.film');
+    if(sc){const img=sc.querySelector('.bgimg'),cp=sc.querySelector('.copy'),gl=sc.querySelector('.glow');
+      img.style.transform=`translate(${-px*18}px,${-py*12}px) scale(${1.06+local*0.08})`;
+      cp.style.transform=`translate(${px*10}px,${py*6}px)`;gl.style.opacity=sc._flicker?(0.5+Math.sin(t*1.1)*0.1+(Math.sin(t*23.7)*Math.sin(t*7.3)>0.93?-0.22:0)):0.55+Math.sin(t*1.1)*0.18;
+      mx.clearRect(0,0,mc.width,mc.height);mx.fillStyle='#FFD84D';
+      for(const m of motes){m.x+=m.vx+Math.sin(t+m.ph)*0.15;m.y+=m.vy+Math.cos(t*.7+m.ph)*0.12;if(m.x>mc.width)m.x=0;if(m.y<0)m.y=mc.height;if(m.y>mc.height)m.y=0;
+        mx.globalAlpha=m.a*(0.6+0.4*Math.sin(t*2+m.ph));mx.beginPath();mx.arc(m.x,m.y,m.r,0,6.28);mx.fill();}
+      mx.globalAlpha=1;}
+    else mx.clearRect(0,0,mc.width,mc.height);
+    requestAnimationFrame(loop);}
+  requestAnimationFrame(loop);
+  function addXp(n){if(!n)return;xp+=n;xpEl.textContent=xp;gain.textContent='+'+n+' XP';gain.classList.add('on');setTimeout(()=>gain.classList.remove('on'),900);}
+  function onScroll(){const total=C.offsetHeight-innerHeight;const p=Math.max(0,Math.min(1,scrollY/total));if(scrollY>40)C.classList.add('moved');
+    const f=p*scenes.length;const k=Math.min(scenes.length-1,Math.floor(f));local=Math.min(1,f-k);
+    if(k!==i){i=k;show(i);if(!seen.has(i)){seen.add(i);addXp(scenes[i].xp);}}}
+  addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);
+  function finish(){try{const f=document.querySelector('.phone iframe');f.contentWindow.postMessage({untangle:'xp',xp},'*');}catch(e){}}
+  const toPlay=()=>document.getElementById('play').scrollIntoView({behavior:'smooth',block:'center'});
+  document.getElementById('cskip').onclick=()=>{finish();toPlay();};
+  document.getElementById('cplay').onclick=e=>{e.preventDefault();finish();toPlay();};
+  show(0);onScroll();
+})();
+
+
+
+/* ---- unbox scroll (Three.js) ---- */
+(function(){const sec=document.querySelector('.unbox');if(!sec||!window.UntangleBox)return;const cv=document.getElementById('boxgl');
+ let api=null;try{api=UntangleBox.mount(cv,{foxLid:__FOX_LID__,foxToken:__FOX_TOKEN__,badge:__BADGE__,foxGlb:__FOX_GLB__});}catch(e){console.warn('box',e);return;}
+ const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+ function tick(){let p=1;if(!rm){const r=sec.getBoundingClientRect();const total=sec.offsetHeight-innerHeight;p=Math.max(0,Math.min(1,(-r.top)/total));p=Math.max(0,Math.min(1,(p-.1)/.72));}
+  api.setProgress(p);sec.classList.toggle('open',p>.2);sec.classList.toggle('done',p>.85);}
+ addEventListener('scroll',tick,{passive:true});addEventListener('resize',tick);tick();})();
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.05});setTimeout(()=>document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in')),4000);
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+const fl=document.getElementById('float');const play=document.getElementById('play');
+const hero=document.querySelector('.hero');let heroOut=false,appIn=false,cineIn=false;const sync=()=>fl.classList.toggle('on',heroOut&&!appIn&&!cineIn);const cineEl=document.getElementById('cine');if(cineEl){new IntersectionObserver(es=>es.forEach(e=>{cineIn=e.isIntersecting;sync();}),{threshold:.01}).observe(cineEl);}const fo=new IntersectionObserver(es=>es.forEach(e=>{heroOut=!e.isIntersecting;sync();}));fo.observe(hero);const ao=new IntersectionObserver(es=>es.forEach(e=>{appIn=e.isIntersecting;sync();}),{threshold:.01});ao.observe(document.getElementById('app'));
+window.addEventListener('message',e=>{if(e.data&&e.data.untangle==='done'){heroOut=true;sync();}});
+</script>
+</body>
+</html>

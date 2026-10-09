@@ -1,0 +1,645 @@
+{
+  "url": "http://127.0.0.1:8176/candidates/a/deck.html",
+  "viewport": [
+    390,
+    844
+  ],
+  "routeCount": 16,
+  "allEnded": true,
+  "screens": [
+    {
+      "line": "You’re on the interview app’s team. Mira left this. Why did she go? Follow your hunch.",
+      "visual": "Mira · your customer\n\n★★★★★\nFive-star review.\nSubscription cancelled.",
+      "choices": [
+        "Maybe it fell short. Read her note.",
+        "Maybe her plans changed. Ask Mira."
+      ]
+    },
+    {
+      "line": "You opened her note. She points to needing less preparation.",
+      "visual": "Mira’s cancellation note\n“I don’t need interview preparation right now.”",
+      "choices": [
+        "Ask what changed"
+      ]
+    },
+    {
+      "line": "Five stars and leaving can both make sense. What was the practice for?",
+      "visual": "Mira · now\n“I accepted an offer. No more interviews planned, so I don’t need preparation now.”",
+      "choices": [
+        "Look back before her interview"
+      ]
+    },
+    {
+      "line": "Back before that interview: you’re choosing her first preparation help. Open something she left you.",
+      "visual": "Mira · before the interview\n“I want to show why my experience fits. My project answer gets two minutes, then questions.”",
+      "choices": [
+        "Play Mira’s recorded answer",
+        "Read Mira’s voice-note transcript"
+      ]
+    },
+    {
+      "line": "You played her answer. Watch where the main result lands.",
+      "visual": "Mira’s original rehearsal\nOpening\nEvidence\nMain result\n2:00 stop\nHer main result comes after the two-minute limit.",
+      "choices": [
+        "Read her voice note too"
+      ]
+    },
+    {
+      "line": "She knows her project. Finding someone at her hours is harder.",
+      "visual": "Mira · before the interview\n“I can describe the project accurately in a relaxed chat. I work late; friends are rarely around when I can practise.”",
+      "choices": [
+        "Choose her first help"
+      ]
+    },
+    {
+      "line": "Help her show why she fits, using her preparation time well. Which help—and why?",
+      "visual": "Timed opening\n\nRecord → stop at 2:00 → replay.\n\nOrganise opening, evidence, result; retry.\n\nNo unexpected questions.\n\nVaried questions\n\nUnseen follow-ups → respond → replay.\n\nNo full timed opening or organising help.\n\nBoth work privately, at her hours. Neither has a cost or time advantage. You can combine them later.",
+      "choices": [
+        "Time her opening: get the result inside the limit.",
+        "Vary her questions: prepare for a changing conversation."
+      ]
+    },
+    {
+      "line": "You chose the timed opening. The stop exposes the missing result; she can reorganise and retry.",
+      "visual": "Timed opening · replay\nOpening\nEvidence\nMain result\n2:00 stop\nNext attempt · available to try\nMain result → opening + evidence → record again\nOpportunity: bring the result forward, then test the whole answer again. Unexpected questions remain untested.",
+      "choices": [
+        "Name what mattered"
+      ]
+    },
+    {
+      "line": "You aimed the help at what was in her way. That’s the useful shift.",
+      "visual": "Jobs to Be Done\n\nThe progress someone seeks in their situation. Mira wanted to show why her experience fit—not just do more practice. Her late result made a timed, organised opening the first useful help.",
+      "choices": [
+        "One detail changes"
+      ]
+    },
+    {
+      "line": "Same interview, same hours. Imagine only this obstacle changed. What does she need first now?",
+      "visual": "BEFORE THE INTERVIEW · ALTERNATE CASE\nMira\n\n“My opening is clear and fits two minutes. But an unexpected follow-up makes me lose my thread.”\n\nTimed opening\n\nFull answer, 2-minute stop, organise, retry.\n\nNo unexpected questions.\n\nVaried questions\n\nUnseen follow-ups, record and replay.\n\nNo full timed opening or organising help.\n\nAlternate version of the earlier preparation. Same goal, deadline and availability; both still work privately.",
+      "choices": [
+        "Time her opening: keep her main answer clear.",
+        "Vary her questions: practise finding her thread."
+      ]
+    },
+    {
+      "line": "You kept the timed opening. Her result fits—but no surprise question arrives.",
+      "visual": "Timed opening · alternate case\nOpening\nEvidence\nMain result\n2:00 stop\nShe can refine the prepared answer again. Responding when the conversation changes is still untested.",
+      "choices": [
+        "See the help that reaches this gap"
+      ]
+    },
+    {
+      "line": "Switch to varied questions. A fresh prompt gives her a response to review and retry.",
+      "visual": "Worked path · varied questions\nA question she has not seen before\n“What would you do differently next time?”\nHer fresh response → record → replay\nPrepared opening · unchanged\nOpening\nEvidence\nMain result\n2:00 stop\nClear opening → unexpected question → review that response. This reaches the remaining gap.",
+      "choices": [
+        "Close Mira’s case"
+      ]
+    },
+    {
+      "line": "Mira’s case is closed. A useful product can lose a customer when the need ends.",
+      "visual": "Before you add a feature…\n\n“In this situation, they need to get from ___ to ___. What’s stopping them?”\n\nNext: use the same question to look at a company you already know.",
+      "choices": []
+    },
+    {
+      "line": "You asked about her plans. The interviews have stopped.",
+      "visual": "Mira · now\n“I accepted an offer. No more interviews planned.”",
+      "choices": [
+        "Hear why she cancelled"
+      ]
+    },
+    {
+      "line": "You opened her voice note. She knows her project. Practising with someone is harder.",
+      "visual": "Mira · before the interview\n“I can describe the project accurately in a relaxed chat. I work late; friends are rarely around when I can practise.”",
+      "choices": [
+        "Play her recorded answer too"
+      ]
+    },
+    {
+      "line": "Now her recording. Watch where the main result lands.",
+      "visual": "Mira’s original rehearsal\nOpening\nEvidence\nMain result\n2:00 stop\nHer main result comes after the two-minute limit.",
+      "choices": [
+        "Choose her first help"
+      ]
+    },
+    {
+      "line": "You chose new questions. She can practise this response; the late opening result is still untouched.",
+      "visual": "Varied questions · new prompt\nA question she has not seen before\n“Why did you choose that approach?”\nHer fresh response → record → replay\nPrepared opening · unchanged\nOpening\nEvidence\nMain result\n2:00 stop\nA fresh response can be recorded and replayed. Her full opening has not been revised or timed.",
+      "choices": [
+        "Name what mattered"
+      ]
+    },
+    {
+      "line": "For that late result, start with the timed opening. Save new questions for later.",
+      "visual": "Jobs to Be Done\n\nThe progress someone seeks in their situation. Mira wanted to show why her experience fit—not just do more practice. Her late result made a timed, organised opening the first useful help.",
+      "choices": [
+        "One detail changes"
+      ]
+    },
+    {
+      "line": "You sent a new question. Now the response she loses her thread in can be recorded and replayed.",
+      "visual": "Varied questions · alternate case\nA question she has not seen before\n“What would you do differently next time?”\nHer fresh response → record → replay\nPrepared opening · unchanged\nOpening\nEvidence\nMain result\n2:00 stop\nThis exercises the changed obstacle. One response doesn’t prove readiness for every question.",
+      "choices": [
+        "Close Mira’s case"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Time her opening: keep her main answer clear.",
+        "See the help that reaches this gap",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Time her opening: get the result inside the limit.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Play Mira’s recorded answer",
+        "Read her voice note too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe it fell short. Read her note.",
+        "Ask what changed",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "Maybe her plans changed. Ask Mira.",
+        "Hear why she cancelled",
+        "Look back before her interview",
+        "Read Mira’s voice-note transcript",
+        "Play her recorded answer too",
+        "Choose her first help",
+        "Vary her questions: prepare for a changing conversation.",
+        "Name what mattered",
+        "One detail changes",
+        "Vary her questions: practise finding her thread.",
+        "Close Mira’s case"
+      ],
+      "ended": true,
+      "final": "Mira’s case is closed. A useful product can lose a customer when the need ends."
+    }
+  ],
+  "issues": []
+}

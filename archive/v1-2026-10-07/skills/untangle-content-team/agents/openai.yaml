@@ -1,0 +1,4 @@
+interface:
+  display_name: "Untangle Content Team"
+  short_description: "Create and check choice-led learning chapters"
+  default_prompt: "Use $untangle-content-team to build a reviewed chapter from a topic brief."

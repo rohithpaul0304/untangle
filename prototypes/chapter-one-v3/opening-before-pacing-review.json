@@ -1,0 +1,490 @@
+{
+  "title": "The ads go dark",
+  "concept": "Strategic interdependence",
+  "takeaway": "Before changing your move, ask what others can still do.",
+  "icon": "01",
+  "nodes": {
+    "start": {
+      "title": "Who gains when the ads disappear?",
+      "line": "Cigarette ads were banned from TV and radio. Would you expect established companies to lose—or benefit?",
+      "visual": {
+        "type": "ads",
+        "a": false,
+        "b": false,
+        "history": true
+      },
+      "choices": [
+        {
+          "label": "Expect them to lose",
+          "next": "predict_loss",
+          "set": {
+            "prediction": "Expect them to lose"
+          }
+        },
+        {
+          "label": "They might benefit",
+          "next": "predict_benefit",
+          "set": {
+            "prediction": "They might benefit"
+          }
+        },
+        {
+          "label": "Not sure yet",
+          "next": "predict_unsure",
+          "set": {
+            "prediction": "Not sure yet"
+          }
+        }
+      ],
+      "mood": "thinking",
+      "dialogue": [
+        "Cigarette ads were banned from TV and radio.",
+        "Would you expect established cigarette companies to lose money—or benefit?"
+      ]
+    },
+    "experiment": {
+      "title": "The ban has not happened yet. What will you do?",
+      "line": "Your rival will keep advertising. You can keep your ads or stop paying for them. In this example, customers spend the same total; ads change which company gets their money.",
+      "visual": {
+        "type": "ads",
+        "a": true,
+        "b": true,
+        "money": 60,
+        "receipt": "100 received − 40 on ads = 60 left",
+        "phase": "Before the ban · your decision"
+      },
+      "choices": [
+        {
+          "label": "Keep my ads",
+          "next": "keep"
+        },
+        {
+          "label": "Stop my ads",
+          "next": "stop"
+        }
+      ],
+      "mood": "speaking",
+      "dialogue": [
+        "Your rival will keep advertising.",
+        "In this example, customers spend the same total. Ads change which company gets their money.",
+        "Will you keep your ads—or stop paying for them?"
+      ]
+    },
+    "keep": {
+      "title": "You keep your sales—and your bill.",
+      "line": "You both still pay for advertising. Your money stays at 60.",
+      "visual": {
+        "type": "ads",
+        "a": true,
+        "b": true,
+        "money": 60,
+        "receipt": "100 received − 40 on ads = 60 left"
+      },
+      "choices": [
+        {
+          "label": "Compare stopping",
+          "next": "stop"
+        },
+        {
+          "label": "See the ban take effect",
+          "next": "ban"
+        }
+      ],
+      "mood": "speaking",
+      "dialogue": [
+        "You kept your sales—and your ad bill. You still have 60 left.",
+        "Would you like to compare stopping, or see what the ban changes?"
+      ]
+    },
+    "stop": {
+      "title": "The bill vanished. So did some sales.",
+      "line": "You saved 40 on ads, but lost 60 in sales. Your rival still reaches customers.",
+      "visual": {
+        "type": "ads",
+        "a": false,
+        "b": true,
+        "money": 40,
+        "receipt": "40 received − 0 on ads = 40 left"
+      },
+      "choices": [
+        {
+          "label": "See the ban take effect",
+          "next": "ban"
+        }
+      ],
+      "mood": "surprised",
+      "dialogue": [
+        "Your ad bill disappeared. But customers moved to your rival.",
+        "You saved 40 on ads, but lost 60 in sales. You kept 40."
+      ]
+    },
+    "ban": {
+      "title": "Now neither company can advertise.",
+      "line": "Neither has the advantage of advertising alone. Each keeps 100 in this made-up example.",
+      "visual": {
+        "type": "ads",
+        "a": false,
+        "b": false,
+        "money": 100,
+        "receipt": "100 received − 0 on ads = 100 left",
+        "phase": "Now the ban applies to both companies"
+      },
+      "choices": [
+        {
+          "label": "What made the difference?",
+          "next": "compare"
+        }
+      ],
+      "mood": "surprised",
+      "dialogue": [
+        "Now the ban stops both companies’ ads.",
+        "Your rival no longer has the advantage of advertising alone. You each keep 100."
+      ]
+    },
+    "compare": {
+      "title": "Same move. Different result.",
+      "line": "Your ads are off in both pictures. What changes your result?",
+      "visual": {
+        "type": "compare",
+        "cards": [
+          [
+            "Rival ads ON",
+            "40 left"
+          ],
+          [
+            "Rival ads OFF",
+            "100 left"
+          ]
+        ],
+        "caption": "Your ads: OFF in both"
+      },
+      "choices": [
+        {
+          "label": "The rival’s advertising",
+          "next": "cause"
+        },
+        {
+          "label": "My advertising bill",
+          "next": "bill"
+        }
+      ],
+      "mood": "thinking",
+      "dialogue": [
+        "Your ads are off in both pictures.",
+        "What changed your result from 40 to 100?"
+      ]
+    },
+    "bill": {
+      "title": "Your bill was zero both times.",
+      "line": "Look at the rival’s TV. That is what changed.",
+      "visual": {
+        "type": "compare",
+        "cards": [
+          [
+            "Rival ON",
+            "40"
+          ],
+          [
+            "Rival OFF",
+            "100"
+          ]
+        ],
+        "caption": "Your ad cost stays zero"
+      },
+      "choices": [
+        {
+          "label": "See the idea",
+          "next": "cause"
+        }
+      ],
+      "mood": "speaking"
+    },
+    "cause": {
+      "title": "Strategic interdependence",
+      "line": "Your result depends on your choices AND other people’s choices. Your move alone cannot explain what you get.",
+      "visual": {
+        "type": "compare",
+        "cards": [
+          [
+            "Your choice",
+            "Ads off"
+          ],
+          [
+            "Their choice",
+            "Changes your result"
+          ]
+        ]
+      },
+      "choices": [
+        {
+          "label": "Back to the real ban",
+          "next": "history"
+        }
+      ],
+      "mood": "speaking",
+      "dialogue": [
+        "Your result depends on your choices AND other people’s choices.",
+        "That’s strategic interdependence. Your choice alone doesn’t explain what you get."
+      ]
+    },
+    "history": {
+      "title": "Who already has recognition?",
+      "line": "A familiar brand and a newcomer both lose TV ads. Which already has customers who recognise its name?",
+      "visual": {
+        "type": "brands"
+      },
+      "choices": [
+        {
+          "label": "The established brand",
+          "next": "historyyes"
+        },
+        {
+          "label": "The newcomer",
+          "next": "historyno"
+        }
+      ],
+      "mood": "thinking",
+      "dialogue": [
+        "Back to the real ban. Here’s another way established companies could benefit.",
+        "Which brand already has customers who recognise its name?"
+      ]
+    },
+    "historyyes": {
+      "title": "A different way the restriction could help.",
+      "line": "Yes. Familiar brands already had recognition. Losing an advertising channel could make entry harder. Other advertising channels remained.",
+      "visual": {
+        "type": "brands",
+        "known": true
+      },
+      "choices": [
+        {
+          "label": "What did researchers find?",
+          "next": "evidence"
+        }
+      ],
+      "mood": "speaking"
+    },
+    "historyno": {
+      "title": "A different way the restriction could help.",
+      "line": "The established brand already had recognition. The newcomer still had to build it. Losing an advertising channel could make entry harder. Other advertising channels remained.",
+      "visual": {
+        "type": "brands",
+        "known": true
+      },
+      "choices": [
+        {
+          "label": "What did researchers find?",
+          "next": "evidence"
+        }
+      ],
+      "mood": "speaking"
+    },
+    "evidence": {
+      "title": "Investors expected benefits.",
+      "line": "Stock-market evidence suggested established firms could benefit. Our coins illustrate a possibility; they are not historical results.",
+      "visual": {
+        "type": "cards",
+        "cards": [
+          [
+            "Real evidence",
+            "Investor expectations"
+          ],
+          [
+            "Our experiment",
+            "Invented numbers"
+          ]
+        ]
+      },
+      "choices": [
+        {
+          "label": "Does stopping always help?",
+          "next": "limit"
+        }
+      ],
+      "mood": "speaking"
+    },
+    "limit": {
+      "title": "What if customers buy much less?",
+      "line": "We kept spending fixed. Would the saved advertising bill still guarantee a gain?",
+      "visual": {
+        "type": "cards",
+        "cards": [
+          [
+            "Ad bill",
+            "Disappears"
+          ],
+          [
+            "Sales income",
+            "Could fall"
+          ]
+        ]
+      },
+      "choices": [
+        {
+          "label": "Yes, costs fell",
+          "next": "limitno"
+        },
+        {
+          "label": "No, compare the amounts",
+          "next": "limityes"
+        }
+      ],
+      "mood": "speaking",
+      "dialogue": [
+        "Our experiment kept total customer spending fixed.",
+        "If customers bought much less, would the saved ad bill still guarantee a gain?"
+      ]
+    },
+    "limitno": {
+      "title": "The assumption matters.",
+      "line": "A lower bill is not enough if income falls by more.",
+      "visual": {
+        "type": "cards",
+        "cards": [
+          [
+            "Saving",
+            "Compare with lost income"
+          ]
+        ]
+      },
+      "choices": [
+        {
+          "label": "Keep this idea",
+          "next": "end"
+        }
+      ],
+      "mood": "speaking"
+    },
+    "limityes": {
+      "title": "The assumption matters.",
+      "line": "Exactly. Compare lost income with the saved advertising cost.",
+      "visual": {
+        "type": "cards",
+        "cards": [
+          [
+            "Saving",
+            "Compare with lost income"
+          ]
+        ]
+      },
+      "choices": [
+        {
+          "label": "Keep this idea",
+          "next": "end"
+        }
+      ],
+      "mood": "speaking"
+    },
+    "end": {
+      "title": "Strategic interdependence",
+      "line": "Before changing your move, ask what others can still do.",
+      "visual": {
+        "type": "compare",
+        "cards": [
+          [
+            "My move",
+            "Only part of the picture"
+          ],
+          [
+            "Their move",
+            "Changes my result"
+          ]
+        ]
+      },
+      "choices": [
+        {
+          "label": "Save this idea",
+          "next": "finish"
+        }
+      ],
+      "mood": "celebrating"
+    },
+    "predict_loss": {
+      "title": "You expect them to lose business.",
+      "line": "That makes sense: without TV ads, they lose a way to reach customers. But their competitors lose that way too. Let’s test how those two changes interact.",
+      "visual": {
+        "type": "ads",
+        "a": false,
+        "b": false,
+        "history": true
+      },
+      "choices": [
+        {
+          "label": "Go back to before the ban",
+          "next": "before_ban"
+        }
+      ],
+      "mood": "thinking",
+      "dialogue": [
+        "You expect them to lose business. Without ads, they lose a way to reach customers.",
+        "But their rivals lose that way too. Let’s see why that matters."
+      ]
+    },
+    "predict_benefit": {
+      "title": "You think the ban could help.",
+      "line": "There could be a benefit when competitors lose the same option. Let’s test one way that might happen, rather than assume it must.",
+      "visual": {
+        "type": "ads",
+        "a": false,
+        "b": false,
+        "history": true
+      },
+      "choices": [
+        {
+          "label": "Go back to before the ban",
+          "next": "before_ban"
+        }
+      ],
+      "mood": "thinking",
+      "dialogue": [
+        "You think the ban could help them.",
+        "Let’s test one way that could happen. We won’t assume it must."
+      ]
+    },
+    "predict_unsure": {
+      "title": "It could pull in two directions.",
+      "line": "Ads bring in business, but they also cost money. And the ban affects competitors too. Let’s separate those effects.",
+      "visual": {
+        "type": "ads",
+        "a": false,
+        "b": false,
+        "history": true
+      },
+      "choices": [
+        {
+          "label": "Go back to before the ban",
+          "next": "before_ban"
+        }
+      ],
+      "mood": "thinking",
+      "dialogue": [
+        "Ads bring in business, but they also cost money.",
+        "The ban changes both companies’ options. Let’s investigate."
+      ]
+    },
+    "before_ban": {
+      "title": "Before the ban, both companies can advertise.",
+      "line": "We’re switching to a made-up example. You run the company on the left. First, see what you keep while both companies advertise.",
+      "visual": {
+        "type": "ads",
+        "a": true,
+        "b": true,
+        "money": 60,
+        "receipt": "100 from customers − 40 spent on ads = 60 left",
+        "phase": "Before the ban · made-up example"
+      },
+      "choices": [
+        {
+          "label": "Try a decision before the ban",
+          "next": "experiment"
+        }
+      ],
+      "mood": "speaking",
+      "dialogue": [
+        "Let’s go back to before the ban. Both companies can still advertise.",
+        "This is a made-up example. You run the company on the left.",
+        "You receive 100 coins from customers and spend 40 on ads. That leaves 60."
+      ]
+    }
+  }
+}

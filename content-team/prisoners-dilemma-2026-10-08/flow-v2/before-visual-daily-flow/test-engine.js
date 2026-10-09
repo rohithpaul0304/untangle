@@ -1,0 +1,13 @@
+const assert=require('node:assert/strict'),E=require('./engine'),P=E.prices,play=a=>a.reduce((r,p)=>E.step(r,p),E.fresh());
+for(const a of P)for(const b of P){const d=E.detail(a,b);assert.equal(d.cups[0]+d.cups[1],200);assert.deepEqual(d.cups,a===b?[100,100]:a<b?[Math.min(200,100+(b-a)*5),Math.max(0,100-(b-a)*5)]:[Math.max(0,100-(a-b)*5),Math.min(200,100+(a-b)*5)]);assert.deepEqual(d.retained,d.cups.map((c,i)=>c*(d.prices[i]-50)));assert.deepEqual(E.pair(a,b),E.pair(b,a).reverse());if(a===50)assert.equal(d.retained[0],0);}
+for(const p of [49,51,110,'90',NaN])assert.throws(()=>E.pair(p,100));assert.deepEqual(E.pair(80,100),[6000,0]);assert.deepEqual(E.pair(70,100),[4000,0]);assert.deepEqual(E.pair(50,100),[0,0]);assert.deepEqual(E.pair(90,100),[6000,2500]);
+for(let seed=0;seed<1024;seed++){let x=seed;const seq=Array.from({length:10},()=>{x=(x*1664525+1013904223)>>>0;return P[x%6]}),r=play(seq);assert(E.validate(r));assert.deepEqual(r.hers,[100,...seq.slice(0,9)]);assert.throws(()=>E.step(r,100));}
+assert.deepEqual(play(Array(10).fill(100)).totals,[50000,50000]);assert.deepEqual(play([...Array(9).fill(100),80]).totals,[51000,45000]);
+const base={version:4,scene:3,beat:0,dealBeat:0,reasoningBeat:0,cafeBeat:0,phase:'choose',selectedPrice:80,prison:null,run:E.fresh(),first:null};
+for(let dealBeat=0;dealBeat<6;dealBeat++)assert.equal(E.restore(JSON.stringify({...base,dealBeat})).dealBeat,dealBeat);
+for(const prison of ['talk','silent'])for(const scene of [5,6])for(let reasoningBeat=0;reasoningBeat<(scene===5?3:2);reasoningBeat++)assert(E.restore(JSON.stringify({...base,prison,scene,reasoningBeat})));
+for(const phase of ['cups','margin','money'])assert(E.restore(JSON.stringify({...base,scene:8,prison:'talk',phase,run:play([80])})));
+const replay={...base,scene:8,prison:'talk',first:play(Array(10).fill(90))};assert.deepEqual(E.restore(JSON.stringify(replay)).first,replay.first);assert.equal(E.restore(JSON.stringify(replay)).selectedPrice,80);
+for(const price of [49,55,110])assert.equal(E.restore(JSON.stringify({...base,selectedPrice:price})),null);
+for(const version of [2,3]){const prison=E.restore(JSON.stringify({...base,version,scene:5,prison:'silent',reasoningBeat:1}));assert.equal(prison.scene,5);assert.equal(prison.reasoningBeat,1);const old=E.restore(JSON.stringify({...base,version,scene:8,prison:'talk',run:{yours:['discount'],hers:['usual'],totals:[6000,2500]}}));assert.equal(old.scene,7);assert.equal(old.migrationNotice,true);assert.deepEqual(old.run,E.fresh());}
+assert.throws(()=>E.step(E.fresh(),100,2));console.log('PASS: all36price pairs, boundaries, zero-price-contribution, 1024sampled ten-day runs, copyrule, duplicate-day prevention, replay, selection saves, prison preservation and legacy migration.');

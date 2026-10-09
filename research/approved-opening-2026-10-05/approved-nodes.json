@@ -1,0 +1,102 @@
+{
+  "start": {
+    "line": "You run a cigarette company. TV ads are about to be banned. Will you make less money—or more?",
+    "dialogue": [
+      "You run a cigarette company. TV ads are about to be banned. Will you make less money—or more?"
+    ],
+    "visual": {
+      "type": "miniHook"
+    },
+    "choices": [
+      {
+        "label": "I’d make less",
+        "next": "expect_hurt",
+        "set": {
+          "openingPrediction": "hurt"
+        }
+      },
+      {
+        "label": "I’d make more",
+        "next": "expect_help",
+        "set": {
+          "openingPrediction": "help"
+        }
+      }
+    ],
+    "mood": "thinking"
+  },
+  "expect_hurt": {
+    "line": "Maybe. You could lose customers. But your rival is losing its TV ads too. Let’s see why that matters.",
+    "dialogue": [
+      "Maybe. You could lose customers. But your rival is losing its TV ads too. Let’s see why that matters."
+    ],
+    "visual": {
+      "type": "miniRole"
+    },
+    "choices": [
+      {
+        "label": "Show me my rival",
+        "next": "meet_rival"
+      }
+    ],
+    "mood": "speaking",
+    "help": "Let’s use a small game. You’re blue. Your goal: keep more coins."
+  },
+  "expect_help": {
+    "line": "Maybe. You’ll save on ads. But could you lose customers too? Let’s see what happens.",
+    "dialogue": [
+      "Maybe. You’ll save on ads. But could you lose customers too? Let’s see what happens."
+    ],
+    "visual": {
+      "type": "miniRole"
+    },
+    "choices": [
+      {
+        "label": "Show me my rival",
+        "next": "meet_rival"
+      }
+    ],
+    "mood": "speaking",
+    "help": "Let’s use a small game. You’re blue. Your goal: keep more coins."
+  },
+  "meet_rival": {
+    "line": "Here’s your rival. You sell the same thing. Right now, you both run ads—and each has five customers.",
+    "dialogue": [
+      "Here’s your rival. You sell the same thing. Right now, you both run ads—and each has five customers."
+    ],
+    "visual": {
+      "type": "miniMarket",
+      "a": true,
+      "b": true,
+      "intro": true
+    },
+    "choices": [
+      {
+        "label": "See what I earn",
+        "next": "baseline"
+      }
+    ],
+    "mood": "speaking"
+  },
+  "baseline": {
+    "line": "Your customers pay you five coins. Your ad costs two. That leaves you three.",
+    "dialogue": [
+      "Your customers pay you five coins. Your ad costs two. That leaves you three."
+    ],
+    "visual": {
+      "type": "miniMarket",
+      "a": true,
+      "b": true,
+      "money": true,
+      "animate": "baseline"
+    },
+    "choices": [
+      {
+        "label": "What if I stop paying?",
+        "next": "decision"
+      }
+    ],
+    "mood": "speaking",
+    "help": "Each customer brings 1 coin. Running your ad costs 2 coins."
+  }
+}

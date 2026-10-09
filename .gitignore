@@ -1,0 +1,25 @@
+
+# dependencies
+node_modules/
+
+# secrets and local config
+.env
+.env.*
+!.env.example
+
+# tool state and scratch
+Claude outputs/
+.claude/
+.codex/
+.agents/
+.vercel/
+.DS_Store
+start-claude
+start-codex
+start-codex.before-path-fix
+
+# large working files
+*.mov
+*.mp4
+*.MP4
+*.zip

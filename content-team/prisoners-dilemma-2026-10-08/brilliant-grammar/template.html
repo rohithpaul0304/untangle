@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>One switch · Untangle</title>
+
+
+<style>
+__FONTS__
+
+:root{
+  --bg:#FFFBF8;--ink:#1F1F1F;--ink2:#6E6A66;--line:#EBE4DD;
+  --blue:#4960C8;--blue-bd:#C9CFEE;--blue-bg:#ffffff;--slot:#CFC8C0;
+  --green:#7CB342;--green-bg:#EAF5D6;--bar:#EBE4DD;--lime:#D9F26B;
+  --btn:#1F1F1F;--btn-off:#EFEAE4;--btn-off-ink:#B5AFA9;
+  --navy:#2F3A46;--navy-grid:#45515E;--purple:#8E9AFE;--orange:#E9653B;--sand:#EBE4DD;--olive:#6D8D5D;
+  --r:16px;--font:"Bricolage Grotesque",Inter,-apple-system,"Segoe UI",system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.4}
+#app{max-width:430px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:12px 16px calc(16px + env(safe-area-inset-bottom))}
+/* top bar */
+.top{display:flex;align-items:center;gap:12px;height:36px}
+.top .x{width:28px;height:28px;display:grid;place-items:center;color:#555;font-size:18px}
+.bar{flex:1;height:8px;background:var(--bar);border-radius:99px;overflow:hidden;position:relative}
+.bar i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .4s ease}
+.dots{display:flex;gap:6px}
+.dots b{width:8px;height:8px;border-radius:50%;background:#d6d6d6}
+.dots b.on{background:var(--green)}
+.bolt{color:#c9e100;font-size:18px}
+/* body */
+.prompt{margin:18px 0 14px;font-size:16px;min-height:22px}
+.prompt strong{font-weight:600}
+.stage{border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:#fff}
+.stage .hd{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;font-size:13px;font-weight:600}
+.stage .hd .st{display:flex;align-items:center;gap:8px}
+.stage .hd .st:before{content:"";width:12px;height:12px;border-radius:50%;border:3px solid #dfe5f7;background:var(--blue)}
+.tag{border:1px solid #cfcfcf;border-radius:4px;padding:2px 6px;font-size:12px;font-weight:600}
+.tag small{font-size:8px;letter-spacing:.04em;margin-left:4px;color:#555}
+/* world */
+.world{background:linear-gradient(#e9eef5,#dfe6f0);padding:14px 12px 10px;position:relative}
+.rooms{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.room{background:#fff;border:1px solid #d9dfea;border-radius:10px;padding:24px 8px 8px;text-align:center;position:relative;transition:box-shadow .2s}
+.room.lit{box-shadow:0 0 0 2px var(--blue)}
+.room .cbars{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 22px,#9aa6bd 22px 25px);opacity:.18;border-radius:10px;pointer-events:none}
+.face{width:84px;height:84px;border-radius:50%;object-fit:cover;background:#f3f3f3;display:block;margin:0 auto 6px;transition:transform .25s}
+.face.pop{transform:scale(1.08)}
+.room .nm{font-size:13px;font-weight:600}
+.room .yrs{font-size:12px;color:var(--ink2);margin-top:2px;min-height:17px}
+.room .yrs b{color:var(--ink);font-size:15px}
+.room .bubble{position:absolute;z-index:2;top:4px;left:50%;transform:translate(-50%,4px);background:#fff;border:1px solid var(--blue-bd);color:var(--blue);font-size:11px;font-weight:600;border-radius:8px;padding:2px 6px;opacity:0;transform:translateY(4px);transition:all .25s}
+.room .bubble.on{opacity:1;transform:translate(-50%,0)}
+.total{text-align:center;font-size:12px;color:var(--ink2);margin-top:10px}
+.total b{color:var(--ink);font-size:14px}
+/* program lines */
+.prog{padding:10px 12px 12px}
+.row{display:flex;align-items:center;gap:10px;min-height:38px;padding:2px 4px;border-radius:6px;transition:background .2s}
+.row.cur{background:#f0f0f0}
+.row .n{width:18px;text-align:right;font-size:13px;color:#6E6A66;flex:none;display:grid;place-items:center}
+.row.cur .n{color:var(--ink)}
+.row .who{font-size:13px;color:var(--ink2);width:54px;flex:none}
+.chip{display:inline-flex;align-items:center;gap:4px;border:1px solid var(--blue-bd);background:var(--blue-bg);color:var(--blue);border-radius:6px;padding:5px 9px;font-size:14px;line-height:1.2;white-space:nowrap;cursor:pointer;user-select:none;transition:transform .15s,opacity .15s}
+.chip b{font-weight:700}
+.chip.lock{cursor:default;opacity:.85}
+.chip.hidden{opacity:0;transform:scale(.6)}
+.chip:active{transform:scale(.96)}
+.slot{display:inline-block;width:118px;height:30px;border:1.5px dashed var(--slot);border-radius:6px;cursor:pointer}
+.slot.hot{border-color:var(--blue);background:#f4f7ff}
+.qm{display:inline-grid;place-items:center;width:118px;height:30px;border:1px solid #e6e6e6;border-radius:6px;color:#9a9a9a;font-size:13px}
+.tick{color:var(--green);font-size:15px}
+.palette{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;padding:14px 8px 6px}
+/* buttons */
+.foot{margin-top:auto;padding-top:16px;display:flex;align-items:center;gap:12px}
+.fox{width:48px;height:60px;object-fit:contain;flex:none}
+.btn{flex:1;height:50px;border:0;border-radius:99px;background:var(--btn);color:#fff;font:600 16px var(--font);cursor:pointer;transition:background .2s,color .2s}
+.btn:disabled{background:var(--btn-off);color:var(--btn-off-ink);cursor:default}
+.btn.go{background:var(--green)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid #cfcfcf;height:44px;flex:none;padding:0 16px;font-weight:500}
+.link{display:inline-flex;align-items:center;gap:6px;color:var(--ink);font-size:14px;background:none;border:0;cursor:pointer;padding:8px 2px;font-family:var(--font)}
+.sub{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+/* toast */
+.toast{position:fixed;left:0;right:0;bottom:0;background:var(--green-bg);padding:14px 16px calc(16px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .3s ease;z-index:5}
+.toast.on{transform:none}
+.toast .in{max-width:398px;margin:0 auto}
+.toast .t{font-weight:700;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.toast .t small{color:#2f8a44;font-weight:600}
+.toast .t em{font-style:normal;font-weight:400;color:#444;margin-left:auto;font-size:14px}
+.dim{opacity:.25;filter:grayscale(.5);pointer-events:none;transition:opacity .4s}
+/* concept */
+.concept{padding:8px 0}
+.concept p{font-size:16px;margin:0 0 18px}
+.mini{border:1px solid var(--line);border-radius:10px;padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mini .col h4{margin:0 0 6px;font-size:12px;text-align:center}
+.mini .lines{display:flex;flex-direction:column;gap:6px;font-size:12px}
+.mini .lines span{color:var(--blue)}
+.mini .lines span b{font-weight:700}
+.matrix{background:var(--navy);border-radius:8px;padding:8px;color:#dfe3ff;font-size:11px;display:grid;grid-template-columns:auto 1fr 1fr;gap:3px}
+.matrix div{padding:5px 2px;text-align:center;border-radius:4px}
+.matrix .h{color:#9aa4e8;font-size:10px}
+.matrix .c{background:#1b2350;font-weight:600}
+.matrix .c.hi{background:#3a46a8;color:#fff}
+.splash{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center}
+.splash img{width:120px}
+.splash h2{margin:0;font-size:22px}
+.splash p{margin:0;color:var(--ink2)}
+.center{display:flex;flex-direction:column;align-items:center;gap:10px;padding:18px 0}
+/* grid stage for skill check */
+.gridw{background:var(--navy);background-image:linear-gradient(var(--navy-grid) 1px,transparent 1px),linear-gradient(90deg,var(--navy-grid) 1px,transparent 1px);background-size:22px 22px;padding:16px 12px;display:flex;justify-content:center}
+.pm{display:grid;grid-template-columns:70px 1fr 1fr;gap:4px;font-size:12px;color:#dfe3ff;min-width:250px}
+.pm div{text-align:center;padding:7px 2px;border-radius:6px}
+.pm .h{color:#aeb6f0;font-weight:600;font-size:11px}
+.pm .c{background:#1b2350;border:1px solid #2a3470;font-weight:600;font-size:14px}
+.pm .c.hi{background:#3a46a8;border-color:#7b86f0;color:#fff}
+.pm .c.dimc{opacity:.35}
+/* intro */
+.intro{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:10px 0}
+.intro .art{display:flex;align-items:center;gap:14px;margin-bottom:26px}
+.phone{width:150px;height:230px;border:7px solid #3a3a3a;border-radius:26px;background:linear-gradient(#e9eef5,#dfe6f0);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 6px}
+.phone:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:56px;height:14px;background:#3a3a3a;border-radius:0 0 10px 10px}
+.phone .cell{flex:1;background:#fff;border:1px solid #d9dfea;border-radius:8px;height:120px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative}
+.phone .cell img{width:46px;height:46px;border-radius:50%;object-fit:cover}
+.phone .cell span{font-size:9px;font-weight:600}
+.intro .stack{display:flex;flex-direction:column;gap:8px;align-items:flex-start}
+.intro h1{margin:0 0 10px;font-size:26px;font-weight:700;letter-spacing:-.01em}
+.phone .cell.you{box-shadow:0 0 0 2px var(--blue)}
+.phone .cell.you em{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-style:normal;font-size:9px;font-weight:700;border-radius:99px;padding:1px 7px}
+.phone .cell small{font-size:9px;color:var(--ink2)}
+.phone .cell.dimcell{opacity:.45}
+.intro .beats{display:flex;gap:6px;margin-bottom:22px}
+.intro .beats b{width:8px;height:8px;border-radius:50%;background:#d6d6d6}
+.intro .beats b.on{background:var(--ink)}
+.scene{width:100%;max-width:330px;height:250px;display:flex;align-items:center;justify-content:center;margin-bottom:26px}
+.scene img{max-width:100%;max-height:100%;object-fit:contain}
+.scene img.inspector{width:190px;height:190px;border-radius:50%;object-fit:cover;background:#f3f3f3}
+.scene img.rooms{border-radius:12px}
+.fade{animation:fade .3s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.intro p{margin:0;color:#333;max-width:320px}
+/* nudge */
+.nudge{position:relative;background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 12px;font-size:14px;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.06);max-width:230px;line-height:1.3;opacity:0;transform:translateY(6px);transition:all .25s}
+.nudge.on{opacity:1;transform:none}
+.nudge:before{content:"";position:absolute;left:-7px;top:50%;width:12px;height:12px;background:#fff;border-left:1px solid var(--line);border-bottom:1px solid var(--line);transform:translateY(-50%) rotate(45deg)}
+.foot{flex-wrap:wrap}
+.foot .nrow{display:flex;align-items:center;gap:12px;width:100%}
+.foot .brow{display:flex;align-items:center;gap:10px;width:100%}
+/* success */
+.stage.ok{border-color:var(--green);box-shadow:0 0 0 3px rgba(47,191,79,.18)}
+.stage .okstrip{display:none;background:var(--green-bg);color:#1f7a33;font-weight:700;font-size:14px;text-align:center;padding:9px 12px;border-bottom:1px solid #bfe9c8}
+.stage.ok .okstrip{display:block}
+.stage.ok .hd{display:none}
+#app.glow{box-shadow:inset 0 0 0 2px var(--green),0 0 24px rgba(47,191,79,.25);border-radius:18px;transition:box-shadow .3s}
+.xp{display:flex;align-items:center;gap:4px;font-size:13px;color:#444;font-weight:600}
+.xp i{color:var(--green);font-style:normal}
+/* why sheet */
+.sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:18px 18px 0 0;box-shadow:0 -8px 30px rgba(0,0,0,.15);padding:18px 18px calc(18px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .3s;z-index:9}
+.sheet.on{transform:none}
+.sheet .in{max-width:398px;margin:0 auto}
+.sheet p{margin:0 0 14px;font-size:15px}
+.sheet code{background:#f1f3f8;border-radius:4px;padding:1px 5px;font-size:13px;color:var(--blue)}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .3s;z-index:8}
+.scrim.on{opacity:1;pointer-events:auto}
+/* telecom case */
+.nets{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.net{background:#fff;border:1px solid #d9dfea;border-radius:10px;padding:8px 6px 8px;text-align:center;position:relative;transition:box-shadow .2s}
+.net.lit{box-shadow:0 0 0 2px var(--blue)}
+.net.you{border-color:var(--blue)}
+.net .sim{width:44px;height:58px;margin:4px auto 6px;border-radius:8px;background:linear-gradient(160deg,#f7f9ff,#dfe6f5);border:1px solid #c9d4f5;position:relative}
+.net .sim:before{content:"";position:absolute;left:8px;top:14px;width:28px;height:20px;border-radius:4px;background:linear-gradient(135deg,#f3c969,#d99a2b)}
+.net .sim:after{content:"";position:absolute;right:0;top:0;width:12px;height:12px;background:#fff;border-left:1px solid #c9d4f5;border-bottom:1px solid #c9d4f5;border-radius:0 8px 0 4px}
+.net.jio .sim{background:linear-gradient(160deg,#eef6ff,#cfe3ff)}
+.net .nm{font-size:12px;font-weight:700}
+.net .nm small{display:block;font-size:10px;color:var(--ink2);font-weight:500}
+.net .price{display:inline-block;margin-top:5px;font-size:12px;font-weight:700;color:#fff;background:#2b2b2b;border-radius:4px;padding:2px 7px;position:relative;transition:transform .3s}
+.net .price.free{background:var(--green)}
+.net .price.drop{transform:translateY(3px) rotate(-6deg)}
+.net .cust{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin:8px 0 6px;min-height:21px}
+.net .cust i{width:9px;height:9px;border-radius:50%;background:var(--blue);display:block;transition:all .5s}
+.net .cust i.gone{background:#e1e1e1;transform:scale(.6)}
+.net .rev{height:6px;background:#eee;border-radius:99px;overflow:hidden}
+.net .rev b{display:block;height:100%;background:var(--green);border-radius:99px;transition:width .6s}
+.net .rev b.low{background:#e0533d}
+.net .rl{font-size:10px;color:var(--ink2);margin-top:3px}
+.net .you-tag{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:9px;font-weight:700;border-radius:99px;padding:1px 7px}
+.timeline{border:1px solid var(--line);border-radius:12px;padding:6px 12px;margin:0 0 14px}
+.timeline .tr{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid #f0f0f0;font-size:14px;align-items:flex-start}
+.timeline .tr:last-child{border-bottom:0}
+.timeline .yr{flex:none;width:76px;font-weight:700;color:var(--blue);font-size:13px;padding-top:1px}
+.pill{display:inline-block;background:#f1f3f8;border-radius:99px;padding:2px 9px;font-size:12px;color:#444;margin-right:4px}
+/* news clipping */
+.paper{background:#fbf8f1;border:1px solid #e4dccb;border-radius:4px;padding:14px 14px 12px;box-shadow:0 6px 18px rgba(0,0,0,.08);position:relative;transform:rotate(-1deg);margin:6px 4px 18px}
+.paper.two{transform:rotate(1.2deg);margin-top:-6px}
+.paper .mast{display:flex;justify-content:space-between;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#7a6f5a;border-bottom:1px solid #d9d0bd;padding-bottom:6px;margin-bottom:8px}
+.paper h3{margin:0 0 6px;font:700 19px/1.2 Georgia,"Times New Roman",serif;color:#1b1b1b}
+.paper p{margin:0;font:14px/1.45 Georgia,"Times New Roman",serif;color:#2b2b2b}
+.paper .tape{position:absolute;top:-8px;left:50%;transform:translateX(-50%) rotate(-2deg);width:70px;height:16px;background:rgba(255,230,120,.75);border:1px solid rgba(0,0,0,.05)}
+.paper .stamp{position:absolute;right:10px;bottom:8px;border:2px solid #c0392b;color:#c0392b;font:700 10px/1 var(--font);letter-spacing:.08em;padding:3px 6px;border-radius:3px;transform:rotate(-8deg);opacity:.85}
+.caseq{font-size:12px;color:var(--ink2);margin:0 0 8px}
+/* mapping */
+.map{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:14px}
+.map .mr{display:grid;grid-template-columns:1fr 24px 1fr;align-items:center;padding:9px 12px;border-bottom:1px solid #f0f0f0;font-size:14px}
+.map .mr:last-child{border-bottom:0}
+.map .mr.h{background:#f7f8fb;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
+.map .mr .a{color:var(--ink)}
+.map .mr .b{color:var(--blue);font-weight:600}
+.map .mr .ar{text-align:center;color:#bbb}
+/* end chapter list */
+.chap{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;text-align:left}
+.chap img{width:40px;height:40px;border-radius:50%;object-fit:cover;background:#f3f3f3;flex:none}
+.chap .ic{width:40px;height:40px;border-radius:50%;background:#f1f3f8;display:grid;place-items:center;font-size:18px;flex:none}
+.chap .t{font-weight:700;font-size:14px}
+.chap .d{font-size:12px;color:var(--ink2)}
+.chap .st{margin-left:auto;font-size:12px;font-weight:600;color:var(--green);flex:none}
+.chap.lock{opacity:.7}.chap.lock .st{color:#999}
+.stores{display:flex;gap:8px;justify-content:center;margin-top:10px}
+.stores span{border:1px solid #cfcfcf;border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;color:#444}
+
+/* street + fates */
+.street{border:1px solid var(--line);border-radius:12px;padding:12px;background:linear-gradient(#f7f9ff,#eef2fb);margin-bottom:10px;position:relative;overflow:hidden}
+.notif{display:flex;gap:10px;align-items:center;background:#fff;border-radius:12px;padding:8px 10px;box-shadow:0 4px 14px rgba(0,0,0,.08);position:relative;z-index:2}
+.notif img{width:36px;height:36px;border-radius:9px;flex:none}
+.notif b{display:block;font-size:13px}
+.notif span{font-size:12px;color:#444}
+.notif em{font-style:normal;font-weight:800;color:var(--green)}
+.street .queue{display:block;width:62%;margin:6px auto 0}
+.street .cap{font-size:12px;color:var(--ink2);text-align:center;margin-top:4px}
+.rivals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:6px}
+.rv{border:1px solid var(--line);border-radius:10px;padding:8px 4px;text-align:center}
+.rv img{width:34px;height:34px;border-radius:8px;object-fit:contain}
+.rv span{display:block;font-size:11px;font-weight:700;margin-top:4px}
+.rv small{display:block;font-size:10px;color:var(--blue)}
+.fates{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.ft{display:flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:7px 9px;position:relative}
+.ft img{width:34px;height:34px;border-radius:8px;object-fit:contain;flex:none}
+.ft b{display:block;font-size:13px}
+.ft span{font-size:12px;color:#444}
+.ft em{margin-left:auto;font-style:normal;font-size:10px;font-weight:800;letter-spacing:.06em;border-radius:4px;padding:2px 6px;flex:none;transform:rotate(-6deg)}
+.tag-cut{color:#b45309;border:2px solid #b45309}
+.tag-dead{color:#b3261e;border:2px solid #b3261e}
+.tag-win{color:#1f7a33;border:2px solid #1f7a33}
+.ft.dead{background:#fff5f5}.ft.dead img{filter:grayscale(1);opacity:.6}
+.ft.win{background:#f2fbf4}
+.chart{border:1px solid var(--line);border-radius:12px;padding:10px 12px 8px}
+.ch-t{font-size:13px;font-weight:700;margin-bottom:6px}
+.cbars{display:flex;gap:14px;align-items:flex-end;height:140px;padding:22px 6px 0;box-sizing:border-box}
+.cbar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.cbar b{display:block;width:100%;height:4%;background:var(--blue);border-radius:6px 6px 0 0;position:relative;transition:height .9s cubic-bezier(.2,.8,.2,1)}
+.cbar b.grow{height:var(--h)}
+.cbar b i{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-style:normal;font-size:12px;font-weight:700;color:var(--ink)}
+.cbar span{font-size:11px;color:var(--ink2);margin-top:4px;text-align:center}
+.cbar span small{display:block;font-size:9px;color:var(--blue)}
+.ch-s{font-size:11px;color:#6E6A66;margin-top:6px}
+
+/* applied screen */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.pc{position:relative;border:1px solid var(--line);border-radius:12px;padding:12px 8px 10px;text-align:center}
+.pc .face{width:72px;height:72px;border-radius:50%;object-fit:cover;background:#f3f3f3;display:block;margin:0 auto 6px}
+.pc .badge{position:absolute;top:10px;right:calc(50% - 52px);width:30px;height:30px;border-radius:8px;border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.15);background:#fff;object-fit:contain}
+.pc .badge.b2{top:40px;right:calc(50% - 56px)}
+.pc b{display:block;font-size:14px}
+.pc span{font-size:12px;color:var(--ink2)}
+.moves{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.mv{display:flex;align-items:center;gap:10px}
+.mv i{font-style:normal;color:#aaa;font-weight:700}
+.ptag.big{font-size:14px;padding:4px 10px;border-radius:6px;margin:0}
+.ptag.big.cut{background:#b3261e}
+.lm{display:grid;grid-template-columns:70px 1fr 1fr;gap:5px;background:var(--navy);border-radius:10px;padding:8px}
+.lh{display:flex;align-items:center;justify-content:center;gap:5px;color:#aeb6f0;font-size:12px;font-weight:600}
+.lh img{width:18px;height:18px;border-radius:4px;object-fit:contain;background:#fff}
+.lc{position:relative;background:#1b2350;border:1px solid #2a3470;border-radius:6px;padding:8px 4px;color:#dfe3ff;font-family:var(--font);cursor:pointer;text-align:center;transition:background .2s}
+.lc b{display:block;font-size:15px}
+.lc span{display:block;font-size:10px;color:#aeb6f0;margin-top:2px}
+.lc.hi{background:#3a46a8;border-color:#7b86f0;color:#fff}
+.lc.sel{outline:2px solid #fff}
+.lc em{position:absolute;top:-8px;right:-4px;font-style:normal;font-size:9px;font-weight:800;color:#fff;background:#b3261e;border-radius:4px;padding:1px 5px;transform:rotate(8deg)}
+.lm-s{font-size:12px;color:var(--ink2);margin:8px 0 0}
+
+/* tomorrow screen */
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.tcol{border:1px solid var(--line);border-radius:12px;padding:8px;transition:border-color .4s,box-shadow .4s}
+.tcol.bad{border-color:#e0533d;box-shadow:0 0 0 3px rgba(224,83,61,.12)}
+.tcol.good{border-color:var(--green);box-shadow:0 0 0 3px rgba(47,191,79,.15)}
+.tcol .tt{font-weight:700;font-size:14px;text-align:center;margin-bottom:6px}
+.tcol .th{display:grid;grid-template-columns:18px 1fr 1fr 18px;font-size:10px;color:var(--ink2);margin-bottom:2px}
+.tcol .th span:nth-child(2){grid-column:2/3}
+.tn{display:grid;grid-template-columns:18px 1fr 18px;grid-template-areas:"n me y" "n arr y" "n her y";align-items:center;row-gap:2px;padding:4px 0;border-top:1px solid #f0f0f0}
+.tn .tnn{grid-area:n;font-size:11px;color:#6E6A66}
+.tn .chip{font-size:11px;padding:3px 6px;justify-self:start}
+.tn .chip:first-of-type{grid-area:me}
+.tn .chip:last-of-type{grid-area:her}
+.tn .chip.warn{border-color:#e0533d;color:#b3261e}
+.tn .tarr{grid-area:arr;font-size:10px;color:#6E6A66;padding-left:4px}
+.tn .tarr i{font-style:normal}
+.tn .tarr i.none{color:var(--green);font-weight:700}
+.tn b{grid-area:y;font-size:14px;text-align:right}
+.ttot{border-top:1px solid var(--line);margin-top:4px;padding-top:6px;font-size:12px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px}
+.ttot b{font-size:18px}
+.ttot .tbar{grid-column:1/3;height:6px;background:#eee;border-radius:99px;overflow:hidden}
+.ttot .tbar i{display:block;height:100%;background:#e0533d;border-radius:99px;transition:width .8s}
+.tcol.good .tbar i{background:var(--green)}
+/* trap screen */
+.tm{position:relative;display:grid;grid-template-columns:62px 1fr 1fr;gap:6px;background:var(--navy);border-radius:12px;padding:10px;margin-bottom:10px}
+.tmh,.tmr{color:#aeb6f0;font-size:11px;font-weight:600;text-align:center;line-height:1.2;display:grid;place-items:center}
+.tmh{padding:6px 2px}
+.tmh img,.tmr img{width:20px;height:20px;border-radius:5px;background:#fff;object-fit:contain;display:block;margin:0 auto 2px}
+.tmc span{display:block;font-size:10px;color:#aeb6f0;margin-top:3px}
+.concept .beats{display:flex;gap:6px;margin:0 0 12px}
+.concept .beats b{width:8px;height:8px;border-radius:50%;background:#d6d6d6}
+.concept .beats b.on{background:var(--ink)}
+.tmc{position:relative;background:#1b2350;border:1px solid #2a3470;border-radius:8px;padding:14px 4px;color:#dfe3ff;font-family:var(--font);text-align:center;transition:all .3s}
+.tmc b{font-size:22px}
+.tmc small{font-size:11px;color:#aeb6f0;margin-left:2px}
+.tmc.lit{background:#26306e;border-color:#5560d6}
+.tmc.win{box-shadow:inset 0 0 0 2px var(--green)}
+.tmc.win:after{content:"better";position:absolute;top:-8px;right:6px;background:var(--green);color:#fff;font-size:9px;font-weight:800;border-radius:4px;padding:1px 5px}
+.tmc.trap{background:#5b1d1d;border-color:#e0533d;color:#fff}
+.tmc.trap:after{content:"both end here";position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);background:#e0533d;color:#fff;font-size:9px;font-weight:800;border-radius:4px;padding:1px 5px;white-space:nowrap}
+.tmc.wish{box-shadow:inset 0 0 0 2px var(--green)}
+.tmc.wish:after{content:"both could have";position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:var(--green);color:#fff;font-size:9px;font-weight:800;border-radius:4px;padding:1px 5px;white-space:nowrap}
+.tmc.dim2{opacity:.45}
+.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+.stampname{position:absolute;right:-6px;top:-12px;border:3px solid #c0392b;color:#c0392b;background:rgba(255,255,255,.92);font:800 13px/1 var(--font);letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:4px;transform:rotate(-8deg) scale(1.6);opacity:0;transition:all .35s cubic-bezier(.2,.9,.3,1.4)}
+.stampname.on{opacity:1;transform:rotate(-8deg) scale(1)}
+.tsteps{display:flex;gap:6px;justify-content:center;margin-bottom:10px}
+.tsteps i{width:8px;height:8px;border-radius:50%;background:#d6d6d6}
+.tsteps i.on{background:var(--green)}
+
+/* company cards (ads) */
+.room.co{padding-top:14px}
+.tv{width:84px;height:62px;margin:4px auto 8px;border-radius:8px;background:#1b1b1b;border:4px solid #3a3a3a;display:grid;place-items:center;position:relative;transition:background .3s}
+.tv span{color:#333;font-weight:800;font-size:18px;letter-spacing:.1em;transition:color .3s}
+.tv.on{background:radial-gradient(circle at 50% 40%,#fff6c2,#f3c969 70%)}
+.tv.on span{color:#b3261e}
+.tv:after{content:"";position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);width:30px;height:6px;background:#3a3a3a;border-radius:0 0 4px 4px}
+/* café cards */
+.room.cafe{padding-top:14px}
+.room.cafe .face{width:64px;height:64px}
+.ptag{display:inline-block;background:#2b2b2b;color:#fff;font-size:12px;border-radius:4px;padding:1px 6px;margin-left:4px}
+.cupbar{height:8px;background:#eee;border-radius:99px;overflow:hidden;margin:6px 6px 4px}
+.cupbar b{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .5s}
+.daystrip{display:flex;gap:5px;justify-content:center;margin-top:10px}
+.daystrip i{width:18px;height:8px;border-radius:99px;background:#e1e1e1}
+.daystrip i.done{background:var(--green)}.daystrip i.now{background:var(--blue)}
+/* price chips */
+.chip.price{flex-direction:column;gap:0;padding:5px 10px 4px;line-height:1.15}
+.chip.price small{font-size:10px;color:var(--ink2);font-weight:500}
+.chip.price small em{font-style:normal;color:var(--ink);font-weight:600}
+
+.stepper{display:inline-flex;align-items:center;border:1px solid var(--blue-bd);border-radius:8px;overflow:hidden;background:#fff}
+.stepper button{width:40px;height:40px;border:0;background:#f4f7ff;color:var(--blue);font:700 20px var(--font);cursor:pointer}
+.stepper button:disabled{color:#bbb;background:#f6f6f6}
+.stepper .val{min-width:84px;text-align:center;font-size:18px;font-weight:700;color:var(--blue)}
+.preview{font-size:12px;color:var(--ink2);margin-left:10px;line-height:1.25}
+.preview b{color:var(--ink)}
+.ft .ic{width:34px;height:34px;border-radius:8px;background:#f1f3f8;display:grid;place-items:center;font-size:18px;flex:none}
+
+/* ---- polish pass (product UI): tactile, focus, reduced motion, numerals ---- */
+/* radius system: cards 12px, chips and inputs 6-8px, buttons pill. Do not add other radii. */
+.btn:not(:disabled):active{transform:translateY(1px) scale(.99)}
+.btn.go{box-shadow:0 6px 18px rgba(47,191,79,.25)}
+.btn:not(.ghost):not(:disabled):not(.go){box-shadow:0 6px 18px rgba(0,0,0,.14)}
+.btn.ghost:active{background:#f5f5f5}
+.chip:not(.lock):hover{background:#f7f9ff}
+.stepper button:not(:disabled):active{background:#e8eeff}
+:is(.btn,.chip,.stepper button,.link,.x):focus-visible{outline:3px solid rgba(45,91,215,.45);outline-offset:2px}
+.yrs b,.ptag,.stepper .val,.total b,.xp,.cbar b i,.tmc b,.ttot b{font-variant-numeric:tabular-nums}
+.stage{box-shadow:0 1px 2px rgba(27,27,27,.04)}
+.nudge{box-shadow:0 2px 10px rgba(27,27,27,.07)}
+#app>.prompt,#app>.stage,#app>.palette,#app>.concept,#app>.intro,#app>.splash{animation:fade .25s ease both}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  .face.pop{transform:none}.chip.hidden{opacity:1;transform:none}
+}
+
+
+/* ---- character bubble, pressable controls, grading sheet (own styling) ---- */
+.fox{width:60px;height:74px}
+.nudge{background:#f4f7ff;border:0;border-radius:14px;padding:11px 14px;font-size:15px;font-weight:500;color:var(--ink);box-shadow:none;max-width:none;flex:1;line-height:1.35}
+.nudge:before{content:"";position:absolute;left:-7px;top:50%;width:12px;height:12px;background:#f4f7ff;border:0;transform:translateY(-50%) rotate(45deg)}
+.btn{box-shadow:inset 0 -3px 0 rgba(0,0,0,.18)!important;height:52px}
+.btn:not(:disabled):active{transform:translateY(1px);box-shadow:inset 0 -1px 0 rgba(0,0,0,.18)!important}
+.btn:disabled{box-shadow:none!important}
+.btn.go{background:var(--green)}
+.btn.bad{background:#e0533d;color:#fff}
+.btn.ghost{border:1.5px solid #d9d9d9;background:#fff;color:var(--ink);font-weight:600;height:48px;box-shadow:inset 0 -2px 0 #e6e6e6!important}
+.chip{border:1.5px solid var(--blue-bd);border-radius:10px;padding:7px 12px;color:var(--blue);background:#fff;box-shadow:inset 0 -2px 0 #e3e9fb}
+.chip:not(.lock):active{transform:translateY(1px);box-shadow:none}
+.chip.lock{box-shadow:none;background:#fafbff}
+.slot{border:1.5px dashed #cfd6e8;border-radius:10px;height:38px}
+.stepper{border:1.5px solid var(--blue-bd);border-radius:10px;box-shadow:inset 0 -2px 0 #e3e9fb}
+.stepper button{background:#fff}
+#app.padded{padding-bottom:200px}
+/* grading sheet */
+.fb{position:fixed;left:0;right:0;bottom:0;transform:translateY(110%);transition:transform .28s cubic-bezier(.2,.8,.2,1);z-index:6;padding:12px 12px calc(12px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--line);box-shadow:0 -10px 30px rgba(27,27,27,.08)}
+.fb.on{transform:none}
+.fb .in{max-width:406px;margin:0 auto;border-radius:14px;padding:12px}
+.fb.ok .in{background:var(--green-bg)}.fb.bad .in{background:#fdecea}
+.fbrow{display:flex;gap:12px;align-items:center;margin-bottom:12px}
+.fbfox{width:52px;height:64px;object-fit:contain;flex:none}
+.fbt{font-size:17px;font-weight:700;line-height:1.2;color:var(--ink)}
+.fbl{font-size:14px;margin-top:3px;line-height:1.35;color:#333}
+.fbb{display:flex;align-items:center;gap:14px}
+.fbb .link{color:var(--ink);font-weight:600;flex:none;padding:8px 4px;text-decoration:underline;text-underline-offset:3px}
+.fbb .btn{flex:1}
+
+/* ---- Brainy Pop style pass: Bricolage, warm paper, lime, folder cards, black pills ---- */
+html,body{background:var(--bg)}
+#app{background:var(--bg)}
+.world{background-color:#F8F4EE;background-image:linear-gradient(#ECE5DC 1px,transparent 1px),linear-gradient(90deg,#ECE5DC 1px,transparent 1px);background-size:22px 22px}
+.gridw,.lm,.tm,.matrix{background-image:none}
+.prompt{font-size:18px;font-weight:600;letter-spacing:-.01em;line-height:1.3}
+.intro h1,.splash h2,.fbt{font-weight:800;letter-spacing:-.02em}
+.intro h1{font-size:34px}
+.splash h2{font-size:26px}
+.bar{height:10px;background:#EFEAE4}.bar i{background:var(--lime)}
+.dots b{background:#E3DCD5}.dots b.on{background:var(--lime)}
+.xp i{color:var(--olive)}
+.bolt{color:#F2B705}
+.top .x{background:#fff;border:1.5px solid var(--line);border-radius:50%}
+.stage{border:1.5px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 1px 0 var(--line)}
+.stage .hd{font-weight:700}
+.stage .hd .st:before{background:var(--lime);border-color:#EFF7D6}
+.tag{border:1.5px solid var(--line);border-radius:999px;padding:3px 10px;background:#fff}
+.room{border:1.5px solid var(--line);border-radius:16px}
+.room.lit{box-shadow:0 0 0 2px var(--ink)}
+.room .bars{background:repeating-linear-gradient(90deg,transparent 0 22px,#B9B1A8 22px 25px)}
+.room .bubble{background:var(--lime);border:0;color:var(--ink);border-radius:999px;font-weight:700}
+.room .yrs b,.yrs b{font-weight:800}
+.row .n{color:#A8A19A}
+.chip{border:1.5px solid var(--line);border-radius:999px;padding:8px 14px;color:var(--ink);background:#fff;box-shadow:inset 0 -2px 0 var(--line);font-weight:500}
+.chip b{font-weight:700}
+.chip.lock{background:#F6F1EA;box-shadow:none}
+.chip:not(.lock):active{transform:translateY(1px);box-shadow:none}
+.slot{border:1.5px dashed var(--slot);border-radius:999px;height:40px}
+.qm{border:1.5px solid var(--line);border-radius:999px;color:#A8A19A}
+.tick{color:var(--olive)}
+.ptag{background:var(--ink);border-radius:999px;font-weight:700}
+.ptag.big.cut{background:var(--orange)}
+.stepper{border:1.5px solid var(--line);border-radius:999px;box-shadow:inset 0 -2px 0 var(--line);overflow:hidden}
+.stepper button{background:#fff;color:var(--ink)}
+.stepper .val{color:var(--ink);font-weight:800}
+.btn{border-radius:999px;background:var(--btn);box-shadow:none!important;font-weight:700;height:54px;font-size:16px}
+.btn:not(:disabled):active{transform:scale(.985)}
+.btn.go{background:var(--ink);color:var(--lime)}
+.btn.bad{background:var(--orange);color:#fff}
+.btn:disabled{background:var(--btn-off);color:var(--btn-off-ink)}
+.btn.ghost{background:#fff;border:1.5px solid var(--line);color:var(--ink);box-shadow:none!important;height:50px}
+.link{font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.fox{width:62px;height:76px}
+.nudge{background:#fff;border:1.5px solid var(--line);border-radius:18px 18px 18px 4px;font-weight:500;box-shadow:none}
+.nudge:before{display:none}
+.fb{background:var(--bg);border-top:1.5px solid var(--line);box-shadow:0 -10px 30px rgba(31,31,31,.06)}
+.fb{padding:0}.fb .in{max-width:none;border-radius:0;padding:16px 16px calc(16px + env(safe-area-inset-bottom))}
+.fb.ok .in{background:var(--lime)}.fb.bad .in{background:#FBD6C9}
+.fb{border-top:0;box-shadow:0 -10px 30px rgba(31,31,31,.08)}
+.fbt{font-size:19px}
+.fbb .link{color:var(--ink)}
+.fb.ok .btn.go{background:var(--ink);color:#fff}
+.fb .fbfox{width:60px;height:72px}
+.fb .in>*{max-width:398px;margin-left:auto;margin-right:auto}
+.sheet{background:var(--bg);border-radius:24px 24px 0 0}
+.sheet code{background:#fff;border:1px solid var(--line);color:var(--ink);border-radius:6px}
+.okstrip{background:var(--lime)!important;color:var(--ink)!important;border-bottom:1.5px solid #CFE660;font-weight:800}
+.stage .okstrip{display:none}.stage.ok .okstrip{display:block}
+.stage.ok{border-color:var(--ink);box-shadow:none}
+#app.glow{box-shadow:none}
+/* intro */
+.phone{border-color:var(--ink);background:#F6F1EA}
+.phone:before{background:var(--ink)}
+.phone .cell{border:1.5px solid var(--line);border-radius:12px}
+.phone .cell.you{box-shadow:0 0 0 2px var(--ink)}
+.phone .cell.you em{background:var(--lime);color:var(--ink)}
+.intro .beats b.on,.concept .beats b.on{background:var(--ink)}
+/* concept & case */
+.caseq{font-weight:600;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+.matrix,.tm,.lm,.gridw{background:var(--navy);border-radius:16px}
+.matrix .c,.tmc,.lc,.pm .c{background:#3E4A58;border-color:#4A5765}
+.matrix .c.hi,.pm .c.hi{background:var(--purple);color:var(--ink)}
+.tmc.trap{background:var(--orange);border-color:var(--orange);color:#fff}
+.tmc.wish{box-shadow:inset 0 0 0 2px var(--lime)}
+.tmc.wish:after{background:var(--lime);color:var(--ink)}
+.tmc.win{box-shadow:inset 0 0 0 2px var(--lime)}
+.tmc.win:after{background:var(--lime);color:var(--ink)}
+.tmc.trap:after{background:#fff;color:var(--orange)}
+.stampname{border-color:var(--orange);color:var(--orange)}
+.gridw{background-image:none}
+.map,.timeline,.tcol,.pc,.ft,.rv,.chart,.street,.mini{border:1.5px solid var(--line);border-radius:16px;background:#fff}
+.tcol.bad{border-color:var(--orange)}.tcol.good{border-color:var(--olive)}
+.ttot .tbar i{background:var(--orange)}.tcol.good .tbar i{background:var(--olive)}
+.paper{background:#fff;border-color:var(--line)}
+.chap{border:1.5px solid var(--line);border-radius:16px;background:#fff}
+.chap .st{color:var(--olive)}
+.chap .ic{background:#F6F1EA}
+.ft.dead{background:#FBEFEA}.ft.win{background:#F3F8E6}
+.tag-win{color:var(--olive);border-color:var(--olive)}
+.cbar b{background:var(--purple)}
+.street{background:#F6F1EA}
+.notif{border:1.5px solid var(--line);box-shadow:none}
+.notif em{color:var(--olive)}
+.rv small,.map .mr .b,.lh,.tmh,.tmr{color:var(--blue)}
+.lh,.tmh,.tmr,.matrix .h,.pm .h{color:#C6CFDB}
+.tv{border-color:#3A3A3A}
+.tsteps i.on{background:var(--lime)}
+
+/* ---- taste review pass: one surface, one accent, no emoji ---- */
+#app{background:var(--bg)}
+.world{background:#fff;background-image:none;padding:14px 12px 4px}
+.room{border:1.5px solid var(--line);background:#fff}
+.stage .hd{border-bottom:1.5px solid var(--line)}
+.stage .hd .st:before{background:var(--lime);border:0;width:10px;height:10px}
+.stage.ok{border-color:var(--ink);border-width:2px}
+.stage .okstrip,.stage.ok .okstrip{display:none}
+.stage.ok .hd{display:flex}
+.tick{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--ink);color:var(--lime)}
+.tick svg{display:block}
+.row .n{display:grid;place-items:center}
+.fb .in,.fb.ok .in,.fb.bad .in{background:var(--bg);border-top:4px solid var(--lime)}
+.fb.bad .in{border-top-color:var(--orange)}
+.fb{box-shadow:0 -12px 32px rgba(31,31,31,.10)}
+.fbt{color:var(--ink)}.fbl{color:var(--ink2)}
+.fb.ok .btn.go{background:var(--ink);color:var(--lime)}
+.fbfox{background:transparent}
+.xp{font-weight:700;color:var(--ink)}.xp i{color:var(--ink);font-size:11px}
+.bar{height:8px}
+.top .x{border:1.5px solid var(--line)}
+.nudge{background:#fff}
+.btn:disabled{background:#E9E3DC;color:#A8A19A}
+
+/* ---- accessibility pass ---- */
+h1.lead{font-size:16px;font-weight:400;line-height:1.4;margin:0 0 18px;letter-spacing:0}
+.concept h1.lead strong{font-weight:700}
+.intro h1.lead{font-size:16px;text-align:center}
+.intro h1:not(.lead){font-size:34px;font-weight:800}
+.x{font:inherit;cursor:pointer;color:var(--ink)}
+.prompt{margin:18px 0 14px}
+.chip{font:inherit;font-size:14px;cursor:pointer}
+.row .n,.tnn,.tarr i,.ch-s,.lm-s,.cbar span,.rl,.phone .cell small,.rv small,.net .rl{color:#6E6A66}
+.tn .tarr i.none{color:#3F6A2F}
+.notif em{color:#3F6A2F}
+.btn.bad{background:#C94B22}
+.pm .c.dimc{opacity:1;color:#AEB6C4;background:#2A3440}
+.matrix .h,.pm .h,.lh,.tmh,.tmr{color:#D5DCE6}
+.tverdict{font-weight:600;color:var(--ink2)}
+.tcol.good .tverdict{color:#3F6A2F}.tcol.bad .tverdict{color:#B3261E}
+.tmc.win:before{content:"";position:absolute;inset:0;border-radius:8px;border:2px dashed rgba(255,255,255,.55);pointer-events:none}
+.tmc.trap b{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+:is(button,[tabindex="-1"]):focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+h1:focus,.prompt:focus,p:focus{outline:none}
+@media (min-width:480px){body{background:#F1EBE4}#app{box-shadow:0 0 0 1.5px var(--line)}}
+@media (min-width:480px){body{background:#f5f5f5}#app{background:#fff;min-height:100vh;box-shadow:0 0 0 1px #eee}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<div class="scrim" id="scrim"></div><div class="sheet" id="sheet"><div class="in"><p id="whyText"></p><button class="btn" id="whyOk">Got it</button></div></div>
+<div class="fb" id="fb"></div>
+<script id="assets" type="application/json">__ASSETS__</script>
+<script>
+const A=JSON.parse(document.getElementById('assets').textContent);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ---------- the two binary games ---------- */
+const GAMES={
+ prison:{a:'silent',b:'talk',chip:{silent:'<b>stay</b> silent',talk:'<b>talk</b>'},
+  pay:{'silent|silent':[1,1],'talk|silent':[0,5],'silent|talk':[5,0],'talk|talk':[3,3]},
+  you:'Ravi',her:'Meera',turn:'night',turns:'nights',
+  fmt:n=>`<b>${n}</b> ${n===1?'year':'years'}`,
+  faceA:(me,her)=>!me?'scared':(me==='talk'&&her==='silent')?'ashamed':(me==='silent'&&her==='talk')?'scared':'cold',
+  faceB:(me,her)=>!her?'thawing':(me==='silent'&&her==='silent')?'friendly':(me==='talk'&&her==='silent')?'hurt':(me==='silent'&&her==='talk')?'hard':'grim',
+  card(side,me,her,val){const who=side==='A'?'Ravi':'Meera';const f=side==='A'?this.faceA(me,her):this.faceB(me,her);const img=side==='A'?A['ravi_'+f]:A['meera_'+f];
+    return `<div class="room" id="room-${side}"><div class="cbars"></div><div class="bubble" id="bub-${side}"></div><img class="face" id="face-${side}" src="${img}" alt="${who}, ${side==='A'?this.faceA(me,her):this.faceB(me,her)}"><div class="nm">${who}</div><div class="yrs" id="yrs-${side}" role="status" aria-live="polite">${val==null?'&nbsp;':this.fmt(val)}</div></div>`;},
+  react(side,me,her){const f=side==='A'?this.faceA(me,her):this.faceB(me,her);const el=document.getElementById('face-'+side);el.src=side==='A'?A['ravi_'+f]:A['meera_'+f];el.classList.add('pop');setTimeout(()=>el.classList.remove('pop'),250);},
+  total:(t)=>`Total&nbsp; Ravi <b>${t[0]}</b> · Meera <b>${t[1]}</b>`},
+ ads:{a:'save',b:'ad',chip:{save:'<b>save</b> the money',ad:'<b>run</b> the ads'},
+  pay:{'save|save':[4,4],'ad|save':[5,1],'save|ad':[1,5],'ad|ad':[3,3]},
+  you:'You',her:'Rival',turn:'year',turns:'years',
+  fmt:n=>`<b>${n}</b> cr profit`,
+  card(side,me,her,val){const who=side==='A'?'Your brand':'Rival brand';const on=(side==='A'?me:her)==='ad';
+    return `<div class="room co" id="room-${side}"><div class="bubble" id="bub-${side}"></div><div class="tv ${on?'on':''}" id="tv-${side}"><span>AD</span></div><div class="nm">${who}</div><div class="yrs" id="yrs-${side}">${val==null?'&nbsp;':this.fmt(val)}</div></div>`;},
+  react(side,me,her){const on=(side==='A'?me:her)==='ad';document.getElementById('tv-'+side).classList.toggle('on',on);},
+  total:(t)=>`Total&nbsp; You <b>${t[0]}</b> · Rival <b>${t[1]}</b> cr`}
+};
+const CHIP=GAMES.prison.chip;
+
+/* ---------- café economics (chapter 2) ---------- */
+const CAFE={cost:50,min:50,max:100,step:10,label:p=>`₹<b>${p}</b>`,
+  cups:(a,b)=>clamp(100+(b-a)*5,0,200),
+  pair(a,b){const c=CAFE.cups(a,b);return [c*(a-50),(200-c)*(b-50),c,200-c];},
+  faceB(a,b,prevB){if(a<b)return 'hurt';if(a===b&&a<100)return 'grim';if(prevB!=null&&b>prevB)return 'thawing';return 'friendly';}};
+
+/* ---------- lesson definition ---------- */
+const STEPS=[
+ /* chapter 1: the prison */
+ {ch:1,id:'intro',type:'intro',beats:[
+   {img:'jewellery',text:'Last night, a jewellery shop in Jayanagar was robbed.'},
+   {img:'inspector',text:'The inspector has two suspects, Ravi and Meera. Not enough proof to hold either for long.'},
+   {img:'inspector',text:'So he makes each of them the same offer: <strong>talk</strong> about the other one, and you walk free tonight.'},
+   {cells:true,text:'They sit in separate rooms. Neither knows what the other will say.'},
+   {title:'You are Ravi.',text:'<strong>Stay silent</strong>, or <strong>talk</strong> about Meera. Get out with as few years as you can.',btn:'Play as Ravi'}]},
+ {ch:1,id:'watch',type:'play',g:'prison',prompt:'Watch what happens when both stay silent.',tag:['Night 1','Police station'],
+  nights:[{me:'silent',her:'silent'}],locked:true,goal:null,goalText:'both stay silent',
+  nudge:'Tonight they both stay silent. See what the morning brings.',done:'Morning. One year each.',doneNudge:'No confession, so the inspector could only prove the small charge. Now you choose for Ravi.',
+  why:'Nobody confessed, so the inspector can only prove the small charge: <code>1 year</code> each. The offer to walk free only works if someone talks.'},
+ {ch:1,id:'zero',type:'play',g:'prison',prompt:'Meera stays silent. Get Ravi out with <strong>zero</strong> years.',tag:['Night 1','Police station'],
+  nights:[{me:null,her:'silent'}],goal:r=>r.me===0,goalText:'Ravi: 0 years',
+  nudge:'Pick Ravi’s answer below.',done:'Morning. Ravi walks free.',doneNudge:'Zero for Ravi. Look what it cost Meera.',missNudge:'Still a year. Try Ravi’s other answer.',
+  why:'Ravi took the offer. His confession is all the proof the inspector needs, so Ravi walks: <code>0 years</code>. Meera, who said nothing, takes the full <code>5</code>.'},
+ {ch:1,id:'concept1',type:'concept',text:'For one night, talking wins. Meera only finds out in the morning, too late to do anything about it.',replay:'zero'},
+ {ch:1,id:'three',type:'play',g:'prison',prompt:'Three nights. Each morning Meera learns what Ravi said, and the next night she does the same. Get Ravi <strong>under 3</strong> years in total.',tag:['3 nights','She copies you'],
+  nights:[{me:null,her:'silent'},{me:null,her:'copy'},{me:null,her:'copy'}],goal:r=>r.me<3,goalText:'Ravi total < 3',
+  nudge:'Pick Ravi’s answer for each night. Meera’s answers appear as the nights play.',done:'Three nights. Ravi: 2 years.',doneNudge:'Talk only on the night she can no longer copy you.',missNudge:'Too many years. On which night can Meera no longer copy you?',
+  why:'Meera copies Ravi’s last move. If he talks on night 1, she talks on night 2 and both sit for <code>3</code>. Staying silent keeps her silent: <code>1 + 1</code>. Night 3 is the last, so she can never answer it: <code>talk</code> costs nothing. Total <code>2</code>.'},
+ {ch:1,id:'concept2',type:'tomorrow'},
+ {ch:1,id:'concept3',type:'trap'},
+ {ch:1,id:'skill',type:'splash'},
+ {ch:1,id:'q1',type:'quiz',prompt:'<strong>Meera talks.</strong> Pick the answer that gives Ravi the fewest years.',her:'talk',want:'talk',n:1},
+ {ch:1,id:'q2',type:'quiz',prompt:'<strong>Meera stays silent.</strong> Pick the answer that gives Ravi and Meera the fewest years <strong>added together</strong>.',her:'silent',want:'silent',n:2},
+ {ch:1,id:'q3',type:'quiz',prompt:'<strong>Two nights. Meera copies Ravi’s last answer.</strong> Pick both nights so Ravi gets the fewest years in total.',two:true,want:'silent,talk',n:3},
+ {ch:1,id:'street',type:'street'},
+ {ch:1,id:'fates',type:'fates'},
+ {ch:1,id:'applied',type:'applied'},
+ {ch:1,id:'chap2',type:'chapter',n:2},
+
+ /* chapter 2: the café */
+ {ch:2,id:'intro2',type:'intro',beats:[
+   {img:'cafes',text:'Six months later. Ravi and Meera are out, and they have opened cafés on the same street.'},
+   {img:'customers',text:'A coffee costs ₹50 to make. Customers walk to whichever café is cheaper.'},
+   {title:'You run Ravi’s café.',text:'Set a price each morning. Make the most money.',btn:'Open the café'}]},
+ {ch:2,id:'day1',type:'cafe',days:1,prompt:'Meera charges <strong>₹100</strong>. Make more than her today.',tag:['Day 1','Same street'],
+  goal:r=>r.me>r.her,goalText:'Beat Meera today',
+  nudge:'Set Ravi’s price.',done:'Ravi made more.',doneNudge:'Cheaper, and her customers crossed the street. Now five days.',missNudge:'Not more than her. Try a lower price.',
+  why:'At ₹100 both cafés get 100 customers and make <code>₹5,000</code>. At ₹90 Ravi gets 150 customers and makes <code>₹6,000</code>; Meera keeps 50 and makes <code>₹2,500</code>. Undercutting steals customers faster than it loses margin. For one day.'},
+ {ch:2,id:'days5',type:'cafe',days:5,prompt:'Five days. Each morning Meera copies Ravi’s price from <strong>yesterday</strong>. Make <strong>₹24,000</strong>.',
+  dayPrompt:(d,her)=>`Day ${d} of 5. Meera copied yesterday: <strong>₹${her}</strong>.`,tag:['5 days','She copies you'],
+  goal:r=>r.me>=24000,goalText:'Ravi total ≥ ₹24,000',
+  nudge:'One price a day.',done:'Ravi made it.',doneNudge:'Hold, and the street stays rich. Cut only when there is no tomorrow.',missNudge:'Not enough. Every cut you make, she makes tomorrow.',
+  why:'Holding at ₹100 earns <code>₹5,000</code> a day, <code>₹25,000</code> in five. The first cut to ₹90 earns ₹6,000 once, then Meera copies it and both earn <code>₹4,000</code> a day from then on. Every cut is a one-day win and a four-day loss. The last day is the only free cut.'},
+ {ch:2,id:'concept4',type:'strategy'},
+ {ch:2,id:'chap3',type:'chapter',n:3},
+
+ /* chapter 3: the ad ban */
+ {ch:3,id:'intro3',type:'intro',beats:[
+   {tv:true,text:'America, 1970. You run a cigarette brand. So does your rival. Both spend a fortune on television ads every year.'},
+   {tv:true,text:'The ads barely create new smokers. Mostly they move smokers from one brand to the other. And back.'},
+   {title:'You run the brand.',text:'Each year: <strong>run the ads</strong>, or <strong>save the money</strong>. Profit is what counts.',btn:'Play the year'}]},
+ {ch:3,id:'adyear',type:'play',g:'ads',prompt:'Your rival runs ads this year. Make the most profit you can.',tag:['Year 1','Television'],
+  nights:[{me:null,her:'ad'}],goal:r=>r.me===3,goalText:'Most profit',
+  nudge:'Pick your move for the year.',done:'Year over. 3 crore each.',doneNudge:'You had to match the ads or lose customers. Both brands paid for TV and ended level. Sound familiar?',missNudge:'You saved the money and the rival took your customers. Try again.',
+  why:'If the rival advertises and you do not, their ads pull your smokers across: <code>1 cr</code> for you, <code>5</code> for them. Matching costs money but keeps your customers: <code>3</code> each. Both brands would rather be at <code>4 and 4</code> with no ads at all, but neither can stop alone.'},
+ {ch:3,id:'ban',type:'play',g:'ads',predict:{options:{up:'profit goes <b>up</b>',down:'profit goes <b>down</b>'},answer:'up'},
+  prompt:'January 1971. The government <strong>bans</strong> cigarette ads on TV. Neither brand can advertise. What happens to profit?',tag:['Year 2','Ad ban'],
+  nights:[{me:'save',her:'save'}],goal:r=>r.guess==='up',goalText:'Your prediction',
+  nudge:'Make a guess, then play the year.',done:'Year over. 4 crore each.',doneNudge:'Nobody could advertise, so nobody lost customers, and nobody paid for TV. The ban did what neither brand could do alone.',missNudge:'Profit went up. Play it again and watch where the money that used to go to TV went.',
+  why:'The ban forced both brands into the <code>save</code> row at once. Customers stayed where they were, ad bills vanished, and profit rose from <code>3</code> to <code>4</code>. A rule that ties both hands can set both free. Tobacco companies in the US did not fight the 1971 TV ban hard, and the years after it were profitable ones.'},
+ {ch:3,id:'news3',type:'news3'},
+ {ch:3,id:'concept5',type:'text',text:'When both sides are stuck in the bottom-right cell, the way out is not a cleverer move. It is a <strong>rule</strong> that removes the move for everyone at once.',sub:'Ad bans, salary caps, ceasefires, exam honour codes. Same table, same fix.'},
+ {ch:3,id:'end',type:'end'}
+];
+const WEB=new URLSearchParams(location.search).get('web')==='1';
+if(WEB){const k=STEPS.findIndex(s=>s.id==='chap2');STEPS.splice(k,STEPS.length-k,{ch:1,id:'end',type:'end'});}
+const S={i:0,prog:{},done:{},xp:0};
+try{const s=JSON.parse(localStorage.getItem('untangle-brill-v2'));if(s&&s.i<STEPS.length-1&&new URLSearchParams(location.search).get('fresh')===null){S.i=s.i;S.prog=s.prog||{};S.xp=s.xp||0;S.done=s.done||{};}}catch(e){}
+const jump=new URLSearchParams(location.search).get('ch');if(jump){const k=STEPS.findIndex(s=>s.ch===+jump);if(k>=0)S.i=k;}
+function save(){try{localStorage.setItem('untangle-brill-v2',JSON.stringify({i:S.i,prog:S.prog,xp:S.xp,done:S.done}))}catch(e){}}
+const app=document.getElementById('app');
+
+/* ---------- chrome ---------- */
+function topbar(){
+  const st=STEPS[S.i];const quiz=st.type==='quiz'||st.type==='splash';
+  const teach=STEPS.filter(s=>s.ch===st.ch&&!['quiz','splash','chapter','end'].includes(s.type));
+  const k=teach.indexOf(st);const pct=quiz?100:Math.round(k/teach.length*100);
+  if(quiz){const q=STEPS.filter(s=>s.type==='quiz'&&s.ch===st.ch);const d=q.map(x=>`<b class="${S.done[x.id]?'on':''}"></b>`).join('');
+    return `<div class="top"><button class="x" aria-label="Back">✕</button><div style="flex:1"></div><div class="dots" role="img" aria-label="Skill check, ${Object.keys(S.done).filter(k=>k.startsWith('q')).length} of 3 done">${d}</div><div style="flex:1"></div></div>`;}
+  return `<div class="top"><button class="x" aria-label="Back">✕</button><div class="bar" role="progressbar" aria-label="Chapter progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><i style="width:${pct}%"></i></div><div class="dots" aria-hidden="true"><b></b><b></b><b></b></div><div class="xp" aria-label="${S.xp} XP"><i aria-hidden="true">✦</i>${S.xp}</div></div>`;
+}
+function fox(mood){return `<img class="fox" id="fox" src="${A['fox_'+(mood||'waiting')]}" alt="" aria-hidden="true">`;}
+function nudge(text){return `<div class="nudge ${text?'on':''}" id="nudge" role="status" aria-live="polite">${text||''}</div>`;}
+function setNudge(t){const n=document.getElementById('nudge');if(!n)return;n.classList.remove('on');setTimeout(()=>{n.innerHTML=t;n.classList.add('on');},150);}
+function addXp(n){S.xp+=n;save();const x=app.querySelector('.xp');if(x)x.innerHTML=`<i>✦</i>${S.xp}`;}
+function openWhy(html){const s=document.getElementById('sheet');s.setAttribute('role','dialog');s.setAttribute('aria-modal','true');s.setAttribute('aria-label','Why');document.getElementById('whyText').innerHTML=html;s.classList.add('on');document.getElementById('scrim').classList.add('on');setTimeout(()=>document.getElementById('whyOk').focus(),250);}
+function closeWhy(){document.getElementById('sheet').classList.remove('on');document.getElementById('scrim').classList.remove('on');}
+document.getElementById('whyOk').onclick=closeWhy;document.getElementById('scrim').onclick=closeWhy;document.addEventListener('keydown',e=>{if(e.key==='Escape')closeWhy();});
+function go(i){S.i=i;save();render();window.scrollTo(0,0);const h=app.querySelector('h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}}
+function next(){go(Math.min(S.i+1,STEPS.length-1));}
+function sheet(kind,title,line,buttons){
+  const fb=document.getElementById('fb');fb.className='fb '+kind;
+  fb.setAttribute('role','dialog');fb.setAttribute('aria-labelledby','fbt');
+  fb.innerHTML=`<div class="in"><div class="fbrow"><img class="fbfox" src="${A['fox_'+(kind==='ok'?'celebrating':'thinking')]}" alt="" aria-hidden="true"><div><div class="fbt" id="fbt" tabindex="-1">${title}</div><div class="fbl">${line}</div></div></div><div class="fbb">${buttons}</div></div>`;
+  requestAnimationFrame(()=>{fb.classList.add('on');setTimeout(()=>document.getElementById('fbt').focus(),250);});app.classList.add('padded');
+}
+function closeSheet(){const fb=document.getElementById('fb');fb.classList.remove('on');app.classList.remove('padded');}
+function succeed(st,foot,doneText,doneNudge,why){
+  const stg=app.querySelector('.stage');if(stg)stg.classList.add('ok');
+  if(!S.done[st.id]){S.done[st.id]=true;addXp(10);}
+  foot.innerHTML='';
+  sheet('ok',doneText,doneNudge,`${why?'<button class="link" id="why">Why?</button>':''}<button class="btn go" id="cont">Continue</button>`);
+  document.getElementById('cont').onclick=()=>{closeSheet();next();};
+  if(why)document.getElementById('why').onclick=()=>openWhy(why);
+}
+function fail(st,foot,missNudge,onOver){
+  foot.innerHTML='';
+  sheet('bad','Not yet.',missNudge,`<button class="btn bad" id="over">Start over</button>`);
+  document.getElementById('over').onclick=()=>{closeSheet();onOver();};
+}
+
+/* ---------- intro ---------- */
+function renderIntro(st,b){
+  b=b||0;const bt=st.beats[b];const last=b===st.beats.length-1;
+  let art;
+  if(bt.title){
+    const ch=st.ch;
+    art=ch===1?`<div class="art"><div class="phone"><div class="cell you"><em>you</em><img src="${A.ravi_scared}" alt=""><span>Ravi</span><small>? years</small></div><div class="cell dimcell"><img src="${A.meera_thawing}" alt=""><span>Meera</span></div></div>
+   <div class="stack"><span class="chip lock">${CHIP.silent}</span><span class="chip lock">${CHIP.talk}</span></div></div><h1>${bt.title}</h1>`
+    :ch===2?`<div class="art"><div class="phone"><div class="cell you"><em>you</em><img src="${A.ravi_cold}" alt=""><span>Ravi’s</span><small>₹ ?</small></div><div class="cell dimcell"><img src="${A.meera_friendly}" alt=""><span>Meera’s</span><small>₹100</small></div></div>
+   <div class="stack"><span class="stepper" style="transform:scale(.85)"><button disabled>−</button><span class="val">₹90</span><button disabled>+</button></span></div></div><h1>${bt.title}</h1>`
+    :`<div class="art"><div class="phone"><div class="cell you"><em>you</em><div class="tv on" style="transform:scale(.8)"><span>AD</span></div><span>Your brand</span></div><div class="cell dimcell"><div class="tv on" style="transform:scale(.8)"><span>AD</span></div><span>Rival</span></div></div>
+   <div class="stack"><span class="chip lock">${GAMES.ads.chip.ad}</span><span class="chip lock">${GAMES.ads.chip.save}</span></div></div><h1>${bt.title}</h1>`;
+  }else if(bt.cells){art=`<div class="scene"><div class="stage" style="width:100%"><div class="world"><div class="rooms">${GAMES.prison.card('A',null,null,null)}${GAMES.prison.card('B',null,null,null)}</div></div></div></div>`;}
+  else if(bt.tv){art=`<div class="scene"><div class="stage" style="width:100%"><div class="world"><div class="rooms">${GAMES.ads.card('A','ad','ad',null)}${GAMES.ads.card('B','ad','ad',null)}</div></div></div></div>`;}
+  else art=`<div class="scene"><img src="${A[bt.img]}" alt="" class="${bt.img}"></div>`;
+  app.innerHTML=topbar()+`<div class="intro fade"><div class="beats" aria-hidden="true">${st.beats.map((_,i)=>`<b class="${i<=b?'on':''}"></b>`).join('')}</div>${art}<h1 class="lead">${bt.text}</h1></div>
+   <div class="foot"><button class="btn" id="cont">${last?(bt.btn||'Play'):'Continue'}</button></div>`;
+  document.getElementById('cont').onclick=()=>last?next():renderIntro(st,b+1);
+}
+
+/* ---------- binary play (prison, ads) ---------- */
+function renderPlay(st){
+  const G=GAMES[st.g];
+  const prog=S.prog[st.id]||st.nights.map(n=>n.me);
+  const multi=st.nights.length>1;const guess=st.predict?(S.prog[st.id+':g']||null):null;
+  const rows=st.nights.map((n,k)=>{
+    const me=prog[k];
+    const meCell=(st.locked||st.predict)?`<span class="chip lock">${G.chip[me]}</span>`:(me?`<button class="chip" data-row="${k}" data-act="unset" aria-label="Remove ${G.chip[me].replace(/<[^>]+>/g,"")}">${G.chip[me]}</button>`:`<span class="slot" data-row="${k}" role="img" aria-label="Empty slot"></span>`);
+    const herCell=n.her==='copy'?`<span class="qm">copies ${G.turn} ${k}</span>`:`<span class="chip lock">${G.chip[n.her]}</span>`;
+    return `<div class="row" id="r${k}a"><span class="n">${multi?('N'+(k+1)):'1'}</span><span class="who">${G.you}</span>${meCell}</div>`+
+           `<div class="row" id="r${k}b"><span class="n">${multi?'':'2'}</span><span class="who">${G.her}</span>${herCell}</div>`;
+  }).join('')+(st.predict?`<div class="row" id="rg"><span class="n">?</span><span class="who">Guess</span>${guess?`<button class="chip" data-act="unguess" aria-label="Remove guess">${st.predict.options[guess]}</button>`:'<span class="slot" role="img" aria-label="Empty slot"></span>'}</div>`:'');
+  const full=st.predict?!!guess:prog.every(Boolean);
+  const pal=st.locked?'':st.predict?`<div class="palette">${Object.entries(st.predict.options).map(([k,v])=>`<button class="chip" data-guess="${k}">${v}</button>`).join('')}</div>`
+    :`<div class="palette"><button class="chip" data-pal="${G.a}">${G.chip[G.a]}</button><button class="chip" data-pal="${G.b}">${G.chip[G.b]}</button></div>`;
+  app.innerHTML=topbar()+`<h1 class="prompt">${st.prompt}</h1>
+  <div class="stage"><div class="okstrip" id="okstrip"></div><div class="hd"><span class="st">${st.goalText}</span><span class="tag">${st.tag[0]}<small>${st.tag[1].toUpperCase()}</small></span></div>
+   <div class="world"><div class="rooms">${G.card('A',null,null,null)}${G.card('B',null,null,null)}</div>${multi?`<div class="total" id="total">${G.total([0,0])}</div>`:''}</div>
+   <div class="prog">${rows}</div></div>${pal}
+  <div class="foot"><div class="nrow">${fox()}${nudge(st.nudge)}</div><div class="brow"><button class="btn" id="run" ${full?'':'disabled'}>Play the ${multi?G.turns:G.turn}</button></div></div>`;
+  app.classList.remove('glow');
+  app.querySelectorAll('[data-pal]').forEach(c=>c.onclick=()=>{const k=prog.findIndex(v=>!v);if(k<0)return;prog[k]=c.dataset.pal;S.prog[st.id]=prog;save();renderPlay(st);});
+  app.querySelectorAll('[data-act=unset]').forEach(c=>c.onclick=()=>{prog[c.dataset.row]=null;S.prog[st.id]=prog;save();renderPlay(st);});
+  app.querySelectorAll('[data-guess]').forEach(c=>c.onclick=()=>{S.prog[st.id+':g']=c.dataset.guess;save();renderPlay(st);});
+  app.querySelectorAll('[data-act=unguess]').forEach(c=>c.onclick=()=>{S.prog[st.id+':g']=null;save();renderPlay(st);});
+  document.getElementById('run').onclick=()=>runPlay(st,prog,guess);
+}
+async function runPlay(st,prog,guess){
+  const G=GAMES[st.g];
+  const btn=document.getElementById('run');btn.disabled=true;btn.textContent='Playing…';
+  app.querySelectorAll('.palette .chip').forEach(c=>c.style.visibility='hidden');
+  let tot=[0,0],prev=null;
+  for(let k=0;k<st.nights.length;k++){
+    const me=prog[k];const her=st.nights[k].her==='copy'?prev:st.nights[k].her;
+    const ra=document.getElementById(`r${k}a`),rb=document.getElementById(`r${k}b`);
+    ra.classList.add('cur');ra.querySelector('.n').textContent='▶';document.getElementById('room-A').classList.add('lit');
+    const bA=document.getElementById('bub-A');bA.innerHTML=G.chip[me];bA.classList.add('on');G.react('A',me,null);
+    await sleep(650);
+    ra.classList.remove('cur');ra.querySelector('.n').innerHTML='<span class="tick"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';document.getElementById('room-A').classList.remove('lit');
+    rb.classList.add('cur');rb.querySelector('.n').textContent='▶';
+    if(st.nights[k].her==='copy'){rb.querySelector('.qm').outerHTML=`<span class="chip lock">${G.chip[her]}</span>`;}
+    document.getElementById('room-B').classList.add('lit');
+    const bB=document.getElementById('bub-B');bB.innerHTML=G.chip[her];bB.classList.add('on');G.react('B',null,her);
+    await sleep(650);
+    rb.classList.remove('cur');rb.querySelector('.n').innerHTML='<span class="tick"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';document.getElementById('room-B').classList.remove('lit');
+    const p=G.pay[me+'|'+her];tot[0]+=p[0];tot[1]+=p[1];
+    G.react('A',me,her);G.react('B',me,her);
+    document.getElementById('yrs-A').innerHTML=G.fmt(p[0]);document.getElementById('yrs-B').innerHTML=G.fmt(p[1]);
+    const t=document.getElementById('total');if(t)t.innerHTML=G.total(tot);
+    await sleep(900);bA.classList.remove('on');bB.classList.remove('on');prev=me;
+  }
+  const res={me:tot[0],her:tot[1],guess};
+  const ok=!st.goal||st.goal(res);
+  const foot=app.querySelector('.foot');
+  if(ok)succeed(st,foot,st.done,st.doneNudge,st.why);
+  else fail(st,foot,st.missNudge||(st.goalText+'? Not yet.'),()=>{S.prog[st.id]=st.nights.map(n=>st.predict?n.me:null);S.prog[st.id+':g']=null;save();renderPlay(st);});
+}
+
+/* ---------- café play (chapter 2) ---------- */
+function cafeCard(side,price,total,multi,face){
+  const who=side==='A'?'Ravi’s':'Meera’s';const img=side==='A'?A['ravi_'+(face||'cold')]:A['meera_'+(face||'friendly')];
+  return `<div class="room cafe" id="room-${side}"><div class="bubble" id="bub-${side}"></div><img class="face" id="face-${side}" src="${img}" alt=""><div class="nm">${who} <span class="ptag" id="pt-${side}">${price==null?'₹ ?':'₹'+price}</span></div>
+   <div class="yrs" id="yrs-${side}">${multi||total?'<b>₹'+(total||0).toLocaleString('en-IN')+'</b> '+(multi?'so far':'today'):'&nbsp;'}</div></div>`;
+}
+function renderCafe(st){
+  const run=S.prog[st.id]||{yours:[],hers:[],tot:[0,0],pick:null};
+  const day=run.yours.length;const herPrice=day?run.yours[day-1]:100;const done=day>=st.days;
+  const lastA=day?run.yours[day-1]:null,lastB=day?run.hers[day-1]:null;
+  const multi=st.days>1;const faceB=day?CAFE.faceB(lastA,lastB,day>1?run.hers[day-2]:null):'friendly';
+  const price=run.pick??herPrice;const pv=CAFE.pair(price,herPrice);
+  const played=done?`<div class="row"><span class="n"><span class="tick"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="who">Meera</span><span class="chip lock">${CAFE.label(lastB)}</span></div><div class="row"><span class="n"><span class="tick"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span></span><span class="who">Ravi</span><span class="chip lock">${CAFE.label(lastA)}</span></div>`:'';
+  const cur=done?'':`<div class="row" id="rowB"><span class="n">1</span><span class="who">Meera</span><span class="chip lock">${CAFE.label(herPrice)}${day?' <i style="font-style:normal;color:#888;font-size:12px">(copied)</i>':''}</span></div>
+   <div class="row" id="rowA" style="min-height:48px"><span class="n">2</span><span class="who">Ravi</span><span class="stepper"><button id="minus" aria-label="Lower price by 10 rupees" ${price<=CAFE.min?'disabled':''}>−</button><span class="val" role="status" aria-live="polite">₹${price}</span><button id="plus" aria-label="Raise price by 10 rupees" ${price>=CAFE.max?'disabled':''}>+</button></span></div>`;
+  const pal='';
+  const prompt=(multi&&st.dayPrompt&&day>0&&!done)?st.dayPrompt(day+1,herPrice):st.prompt;
+  app.innerHTML=topbar()+`<h1 class="prompt">${prompt}</h1>
+  <div class="stage"><div class="okstrip" id="okstrip"></div><div class="hd"><span class="st">${multi?'Ravi total ₹'+run.tot[0].toLocaleString('en-IN'):st.goalText}</span><span class="tag">${multi?'Day '+Math.min(day+1,st.days)+' of '+st.days:st.tag[0]}<small>${st.tag[1].toUpperCase()}</small></span></div>
+   <div class="world"><div class="rooms">${cafeCard('A',done?lastA:null,run.tot[0],multi,'cold')}${cafeCard('B',done?lastB:herPrice,run.tot[1],multi,faceB)}</div></div>
+   <div class="prog">${played}${cur}</div></div>${pal}
+  <div class="foot"><div class="nrow">${fox()}${nudge(st.nudge)}</div><div class="brow">${done?'':`<button class="btn" id="run">Play the day</button>`}</div></div>`;
+  app.classList.remove('glow');
+  const stepTo=p=>{run.pick=p;S.prog[st.id]=run;save();renderCafe(st);
+    const n=p<=CAFE.min?'₹50 is what a coffee costs to make. Full house, no money.':p<herPrice?`₹${herPrice-p} under her. Her customers cross the street today.`:p===herPrice?'Same price. The street splits evenly.':'';if(n)setNudge(n);};
+  const mi=document.getElementById('minus'),pl=document.getElementById('plus');
+  if(mi)mi.onclick=()=>stepTo(price-CAFE.step);if(pl)pl.onclick=()=>stepTo(price+CAFE.step);
+  const rb=document.getElementById('run');if(rb)rb.onclick=()=>playDay(st,run,price);
+  if(done)finishCafe(st,run);
+}
+async function playDay(st,run,price){
+  const btn=document.getElementById('run');btn.disabled=true;btn.textContent='Playing…';
+  document.querySelectorAll('.stepper button').forEach(b=>b.disabled=true);
+  const her=run.yours.length?run.yours[run.yours.length-1]:100;
+  const rB=document.getElementById('rowB'),rA=document.getElementById('rowA');
+  rB.classList.add('cur');rB.querySelector('.n').textContent='▶';document.getElementById('room-B').classList.add('lit');
+  await sleep(550);rB.classList.remove('cur');rB.querySelector('.n').innerHTML='<span class="tick"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';document.getElementById('room-B').classList.remove('lit');
+  rA.classList.add('cur');rA.querySelector('.n').textContent='▶';document.getElementById('room-A').classList.add('lit');
+  document.getElementById('pt-A').textContent='₹'+price;
+  await sleep(550);
+  const p=CAFE.pair(price,her);
+  const tA=run.tot[0]+p[0],tB=run.tot[1]+p[1];
+  document.getElementById('yrs-A').innerHTML=`<b>+₹${p[0].toLocaleString('en-IN')}</b> today`;document.getElementById('yrs-B').innerHTML=`<b>+₹${p[1].toLocaleString('en-IN')}</b> today`;
+  setTimeout(()=>{document.getElementById('yrs-A').innerHTML=`<b>₹${tA.toLocaleString('en-IN')}</b> so far`;document.getElementById('yrs-B').innerHTML=`<b>₹${tB.toLocaleString('en-IN')}</b> so far`;},700);
+  const fb=CAFE.faceB(price,her,run.hers.length?run.hers[run.hers.length-1]:null);const el=document.getElementById('face-B');el.src=A['meera_'+fb];el.classList.add('pop');
+  const bub=document.getElementById('bub-B');if(price<her){bub.textContent='Hey!';bub.classList.add('on');}
+  await sleep(900);rA.classList.remove('cur');rA.querySelector('.n').innerHTML='<span class="tick"><svg viewBox="0 0 16 16" width="16" height="16"><path d="M3 8.5l3 3 7-7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>';document.getElementById('room-A').classList.remove('lit');
+  run.yours.push(price);run.hers.push(her);run.tot=[run.tot[0]+p[0],run.tot[1]+p[1]];run.pick=null;S.prog[st.id]=run;save();
+  renderCafe(st);
+}
+function finishCafe(st,run){
+  const res={me:run.tot[0],her:run.tot[1]};
+  if(st.days===1){const p=CAFE.pair(run.yours[0],run.hers[0]);res.me=p[0];res.her=p[1];}
+  const ok=st.goal(res);const foot=app.querySelector('.foot');
+  if(ok)succeed(st,foot,st.done,st.doneNudge,st.why);
+  else fail(st,foot,st.missNudge,()=>{S.prog[st.id]=null;save();renderCafe(st);});
+}
+
+
+/* ---------- café wrap: same switch, one strategy so far ---------- */
+function renderStrategy(st,b){
+  b=b||0;
+  const beats=[
+    {text:'Same switch. <strong>Cutting</strong> is <strong>talking</strong>. <strong>Holding</strong> is <strong>staying silent</strong>. Every day has a tomorrow, so the price war never pays, except on the last day.',
+     art:`<div class="moves"><div class="mv"><span class="chip lock">${CHIP.talk}</span><i>=</i><span class="ptag big cut">cut ₹90</span></div><div class="mv"><span class="chip lock">${CHIP.silent}</span><i>=</i><span class="ptag big">hold ₹100</span></div></div>`,
+     say:'Rivals on one street so often charge the same price without ever speaking. This is why.'},
+    {text:'Meera has played one way the whole time: <strong>hold first, then copy whatever you did yesterday</strong>. That strategy has a name: <strong>tit for tat</strong>.',
+     art:`<div class="stage"><div class="world"><div class="rooms">${cafeCard('A',90,null,false,'cold')}${cafeCard('B',90,null,false,'grim')}</div></div>
+          <div class="prog"><div class="row"><span class="n">1</span><span class="who" style="width:90px">Day 1, Ravi</span><span class="chip lock">₹<b>90</b></span><span style="margin-left:10px;font-size:11px;color:#999">↘ she copies</span></div>
+          <div class="row"><span class="n">2</span><span class="who" style="width:90px">Day 2, Meera</span><span class="chip lock">₹<b>90</b></span></div></div></div>`,
+     say:'Simple, polite, unforgiving. It beat every cleverer program in a famous 1980 tournament.'},
+    {text:'Not everyone plays tit for tat. Some rivals never forgive a cut. Some cut no matter what. Some flip a coin. Each one needs a different answer.',
+     art:`<div class="fates">
+       <div class="ft"><div class="ic" aria-hidden="true">😤</div><div><b>The grudge</b><span>One cut from you, and she cuts forever.</span></div><em class="tag-cut">APP</em></div>
+       <div class="ft"><div class="ic" aria-hidden="true">🎲</div><div><b>The coin</b><span>Holds or cuts at random. Can you still profit?</span></div><em class="tag-cut">APP</em></div>
+       <div class="ft"><div class="ic" aria-hidden="true">🔪</div><div><b>The shark</b><span>Cuts every day, whatever you do.</span></div><em class="tag-cut">APP</em></div>
+       <div class="ft"><div class="ic" aria-hidden="true">🏆</div><div><b>The tournament</b><span>Your strategy against everyone else’s.</span></div><em class="tag-cut">APP</em></div></div>`,
+     say:'You have beaten one opponent. The rest are in the app.'}
+  ];
+  const last=b===beats.length-1;
+  app.innerHTML=topbar()+`<div class="concept fade"><div class="beats" aria-hidden="true">${beats.map((_,i)=>`<b class="${i<=b?'on':''}"></b>`).join('')}</div><h1 class="lead">${beats[b].text}</h1>${beats[b].art}</div>
+   <div class="foot"><div class="nrow">${fox('speaking')}${nudge(beats[b].say)}</div><div class="brow"><button class="btn" id="cont">Continue</button></div></div>`;
+  document.getElementById('cont').onclick=()=>last?next():renderStrategy(st,b+1);
+}
+
+/* ---------- the tomorrow screen ---------- */
+function renderTomorrow(){
+  const G=GAMES.prison;
+  const col=(title,prog,id)=>{let prev=null,tot=0;const rows=prog.map((me,k)=>{const her=k===0?'silent':prev;prev=me;const p=G.pay[me+'|'+her];tot+=p[0];
+    return `<div class="tn"><span class="tnn">N${k+1}</span><span class="chip lock ${me==='talk'?'warn':''}">${G.chip[me]}</span><span class="tarr">${k<2?'<i>↓ she copies</i>':'<i class="none">no tomorrow</i>'}</span><span class="chip lock ${her==='talk'?'warn':''}">${G.chip[her]}</span><b>${p[0]}</b></div>`;}).join('');
+    return `<div class="tcol" id="${id}"><div class="tt">${title} <span class="tverdict"></span></div><div class="th"><span>Ravi</span><span></span><span>Meera</span><span>yrs</span></div>${rows}<div class="ttot"><span>Ravi total</span><b>${tot}</b><div class="tbar"><i style="width:${tot/6*100}%"></i></div></div></div>`;};
+  app.innerHTML=topbar()+`<div class="concept"><h1 class="lead"><strong>Your move tonight becomes her move tomorrow.</strong> Only the last night has no tomorrow.</h1>
+   <div class="tgrid">${col('Talk first',['talk','silent','silent'],'tc1')}${col('Talk last',['silent','silent','talk'],'tc2')}</div>
+   <p class="lm-s">Same three chips. The only difference is which night the talk lands on.</p>
+  </div>
+  <div class="foot"><div class="nrow">${fox('speaking')}${nudge('Talk on night one and she talks on night two. Talk on night three and nobody can answer it.')}</div><div class="brow"><button class="btn" id="cont">Continue</button></div></div>`;
+  document.getElementById('cont').onclick=next;
+  setTimeout(()=>{document.getElementById('tc1').classList.add('bad');document.getElementById('tc2').classList.add('good');document.querySelector('#tc1 .tverdict').textContent='· worse';document.querySelector('#tc2 .tverdict').textContent='· better';},500);
+}
+
+/* ---------- the trap screen: three slides over one table ---------- */
+function trapTable(mode,logos){
+  const hA=logos?`<img src="${A.logo_airtel}" alt="">`:'Ravi',hB=logos?`<img src="${A.logo_vi}" alt="">`:'Meera';
+  const la=logos?['hold','cut']:['silent','talks'],lb=logos?['hold','cut']:['silent','talks'];
+  const cell=(r,c,big,small,txt)=>{let cls='';
+    if(mode===1&&c==='silent')cls='lit'+(r==='talk'?' win':'');
+    if(mode===2&&c==='talk')cls='lit'+(r==='talk'?' win':'');
+    if(mode>=3){cls=(r==='talk'&&c==='talk')?'trap':(r==='silent'&&c==='silent')?'wish':'dim2';}
+    const sr=cls.includes('win')?' (better)':cls.includes('trap')?' (both end here)':cls.includes('wish')?' (both could have had this)':'';
+    return `<div class="tmc ${cls}" role="img" aria-label="${big} and ${small}${sr}"><b>${big}</b><small>/ ${small}</small>${txt?`<span>${txt}</span>`:''}</div>`;};
+  return `<div class="tm">
+    <div></div><div class="tmh">${hB}<br>${lb[0]}</div><div class="tmh">${hB}<br>${lb[1]}</div>
+    <div class="tmr">${hA}<br>${la[0]}</div>${cell('silent','silent',1,1,logos&&'everyone keeps money')}${cell('silent','talk',5,0,logos&&'you lose customers')}
+    <div class="tmr">${hA}<br>${la[1]}</div>${cell('talk','silent',0,5,logos&&'you win customers')}${cell('talk','talk',3,3,logos&&'everyone poorer')}
+    <div class="stampname ${mode>=3?'on':''}">${logos?'India, 2017':'Prisoner’s dilemma'}</div></div>`;
+}
+function renderTrap(st,b){
+  b=b||0;
+  const beats=[
+    {text:'Every night was one of the same four outcomes. Written as a table, they look like this. Big number: Ravi’s years. Small: Meera’s.',say:'Read it once. Then watch what happens to it.'},
+    {text:'<strong>If Meera stays silent</strong>: 1 year for silence, 0 for talking. Talking is better.',say:'Left column only.'},
+    {text:'<strong>If Meera talks</strong>: 5 years for silence, 3 for talking. Talking is better again.',say:'Right column too. Whatever she does, Ravi should talk.'},
+    {text:'So Ravi talks. Meera, reading the same table, talks too. Both get <strong>3</strong>. Both could have had <strong>1</strong>. That is the <strong>prisoner’s dilemma</strong>: each player’s best move leaves both worse off.',say:'The most studied situation in game theory. You just played it three ways.'}
+  ];
+  const last=b===beats.length-1;
+  app.innerHTML=topbar()+`<div class="concept fade"><div class="beats" aria-hidden="true">${beats.map((_,i)=>`<b class="${i<=b?'on':''}"></b>`).join('')}</div><h1 class="lead">${beats[b].text}</h1>${trapTable(b,false)}</div>
+   <div class="foot"><div class="nrow">${fox(last?'celebrating':'speaking')}${nudge(beats[b].say)}</div><div class="brow"><button class="btn ${last?'go':''}" id="cont">Continue</button></div></div>`;
+  document.getElementById('cont').onclick=()=>last?next():renderTrap(st,b+1);
+}
+/* ---------- concept / matrix / text ---------- */
+function renderConcept(st){
+  const src=STEPS.find(s=>s.id===st.replay);const G=GAMES[src.g];const prog=S.prog[src.id]||src.nights.map(n=>n.me);
+  let prev=null;const lines=src.nights.map((n,k)=>{const her=n.her==='copy'?prev:n.her;prev=prog[k];const p=G.pay[prog[k]+'|'+her];
+    return `<div class="row" style="gap:8px"><span class="n">${src.nights.length>1?'N'+(k+1):'1'}</span><span class="chip lock">${G.chip[prog[k]]}</span><span style="color:#999">·</span><span class="chip lock">${G.chip[her]}</span><span style="color:#555;font-size:13px;margin-left:auto">${p[0]} / ${p[1]}</span></div>`;}).join('');
+  const last=(()=>{let prev=null,me,her;src.nights.forEach((n,k)=>{her=n.her==='copy'?prev:n.her;me=prog[k];prev=me;});return {me,her};})();
+  app.innerHTML=topbar()+`<div class="concept"><h1 class="lead">${st.text}</h1>
+   <div class="stage"><div class="world"><div class="rooms">${G.card('A',last.me,last.her,null)}${G.card('B',last.me,last.her,null)}</div></div>
+   <div class="prog"><div class="row" style="min-height:22px"><span class="n"></span><span style="font-size:12px;color:#7a7a7a;width:118px">${G.you}</span><span style="font-size:12px;color:#7a7a7a;margin-left:22px">${G.her}</span><span style="font-size:12px;color:#7a7a7a;margin-left:auto">${G.turn==='night'?'years':'profit'}</span></div>${lines}</div></div>
+   <div class="center"><button class="link" id="restart">↻ Replay</button></div></div>
+   <div class="foot">${fox('speaking')}<button class="btn" id="cont">Continue</button></div>`;
+  document.getElementById('cont').onclick=next;document.getElementById('restart').onclick=()=>go(STEPS.indexOf(src));
+}
+function matrix(hi){return `<div class="matrix"><div></div><div class="h">Meera silent</div><div class="h">Meera talks</div>
+ <div class="h">Ravi silent</div><div class="c ${hi==='silent|silent'?'hi':''}">1 / 1</div><div class="c ${hi==='silent|talk'?'hi':''}">5 / 0</div>
+ <div class="h">Ravi talks</div><div class="c ${hi==='talk|silent'?'hi':''}">0 / 5</div><div class="c ${hi==='talk|talk'?'hi':''}">3 / 3</div></div>`;}
+function renderMatrix(st){
+  app.innerHTML=topbar()+`<div class="concept"><h1 class="lead">${st.text}</h1>
+  <div class="mini"><div class="col"><h4>The four nights</h4><div class="lines" style="font-size:12px">
+    <span style="color:#7a7a7a">Ravi · Meera → years</span>
+    <span><b>silent</b> · <b>silent</b> <i style="color:#555;font-style:normal;float:right">1 / 1</i></span>
+    <span><b>silent</b> · <b>talk</b> <i style="color:#555;font-style:normal;float:right">5 / 0</i></span>
+    <span><b>talk</b> · <b>silent</b> <i style="color:#555;font-style:normal;float:right">0 / 5</i></span>
+    <span><b>talk</b> · <b>talk</b> <i style="color:#555;font-style:normal;float:right">3 / 3</i></span></div></div>
+   <div class="col"><h4>Payoff matrix</h4>${matrix()}</div></div></div>
+   <div class="foot">${fox('speaking')}<button class="btn" id="cont">Continue</button></div>`;
+  document.getElementById('cont').onclick=next;
+}
+function renderText(st){
+  app.innerHTML=topbar()+`<div class="concept"><h1 class="lead">${st.text}</h1>${st.sub?`<p style="color:var(--ink2);font-size:14px">${st.sub}</p>`:''}</div>
+   <div class="foot">${fox('speaking')}<button class="btn" id="cont">Continue</button></div>`;
+  document.getElementById('cont').onclick=next;
+}
+
+/* ---------- splash / quiz ---------- */
+function renderSplash(){
+  app.innerHTML=topbar()+`<div class="splash"><img src="${A.fox_surprised}" alt=""><h1>Skill check</h1><p>Three quick ones. Then the real world.</p></div><div class="foot"><button class="btn" id="cont">Start</button></div>`;
+  document.getElementById('cont').onclick=next;
+}
+function pmGrid(her,hi){
+  const cell=(k,v)=>{const dim=her&&!k.endsWith('|'+her)?'dimc':'';return `<div class="c ${dim} ${hi===k?'hi':''}" role="img" aria-label="${v}${dim?' (not tonight)':''}${hi===k?' (your pick)':''}">${v}</div>`;};
+  return `<div class="pm"><div></div><div class="h">Meera silent</div><div class="h">Meera talks</div>
+  <div class="h">Ravi silent</div>${cell('silent|silent','1 / 1')}${cell('silent|talk','5 / 0')}
+  <div class="h">Ravi talks</div>${cell('talk|silent','0 / 5')}${cell('talk|talk','3 / 3')}</div>`;
+}
+function renderQuiz(st){
+  const slots=st.two?2:1;const prog=S.prog[st.id]||Array(slots).fill(null);
+  const rows=Array.from({length:slots},(_,k)=>`<div class="row"><span class="n">${k+1}</span><span class="who">${st.two?'Night '+(k+1):'Ravi'}</span>${prog[k]?`<button class="chip" data-row="${k}" data-act="unset" aria-label="Remove ${CHIP[prog[k]].replace(/<[^>]+>/g,"")}">${CHIP[prog[k]]}</button>`:`<span class="slot" data-row="${k}" role="img" aria-label="Empty slot"></span>`}</div>`).join('');
+  const full=prog.every(Boolean);
+  app.innerHTML=topbar()+`<h1 class="prompt">${st.prompt}</h1>
+  <div class="stage"><div class="hd"><span class="st">${slots===1?'1 move':'2 moves'}</span><span class="tag">${st.n} of 3</span></div>
+   <div class="gridw">${pmGrid(st.two?null:st.her,null)}</div><div class="prog">${rows}</div></div>
+  <div class="palette"><button class="chip" data-pal="silent">${CHIP.silent}</button><button class="chip" data-pal="talk">${CHIP.talk}</button></div>
+  <div class="foot"><div class="nrow">${fox()}${nudge(st.nudgeNow||'')}</div><div class="brow"><button class="btn" id="check" ${full?'':'disabled'}>Check</button></div></div>`;
+  st.nudgeNow='';
+  app.querySelectorAll('[data-pal]').forEach(c=>c.onclick=()=>{const k=prog.findIndex(v=>!v);if(k<0)return;prog[k]=c.dataset.pal;S.prog[st.id]=prog;save();renderQuiz(st);});
+  app.querySelectorAll('[data-act=unset]').forEach(c=>c.onclick=()=>{prog[c.dataset.row]=null;S.prog[st.id]=prog;save();renderQuiz(st);});
+  document.getElementById('check').onclick=async()=>{
+    const ok=prog.join(',')===st.want;document.getElementById('check').disabled=true;
+    if(ok){
+      if(!S.done[st.id]){S.done[st.id]=true;addXp(st.n===3?25:15);}
+      ['.stage','.palette','.prompt'].forEach(q=>app.querySelector(q).classList.add('dim'));
+      document.getElementById('fox').src=A.fox_celebrating;
+      sheet('ok','Correct.',`+${st.n===3?25:15} XP`,'<button class="btn go" id="toastBtn">Continue</button>');
+      document.getElementById('toastBtn').onclick=()=>{closeSheet();next();};
+    }else{
+      if(!st.two){app.querySelector('.gridw').innerHTML=pmGrid(st.her,prog[0]+'|'+st.her);}
+      document.getElementById('fox').src=A.fox_thinking;setNudge(st.two?'Count both nights. On which one can she no longer copy you?':'Not that one. Only Meera’s column counts tonight.');
+      await sleep(1600);st.nudgeNow='Try again.';S.prog[st.id]=Array(slots).fill(null);save();renderQuiz(st);
+    }
+  };
+}
+
+/* ---------- real cases ---------- */
+function renderStreet(){
+  app.innerHTML=topbar()+`<div class="concept">
+   <p class="caseq">Real case · India, September 2016</p>
+   <h1 class="lead"><strong>This is not a story.</strong> In 2016 every network in India sat in Ravi’s chair.</h1>
+   <div class="street">
+     <div class="notif"><img src="${A.logo_jio}" alt="Jio"><div><b>Jio Welcome Offer</b><span>Unlimited calls. Unlimited data. <em>₹0</em> till 31 December.</span></div></div>
+     <img class="queue" src="${A.customers}" alt="">
+     <div class="cap">Queues outside Jio stores ran around the block. Everyone else watched their customers stand in them.</div>
+   </div>
+   <div class="rivals">
+     <div class="rv"><img src="${A.logo_airtel}" alt="Airtel"><span>Airtel</span><small>hold, or cut?</small></div>
+     <div class="rv"><img src="${A.logo_vi}" alt="Vodafone Idea"><span>Vodafone, Idea</span><small>hold, or cut?</small></div>
+     <div class="rv"><img src="${A.logo_rcom}" alt="Reliance Communications"><span>Reliance Comm.</span><small>hold, or cut?</small></div>
+   </div>
+  </div>
+  <div class="foot"><div class="nrow">${fox('surprised')}${nudge('The inspector’s offer, made to every network at once. Separate rooms, same night.')}</div><div class="brow"><button class="btn" id="cont">What did they do?</button></div></div>`;
+  document.getElementById('cont').onclick=next;
+}
+function renderFates(){
+  app.innerHTML=topbar()+`<div class="concept">
+   <p class="caseq">Real case · What happened next</p>
+   <h1 class="lead">Everyone cut. Then cut again. Here is where the four of them ended up.</h1>
+   <div class="fates">
+     <div class="ft"><img src="${A.logo_airtel}" alt="Airtel"><div><b>Airtel</b><span>Cut prices to match. Survived, poorer.</span></div><em class="tag-cut">CUT</em></div>
+     <div class="ft"><img src="${A.logo_vi}" alt="Vi"><div><b>Vodafone + Idea</b><span>Cut, bled, and merged in 2018 to survive. Now Vi.</span></div><em class="tag-cut">MERGED</em></div>
+     <div class="ft dead"><img src="${A.logo_rcom}" alt="Reliance Communications"><div><b>Reliance Communications</b><span>Cut, could not keep up, shut its mobile network in 2017.</span></div><em class="tag-dead">CLOSED</em></div>
+     <div class="ft win"><img src="${A.logo_jio}" alt="Jio"><div><b>Jio</b><span>Charged after March 2017. Largest network in India within three years.</span></div><em class="tag-win">No. 1</em></div>
+   </div>
+   <div class="chart"><div class="ch-t">What 1 GB of data cost in India</div>
+     <div class="cbars"><div class="cbar"><b style="--h:100%"><i>₹269</i></b><span>2014</span></div><div class="cbar"><b style="--h:76%"><i>≈₹200</i></b><span>2016<small>Jio launches</small></span></div><div class="cbar"><b style="--h:5%"><i>₹12</i></b><span>2018</span></div></div>
+     <div class="ch-s">TRAI averages per GB, 2014 and 2018. The 2016 bar is approximate.</div></div>
+  </div>
+  <div class="foot"><div class="nrow">${fox('thinking')}${nudge('Cheaper for you. Poorer companies. One fewer of them. Both talked, both paid.')}</div><div class="brow"><button class="btn" id="cont">Continue</button></div></div>`;
+  document.getElementById('cont').onclick=next;
+  requestAnimationFrame(()=>app.querySelectorAll('.cbar b').forEach(b=>b.classList.add('grow')));
+}
+function renderApplied(st,b){
+  b=b||0;
+  const beats=[
+    {text:'Same table, new names. <strong>Ravi is Airtel.</strong> Meera is everyone else on the street.',
+     art:`<div class="pair"><div class="pc"><img class="face" src="${A.ravi_cold}" alt=""><img class="badge" src="${A.logo_airtel}" alt=""><b>Ravi</b><span>is Airtel</span></div>
+          <div class="pc"><img class="face" src="${A.meera_hard}" alt=""><img class="badge" src="${A.logo_vi}" alt=""><img class="badge b2" src="${A.logo_rcom}" alt=""><b>Meera</b><span>is the others</span></div></div>`,
+     say:'Separate rooms. Nobody knew what the others would charge.'},
+    {text:'<strong>Stay silent</strong> is holding your price. <strong>Talk</strong> is cutting it. The inspector’s offer is Jio, free till March.',
+     art:`<div class="moves"><div class="mv"><span class="chip lock">${CHIP.silent}</span><i>=</i><span class="ptag big">hold ₹249</span></div>
+          <div class="mv"><span class="chip lock">${CHIP.talk}</span><i>=</i><span class="ptag big cut">cut ₹149</span></div>
+          <div class="mv"><span class="qm" style="width:auto;padding:0 10px">the inspector’s offer</span><i>=</i><img class="badge" src="${A.logo_jio}" alt="" style="position:static;width:28px;height:28px"><span style="font-size:13px">free till March</span></div></div>`,
+     say:'Same two chips. Different price tags.'},
+    {text:'Cutting was safer whatever the others did. So everyone cut. The whole industry landed in the bottom-right cell: cheaper bills for you, poorer companies, one merger, one shutdown.',
+     art:trapTable(3,true),say:'Both talked. Both paid. Now you know why.'}
+  ];
+  const last=b===beats.length-1;
+  app.innerHTML=topbar()+`<div class="concept fade"><p class="caseq">Real case · How the dilemma applied</p><div class="beats">${beats.map((_,i)=>`<b class="${i<=b?'on':''}"></b>`).join('')}</div><h1 class="lead">${beats[b].text}</h1>${beats[b].art}</div>
+   <div class="foot"><div class="nrow">${fox('speaking')}${nudge(beats[b].say)}</div><div class="brow"><button class="btn" id="cont">Continue</button></div></div>`;
+  document.getElementById('cont').onclick=()=>last?next():renderApplied(st,b+1);
+}
+function renderNews3(){
+  app.innerHTML=topbar()+`<div class="concept">
+   <p class="caseq">Real case · United States, 1970 to 1971</p>
+   <p><strong>This happened too.</strong> The brands could not stop the ad war themselves. A law stopped it for them.</p>
+   <div class="paper"><div class="tape"></div><div class="mast"><span>Washington</span><span>April 1970</span></div>
+    <h3>Cigarette ads to leave television from January</h3>
+    <p>The Public Health Cigarette Smoking Act, signed this month, ends cigarette advertising on TV and radio from 2 January 1971. Tobacco companies, who spend heavily on the medium, offered little resistance.</p></div>
+   <div class="paper two"><div class="mast"><span>Business</span><span>1972</span></div>
+    <h3>A year without TV ads: tobacco profits hold up</h3>
+    <p>With the airwaves closed to every brand at once, advertising budgets fell sharply and sales barely moved. Analysts note the industry has ended up better off than when it was free to advertise.</p>
+    <div class="stamp" style="color:#1f7a33;border-color:#1f7a33">PROFIT UP</div></div>
+   <p style="font-size:13px;color:var(--ink2);margin:0">Headlines written for this lesson, based on the 1970 Act and reports from the years after it.</p>
+  </div>
+  <div class="foot"><div class="nrow">${fox('surprised')}${nudge('A ban both sides quietly wanted. Same table as Ravi and Meera.')}</div><div class="brow"><button class="btn" id="cont">Continue</button></div></div>`;
+  document.getElementById('cont').onclick=next;
+}
+
+/* ---------- chapter screens ---------- */
+const CHAPS=[
+ {n:1,t:'One switch',d:'The prisoner’s dilemma, and Jio 2016',img:()=>A.ravi_cold},
+ {n:2,t:'The café',d:'Same game, ten days, real money',img:()=>A.meera_friendly},
+ {n:3,t:'The ad ban',d:'Why cigarette brands cheered a ban',ic:'📺'},
+ {n:4,t:'New opponents',d:'The grudge, the coin, the shark',ic:'😤',app:true},
+ {n:5,t:'The tournament',d:'Your strategy against everyone else’s',ic:'🏆',app:true}
+];
+function chapList(current){
+  return CHAPS.map(c=>{const done=c.n<current;const lock=c.app||(WEB&&c.n>1);
+    const st=done?'<span class="st">✓ done</span>':lock?'<span class="st">🔒 app</span>':c.n===current?'<span class="st" style="color:var(--blue)">next</span>':'<span class="st" style="color:#bbb">soon</span>';
+    return `<div class="chap ${lock?'lock':''}">${c.img?`<img src="${c.img()}" alt="">`:`<div class="ic">${c.ic}</div>`}<div><div class="t">${c.n} · ${c.t}</div><div class="d">${c.d}</div></div>${st}</div>`;}).join('');
+}
+function renderChapter(st){
+  const c=CHAPS[st.n-1];
+  app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:88px"><h1 style="margin:6px 0 4px;font-size:22px">Chapter ${st.n-1} done.</h1><p style="color:var(--ink2);margin:0">✦ ${S.xp} XP so far. Next: ${c.t}.</p></div>${chapList(st.n)}</div>
+  <div class="foot"><div class="brow"><button class="btn go" id="cont">Play chapter ${st.n}: ${c.t}</button></div></div>`;
+  document.getElementById('cont').onclick=next;
+}
+function renderEnd(){
+  if(WEB){
+    try{parent.postMessage({untangle:'done',xp:S.xp},'*');}catch(e){}
+    app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:96px"><h1 style="margin:6px 0 4px;font-size:22px">You can see the game now.</h1><p style="color:var(--ink2);margin:0">One opponent beaten: tit for tat. The café, the ad ban and the tournament are in the app. ✦ ${S.xp} XP.</p></div>${chapList(2)}</div>
+    <div class="foot"><div class="brow"><button class="btn ghost" id="again">Again</button><a class="btn go" id="appBtn" href="#app" target="_parent" style="display:grid;place-items:center;text-decoration:none">Continue in the app</a></div></div>`;
+    document.getElementById('again').onclick=()=>{S.i=0;S.prog={};S.done={};S.xp=0;save();render();};
+    return;
+  }
+  app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:96px"><h1 style="margin:6px 0 4px;font-size:22px">You can see the game now.</h1><p style="color:var(--ink2);margin:0">Three worlds, one table, one opponent so far: tit for tat. The other opponents, and the tournament, are in the app. ✦ ${S.xp} XP.</p></div>${chapList(4)}</div>
+  <div class="foot"><div class="brow"><button class="btn ghost" id="again">↺ Again</button><button class="btn go" id="appBtn">Continue in the app</button></div></div>`;
+  document.getElementById('again').onclick=()=>{S.i=0;S.prog={};S.done={};S.xp=0;save();render();};
+  document.getElementById('appBtn').onclick=()=>openWhy('<strong>Store links go here.</strong> Chapters one to three stay free in the app. New opponents, the tournament, and every chapter after live there.');
+}
+
+/* ---------- router ---------- */
+function render(){
+  closeSheet();app.classList.remove('glow');
+  const st=STEPS[S.i];
+  ({strategy:renderStrategy,tomorrow:renderTomorrow,trap:renderTrap,intro:renderIntro,play:renderPlay,cafe:renderCafe,concept:renderConcept,matrix:renderMatrix,text:renderText,splash:renderSplash,quiz:renderQuiz,street:renderStreet,fates:renderFates,applied:renderApplied,news3:renderNews3,chapter:renderChapter,end:renderEnd})[st.type](st);
+  app.querySelector('.x').onclick=()=>{if(S.i>0)go(S.i-1);};
+}
+window.addEventListener('message',e=>{if(e.data&&e.data.untangle==='xp'&&typeof e.data.xp==='number'&&S.xp===0){S.xp=e.data.xp;save();render();}});
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Untangle Play Designer Team"
+  short_description: "Run independent designers and compare playable openings"
+  default_prompt: "Use $untangle-play-designer to design and review three distinct openings before expanding a chapter."

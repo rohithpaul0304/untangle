@@ -1,0 +1,16 @@
+const fox=document.querySelector('#fox'),ctx=fox.getContext('2d'),pause=document.querySelector('#pause'),replay=document.querySelector('#replay'),mood=document.querySelector('#mood'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const messages={waiting:'Hey! Ready to try a move?',speaking:'Let me show you how.',thinking:'Hmm… let’s think it through.',surprised:'Oh! Did you see that?',celebrating:'Yes! You worked it out!'};
+const durations={waiting:150,speaking:170,thinking:190,surprised:150,celebrating:130};
+const sequences={waiting:[0,10,9,4,3,7,8,7,3,9,10,11]};
+const images={};let image=null,paused=false,elapsed=0,last=0,raf=0,request=0,mode='waiting';
+function load(mode){if(!images[mode])images[mode]=new Promise((resolve,reject)=>{const i=new Image();i.onload=()=>resolve(i);i.onerror=reject;i.src='fox-b/'+mode+'-gesture-v3.png';});return images[mode];}
+function render(frame){if(!image)return;const cell=sequences[mode]?.[frame]??frame;const w=image.naturalWidth/4,h=image.naturalHeight/3;ctx.clearRect(0,0,fox.width,fox.height);ctx.drawImage(image,(cell%4)*w,Math.floor(cell/4)*h,w,h,0,0,fox.width,fox.height);fox.dataset.frame=frame;}
+function tick(time){if(last)elapsed+=time-last;last=time;const frame=Math.min(11,Math.floor(elapsed/durations[mode]));render(frame);fox.dataset.playing=String(frame<11);if(frame<11&&!paused&&!reduced.matches)raf=requestAnimationFrame(tick);else{raf=0;last=0;}}
+function start(){cancelAnimationFrame(raf);raf=0;elapsed=0;last=0;render(reduced.matches?11:0);fox.dataset.playing=String(!reduced.matches&&!paused);if(!paused&&!reduced.matches)raf=requestAnimationFrame(tick);}
+function setPause(value){paused=value;pause.textContent=value?'Resume motion':'Pause motion';pause.setAttribute('aria-pressed',String(value));if(value){cancelAnimationFrame(raf);raf=0;last=0;fox.dataset.playing='false';}else if(elapsed<11*durations[mode]&&!reduced.matches){last=0;raf=requestAnimationFrame(tick);}}
+async function showMood(){const id=++request;mode=mood.value;cancelAnimationFrame(raf);last=0;fox.dataset.loading='true';document.querySelector('#bubble').textContent=messages[mode];fox.setAttribute('aria-label','Your fox guide: '+mood.options[mood.selectedIndex].text);try{const next=await load(mode);if(id!==request)return;image=next;motionPreference();fox.dataset.loading='false';fox.dataset.mode=mode;setPause(false);start();}catch(error){if(id!==request)return;fox.dataset.loading='error';document.querySelector('#note').textContent='The gesture could not load. Please reload the preview.';console.error('Fox gesture failed to load',error);}}
+mood.onchange=showMood;
+pause.onclick=()=>setPause(!paused);
+replay.onclick=()=>{if(reduced.matches||!image)return;setPause(false);start();document.querySelector('#status').textContent=mood.options[mood.selectedIndex].text+' gesture replayed.';};
+function motionPreference(){pause.disabled=reduced.matches;replay.disabled=reduced.matches;document.querySelector('#note').textContent=reduced.matches?'Motion is off to match your device setting.':'Character preview · choose a gesture';if(reduced.matches){cancelAnimationFrame(raf);raf=0;last=0;fox.dataset.playing='false';render(11);}}
+reduced.addEventListener('change',motionPreference);motionPreference();showMood();

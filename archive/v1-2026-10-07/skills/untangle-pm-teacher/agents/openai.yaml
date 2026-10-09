@@ -1,0 +1,4 @@
+interface:
+  display_name: "Untangle PM Teacher"
+  short_description: "Plan rigorous PM lessons and clear learning goals"
+  default_prompt: "Use $untangle-pm-teacher to plan a product-management course and brief the independent Play Designers."

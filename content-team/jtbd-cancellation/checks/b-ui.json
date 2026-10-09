@@ -1,0 +1,871 @@
+{
+  "url": "http://127.0.0.1:8176/candidates/b/deck.html",
+  "viewport": [
+    390,
+    844
+  ],
+  "routeCount": 24,
+  "allEnded": true,
+  "screens": [
+    {
+      "line": "You run this interview-practice app. Ask Mira why she left. Your hunch is unscored.",
+      "visual": "Five-star review. Subscription cancelled.\n\nMira · today\n\nA fictional customer story.",
+      "choices": [
+        "“Done with interviews?”",
+        "“Still missing something?”",
+        "“What changed for you?”"
+      ]
+    },
+    {
+      "line": "You asked if preparation was over. Here’s Mira.",
+      "visual": "Mira · today\n“I accepted an offer. I have no more interviews planned, so I don’t need preparation now.”",
+      "choices": [
+        "Rewind to before her interview"
+      ]
+    },
+    {
+      "line": "Before that interview, what did she need help with?",
+      "visual": "Reconstruction · before the interview\n\nA two-minute project answer, then questions. Mira wanted to show why her experience suited the role.\n\nHer rehearsal\n\nAccurate in relaxed conversation. In the recording, her main result came after two minutes.\n\nHer evenings\n\nShe worked late. Friends were rarely free when she could practise.",
+      "choices": [
+        "Choose her first help"
+      ]
+    },
+    {
+      "line": "Repair her next rehearsal. Which help should come first?",
+      "visual": "Structured rehearsal\n\nRecord the whole answer; stop at 2:00. Replay, organise opening/evidence/result, retry. No surprise questions.\n\nFollow-up rehearsal\n\nAnswer varied unseen questions; replay responses. No complete timed opening or help organising it.\n\nBoth work privately when she is free. Neither has a price or time advantage. You can combine them later.",
+      "choices": [
+        "Load structured rehearsal",
+        "Load follow-up rehearsal"
+      ]
+    },
+    {
+      "line": "You loaded structured rehearsal. Her opening stops before the result.",
+      "visual": "Replay · her recorded answer\nStructured rehearsal\nOpening\n\nWhy the project began.\n\nEvidence\n\nWhat I did, step by step.\n\n2:00 · STOP\nResult\n\nWhat changed because of my work.\n\nOrganise the next attempt below. This recording stays unchanged.",
+      "choices": [
+        "Start with the result",
+        "Put result after the context"
+      ]
+    },
+    {
+      "line": "You put the result first. The context and detail now follow it.",
+      "visual": "Your repair · next-answer plan\nStructured rehearsal\nResult\n\nWhat changed because of my work.\n\nOpening\n\nWhy the project began.\n\nEvidence\n\nWhat I did, step by step.\n\nThe order changed. Her delivery still needs a fresh recording.",
+      "choices": [
+        "Replay the repaired session"
+      ]
+    },
+    {
+      "line": "Now she can test that order against the two-minute stop—and hear what survives.",
+      "visual": "Next attempt · ready to record\nStructured rehearsal\nYour chosen order\n\nResult → opening → evidence.\n\nRecord → stop at 2:00\n\nA complete opening attempt.\n\nReplay → revise → retry\n\nCheck whether the main point fits.\n\nSurprise questions: still untested.",
+      "choices": [
+        "What was the app really for?"
+      ]
+    },
+    {
+      "line": "The target was showing her experience—not collecting more practice.",
+      "visual": "Jobs to Be Done\n\nThe progress someone seeks in a particular situation. Here: present relevant experience within the interview’s constraints, while practising alone. “Job” means that progress, not employment.\n\nMira’s offer explains why she left. It does not prove the app caused the offer.",
+      "choices": [
+        "Try one changed obstacle"
+      ]
+    },
+    {
+      "line": "Same interview. Same evenings. Change one thing: she loses her thread on surprise questions.",
+      "visual": "Alternate version · before that interview\n\nHer opening is already clear within two minutes. An unexpected follow-up breaks her flow.\n\nSame two tools\n\nStructured: timed opening + organise + replay; no surprises.\n\nFollow-ups: unseen questions + replay; no complete timed opening.",
+      "choices": [
+        "Keep structured rehearsal",
+        "Switch to follow-up rehearsal"
+      ]
+    },
+    {
+      "line": "You kept the timed opening. That can refine it; the surprise gap is still untouched.",
+      "visual": "Replay · another prepared answer\nStructured rehearsal\nOpening + evidence + result\n\nAlready clear before the two-minute stop.\n\nUnexpected follow-up\n\nNone in this mode.\n\nThe same repair no longer targets the remaining obstacle.",
+      "choices": [
+        "Switch modes and replay the repair"
+      ]
+    },
+    {
+      "line": "Switching brings the missing test: an unseen question, then a response she can review.",
+      "visual": "Worked repair · follow-up rehearsal\nFollow-up rehearsal\n“What would you change?”\n\nA question she had not prepared for.\n\nNew response → replay → retry\n\nShe can inspect where this response loses its thread.\n\nThe opening already fits. The changed conversation needs testing.",
+      "choices": [
+        "Keep the useful move"
+      ]
+    },
+    {
+      "line": "Next time someone asks for a feature, find the progress—and what blocks it.",
+      "visual": "Before choosing the help…\n\n“In this situation, they need to get from ___ to ___. What is stopping them?”\n\nNext question\n\nWould you recognise the same idea when a customer asks for a completely different product?",
+      "choices": []
+    },
+    {
+      "line": "You asked what she was missing. Here’s Mira.",
+      "visual": "Mira · today\n“I don’t need preparation now. I have no more interviews planned—I accepted an offer.”",
+      "choices": [
+        "Rewind to before her interview"
+      ]
+    },
+    {
+      "line": "You left the explanation open. Here’s Mira.",
+      "visual": "Mira · today\n“I accepted an offer, and I have no more interviews planned. I don’t need preparation now.”",
+      "choices": [
+        "Rewind to before her interview"
+      ]
+    },
+    {
+      "line": "You loaded follow-ups. A new question opens; the opening answer stays untouched.",
+      "visual": "A fresh question\nFollow-up rehearsal\n“Why that approach?”\n\nRecord a response → replay it.\n\nOpening answer\n\nResult still after 2:00. No timed opening attempt here.\n\nUseful for the conversation. The documented opening gap remains.",
+      "choices": [
+        "Switch to the timed-answer repair"
+      ]
+    },
+    {
+      "line": "You switched modes. Now her opening stops before the result.",
+      "visual": "Replay · her recorded answer\nStructured rehearsal\nOpening\n\nWhy the project began.\n\nEvidence\n\nWhat I did, step by step.\n\n2:00 · STOP\nResult\n\nWhat changed because of my work.\n\nOrganise the next attempt below. This recording stays unchanged.",
+      "choices": [
+        "Start with the result",
+        "Put result after the context"
+      ]
+    },
+    {
+      "line": "You kept the context first and moved the result ahead of the detail.",
+      "visual": "Your repair · next-answer plan\nStructured rehearsal\nOpening\n\nWhy the project began.\n\nResult\n\nWhat changed because of my work.\n\nEvidence\n\nWhat I did, step by step.\n\nThe order changed. Her delivery still needs a fresh recording.",
+      "choices": [
+        "Replay the repaired session"
+      ]
+    },
+    {
+      "line": "Now she can test that order against the two-minute stop—and hear what survives.",
+      "visual": "Next attempt · ready to record\nStructured rehearsal\nYour chosen order\n\nOpening → result → evidence.\n\nRecord → stop at 2:00\n\nA complete opening attempt.\n\nReplay → revise → retry\n\nCheck whether the main point fits.\n\nSurprise questions: still untested.",
+      "choices": [
+        "What was the app really for?"
+      ]
+    },
+    {
+      "line": "You changed the help because the obstacle changed. Here comes a fresh question.",
+      "visual": "Follow-up rehearsal\nFollow-up rehearsal\n“What would you change?”\n\nA question she had not prepared for.\n\nNew response → replay → retry\n\nShe can inspect where this response loses its thread.\n\nThis tests one response, not every future question.",
+      "choices": [
+        "Keep the useful move"
+      ]
+    }
+  ],
+  "routes": [
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Keep structured rehearsal",
+        "Switch modes and replay the repair",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Start with the result",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load structured rehearsal",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Done with interviews?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“Still missing something?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    },
+    {
+      "path": [
+        2,
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "labels": [
+        "“What changed for you?”",
+        "Rewind to before her interview",
+        "Choose her first help",
+        "Load follow-up rehearsal",
+        "Switch to the timed-answer repair",
+        "Put result after the context",
+        "Replay the repaired session",
+        "What was the app really for?",
+        "Try one changed obstacle",
+        "Switch to follow-up rehearsal",
+        "Keep the useful move"
+      ],
+      "ended": true,
+      "final": "Next time someone asks for a feature, find the progress—and what blocks it."
+    }
+  ],
+  "issues": []
+}
