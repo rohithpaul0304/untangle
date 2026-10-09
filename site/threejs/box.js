@@ -81,7 +81,7 @@ function cardCanvas(bg, title, sub) {
 
 export function mount(el, opts = {}) {
   const W = 4.2, D = 2.9, H = 0.95, LH = 0.42, M = 0.07, T = 0.06;
-  const renderer = new THREE.WebGLRenderer({ canvas: el, antialias: true, alpha: true, powerPreference: 'high-performance' });
+  const renderer = new THREE.WebGLRenderer({ canvas: el, antialias: true, alpha: true, powerPreference: 'high-performance', preserveDrawingBuffer: !!opts.capture });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.outputColorSpace = THREE.SRGBColorSpace;
   const scene = new THREE.Scene();
@@ -145,6 +145,7 @@ export function mount(el, opts = {}) {
     const base = add(new THREE.CylinderGeometry(0.3, 0.32, 0.05, 24), std(C.navy), 0, 0.02, 0);
     return g;
   }
+  let p = 0, dirty = true, w = 0, h = 0;
   let fox3d = null, mixer = null; const clock = new THREE.Clock();
   const foxBase = mesh(new THREE.CylinderGeometry(0.34, 0.36, 0.05, 28), std(C.navy), -1.45, T + 0.025, 0.62);
   function placeFox(obj) { obj.position.set(-1.45, T + 0.05, 0.62); obj.rotation.y = 2.4; box.add(obj); fox3d = obj; dirty = true; }
@@ -195,7 +196,6 @@ export function mount(el, opts = {}) {
     dirty = true;
   });
 
-  let p = 0, dirty = true, w = 0, h = 0;
   function layout() {
     const r = el.getBoundingClientRect(); if (r.width === w && r.height === h) return; w = r.width; h = r.height;
     renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); dirty = true;
