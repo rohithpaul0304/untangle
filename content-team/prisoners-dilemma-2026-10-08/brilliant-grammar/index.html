@@ -554,6 +554,8 @@ h1.lead{font-size:16px;font-weight:400;line-height:1.4;margin:0 0 18px;letter-sp
 h1:focus,.prompt:focus,p:focus{outline:none}
 @media (min-width:480px){body{background:#F1EBE4}#app{box-shadow:0 0 0 1.5px var(--line)}}
 @media (min-width:480px){body{background:#f5f5f5}#app{background:#fff;min-height:100vh;box-shadow:0 0 0 1px #eee}}
+.chip.sel{outline:3px solid var(--blue);outline-offset:2px}
+html,body{overscroll-behavior:contain}
 </style>
 </head>
 <body>
@@ -597,32 +599,20 @@ const CAFE={cost:50,min:50,max:100,step:10,label:p=>`₹<b>${p}</b>`,
 
 /* ---------- lesson definition ---------- */
 const STEPS=[
- /* chapter 1: the prison */
+ /* chapter 1: the prison. Played night by night; nothing resets, years carry. */
  {ch:1,id:'intro',type:'intro',beats:[
-   {img:'jewellery',text:'Last night, a jewellery shop in Jayanagar was robbed.'},
-   {img:'inspector',text:'The inspector has two suspects, Ravi and Meera. Not enough proof to hold either for long.'},
-   {img:'inspector',text:'So he makes each of them the same offer: <strong>talk</strong> about the other one, and you walk free tonight.'},
-   {cells:true,text:'They sit in separate rooms. Neither knows what the other will say.'},
-   {title:'You are Ravi.',text:'<strong>Stay silent</strong>, or <strong>talk</strong> about Meera. Get out with as few years as you can.',btn:'Play as Ravi'}]},
- {ch:1,id:'watch',type:'play',g:'prison',prompt:'Watch what happens when both stay silent.',tag:['Night 1','Police station'],
-  nights:[{me:'silent',her:'silent'}],locked:true,goal:null,goalText:'both stay silent',
-  nudge:'Tonight they both stay silent. See what the morning brings.',done:'Morning. One year each.',doneNudge:'No confession, so the inspector could only prove the small charge. Now you choose for Ravi.',
-  why:'Nobody confessed, so the inspector can only prove the small charge: <code>1 year</code> each. The offer to walk free only works if someone talks.'},
- {ch:1,id:'zero',type:'play',g:'prison',prompt:'Meera stays silent. Get Ravi out with <strong>zero</strong> years.',tag:['Night 1','Police station'],
-  nights:[{me:null,her:'silent'}],goal:r=>r.me===0,goalText:'Ravi: 0 years',
-  nudge:'Pick Ravi’s answer below.',done:'Morning. Ravi walks free.',doneNudge:'Zero for Ravi. Look what it cost Meera.',missNudge:'Still a year. Try Ravi’s other answer.',
-  why:'Ravi took the offer. His confession is all the proof the inspector needs, so Ravi walks: <code>0 years</code>. Meera, who said nothing, takes the full <code>5</code>.'},
- {ch:1,id:'concept1',type:'concept',text:'For one night, talking wins. Meera only finds out in the morning, too late to do anything about it.',replay:'zero'},
- {ch:1,id:'three',type:'play',g:'prison',prompt:'Three nights. Each morning Meera learns what Ravi said, and the next night she does the same. Get Ravi <strong>under 3</strong> years in total.',tag:['3 nights','She copies you'],
-  nights:[{me:null,her:'silent'},{me:null,her:'copy'},{me:null,her:'copy'}],goal:r=>r.me<3,goalText:'Ravi total < 3',
-  nudge:'Pick Ravi’s answer for each night. Meera’s answers appear as the nights play.',done:'Three nights. Ravi: 2 years.',doneNudge:'Talk only on the night she can no longer copy you.',missNudge:'Too many years. On which night can Meera no longer copy you?',
-  why:'Meera copies Ravi’s last move. If he talks on night 1, she talks on night 2 and both sit for <code>3</code>. Staying silent keeps her silent: <code>1 + 1</code>. Night 3 is the last, so she can never answer it: <code>talk</code> costs nothing. Total <code>2</code>.'},
- {ch:1,id:'concept2',type:'tomorrow'},
+   {img:'jewellery',text:'Three jewellery shops in Jayanagar were robbed this month. The last one, last night.'},
+   {img:'inspector',text:'The inspector has two suspects, Ravi and Meera, and three robberies. Not enough proof to pin any of them.'},
+   {img:'inspector',text:'So for each robbery he makes them both the same offer: <strong>talk</strong> about the other one, and your charge is dropped.'},
+   {cells:true,text:'They sit in separate rooms. One robbery a night. Each morning, each finds out what the other said.'},
+   {title:'You are Ravi.',text:'Three nights, three charges. Every year you collect, you serve.',btn:'Night one'}]},
+ {ch:1,id:'run3',type:'nights',g:'prison',n:3,first:'silent',
+  title:'Three robberies',tag:'She hears it every morning'},
+ {ch:1,id:'concept2',type:'tomorrow',src:'run3'},
  {ch:1,id:'concept3',type:'trap'},
- {ch:1,id:'skill',type:'splash'},
- {ch:1,id:'q1',type:'quiz',prompt:'<strong>Meera talks.</strong> Pick the answer that gives Ravi the fewest years.',her:'talk',want:'talk',n:1},
- {ch:1,id:'q2',type:'quiz',prompt:'<strong>Meera stays silent.</strong> Pick the answer that gives Ravi and Meera the fewest years <strong>added together</strong>.',her:'silent',want:'silent',n:2},
- {ch:1,id:'q3',type:'quiz',prompt:'<strong>Two nights. Meera copies Ravi’s last answer.</strong> Pick both nights so Ravi gets the fewest years in total.',two:true,want:'silent,talk',n:3},
+ {ch:1,id:'loop',type:'nights',g:'prison',n:5,first:{from:'run3'},
+  title:'Five old cases',tag:'Meera remembers',
+  lead:'The inspector reopens five older cases. Same offer, five more nights. Meera still remembers last night.'},
  {ch:1,id:'street',type:'street'},
  {ch:1,id:'fates',type:'fates'},
  {ch:1,id:'applied',type:'applied'},
@@ -666,9 +656,9 @@ const STEPS=[
 const WEB=new URLSearchParams(location.search).get('web')==='1';
 if(WEB){const k=STEPS.findIndex(s=>s.id==='chap2');STEPS.splice(k,STEPS.length-k,{ch:1,id:'end',type:'end'});}
 const S={i:0,prog:{},done:{},xp:0};
-try{const s=JSON.parse(localStorage.getItem('untangle-brill-v2'));if(s&&s.i<STEPS.length-1&&new URLSearchParams(location.search).get('fresh')===null){S.i=s.i;S.prog=s.prog||{};S.xp=s.xp||0;S.done=s.done||{};}}catch(e){}
+try{const s=JSON.parse(localStorage.getItem('untangle-brill-v3'));if(s&&s.i<STEPS.length-1&&new URLSearchParams(location.search).get('fresh')===null){S.i=s.i;S.prog=s.prog||{};S.xp=s.xp||0;S.done=s.done||{};}}catch(e){}
 const jump=new URLSearchParams(location.search).get('ch');if(jump){const k=STEPS.findIndex(s=>s.ch===+jump);if(k>=0)S.i=k;}
-function save(){try{localStorage.setItem('untangle-brill-v2',JSON.stringify({i:S.i,prog:S.prog,xp:S.xp,done:S.done}))}catch(e){}}
+function save(){try{localStorage.setItem('untangle-brill-v3',JSON.stringify({i:S.i,prog:S.prog,xp:S.xp,done:S.done}))}catch(e){}}
 const app=document.getElementById('app');
 
 /* ---------- chrome ---------- */
@@ -788,6 +778,90 @@ async function runPlay(st,prog,guess){
   else fail(st,foot,st.missNudge||(st.goalText+'? Not yet.'),()=>{S.prog[st.id]=st.nights.map(n=>st.predict?n.me:null);S.prog[st.id+':g']=null;save();renderPlay(st);});
 }
 
+/* ---------- night by night (chapter 1): one choice a night, consequences carry ---------- */
+function nightsState(st){
+  let r=S.prog[st.id];
+  if(!r||!Array.isArray(r.me)){
+    let first=st.first;
+    if(first&&first.from){const p=S.prog[first.from];first=(p&&p.me&&p.me.length)?p.me[p.me.length-1]:'silent';}
+    r={me:[],her:[],first:first||'silent',sel:null,shown:false};S.prog[st.id]=r;save();
+  }
+  return r;
+}
+function herMove(r,k){return k===0?r.first:r.me[k-1];}
+function nightLine(G,me,her){
+  if(me==='talk'&&her==='silent')return 'Your charge is dropped. Meera takes five. She will hear about it in the morning.';
+  if(me==='silent'&&her==='silent')return 'One year each. Nobody gave anything away.';
+  if(me==='silent'&&her==='talk')return 'She talked. Five years for you, none for her.';
+  return 'You both talked. Three years each.';
+}
+function totals(G,r){let t=[0,0];r.me.forEach((m,k)=>{const p=G.pay[m+'|'+r.her[k]];t[0]+=p[0];t[1]+=p[1];});return t;}
+function renderNights(st){
+  const G=GAMES[st.g];const r=nightsState(st);const k=r.me.length;const N=st.n;
+  const done=k>=N;const tot=totals(G,r);
+  const lastMe=k?r.me[k-1]:null,lastHer=k?r.her[k-1]:null;
+  const hist=r.me.map((m,i)=>{const p=G.pay[m+'|'+r.her[i]];
+    return `<div class="row"><span class="n">N${i+1}</span><span class="chip lock ${m==='talk'?'warn':''}">${G.chip[m]}</span><span style="color:#999">·</span><span class="chip lock ${r.her[i]==='talk'?'warn':''}">${G.chip[r.her[i]]}</span><span style="color:#555;font-size:13px;margin-left:auto">${p[0]} / ${p[1]}</span></div>`;}).join('');
+  let prompt;
+  if(done)prompt=`${st.title}: done. <strong>${tot[0]}</strong> ${tot[0]===1?'year':'years'} for you.`;
+  else if(k===0)prompt=st.lead?`${st.lead}<br><strong>Night 1 of ${N}.</strong> Stay silent, or talk?`:`<strong>Night 1 of ${N}.</strong> Meera is next door. Stay silent, or talk?`;
+  else if(k===N-1)prompt=`<strong>Night ${N} of ${N}. The last one.</strong> After tonight, no more questions. Stay silent, or talk?`;
+  else prompt=`<strong>Night ${k+1} of ${N}.</strong> This morning Meera heard what you said last night. Stay silent, or talk?`;
+  const pal=done?'':`<div class="palette"><button class="chip ${r.sel==='silent'?'sel':''}" data-pick="silent">${G.chip.silent}</button><button class="chip ${r.sel==='talk'?'sel':''}" data-pick="talk">${G.chip.talk}</button></div>`;
+  const say=done?'':k===0?(st.lead?'She has not forgotten.':'Pick your answer. You will see hers in the morning.'):nightLine(G,lastMe,lastHer);
+  app.innerHTML=topbar()+`<h1 class="prompt">${prompt}</h1>
+  <div class="stage"><div class="hd"><span class="st">${st.title}</span><span class="tag">${done?N+' nights':'Night '+(k+1)}<small>${st.tag.toUpperCase()}</small></span></div>
+   <div class="world"><div class="rooms">${G.card('A',lastMe,lastHer,k?G.pay[lastMe+'|'+lastHer][0]:null)}${G.card('B',lastMe,lastHer,k?G.pay[lastMe+'|'+lastHer][1]:null)}</div><div class="total" id="total">${G.total(tot)}</div></div>
+   ${hist?`<div class="prog">${hist}</div>`:''}</div>${pal}
+  <div class="foot"><div class="nrow">${fox(done?'thinking':'waiting')}${nudge(say)}</div><div class="brow">${done?'':`<button class="btn" id="run" ${r.sel?'':'disabled'}>Play night ${k+1}</button>`}</div></div>`;
+  app.querySelectorAll('[data-pick]').forEach(c=>c.onclick=()=>{r.sel=c.dataset.pick;save();renderNights(st);});
+  if(done){nightsSummary(st,r,tot);return;}
+  document.getElementById('run').onclick=()=>playNight(st,r);
+}
+async function playNight(st,r){
+  const G=GAMES[st.g];const k=r.me.length;const me=r.sel;const her=herMove(r,k);
+  const btn=document.getElementById('run');btn.disabled=true;btn.textContent='Night falls…';
+  app.querySelectorAll('.palette .chip').forEach(c=>c.style.visibility='hidden');
+  document.getElementById('room-A').classList.add('lit');
+  const bA=document.getElementById('bub-A');bA.innerHTML=G.chip[me];bA.classList.add('on');G.react('A',me,null);
+  await sleep(750);document.getElementById('room-A').classList.remove('lit');document.getElementById('room-B').classList.add('lit');
+  const bB=document.getElementById('bub-B');bB.innerHTML=G.chip[her];bB.classList.add('on');G.react('B',null,her);
+  await sleep(750);document.getElementById('room-B').classList.remove('lit');
+  const p=G.pay[me+'|'+her];G.react('A',me,her);G.react('B',me,her);
+  document.getElementById('yrs-A').innerHTML=G.fmt(p[0]);document.getElementById('yrs-B').innerHTML=G.fmt(p[1]);
+  r.me.push(me);r.her.push(her);r.sel=null;
+  const t=totals(G,r);document.getElementById('total').innerHTML=G.total(t);
+  addXp(10);save();
+  await sleep(1100);
+  renderNights(st);
+}
+function talkNights(r){return r.me.map((m,i)=>m==='talk'?i+1:0).filter(Boolean);}
+function nightsSummary(st,r,tot){
+  const N=st.n;const y=tot[0];const tn=talkNights(r);let line;
+  if(st.id==='run3'){
+    const best=2;
+    line=y===best?'You held while she could still answer you, and talked on the one night she couldn’t.'
+      :!tn.length?'You never talked, and neither did she. One year a night.'
+      :tn[0]<N?`You talked on night ${tn[0]}. The next night, she talked back.`
+      :'You talked on the last night only.';
+    sheet(y<=2?'ok':'bad',`Three nights. ${y} ${y===1?'year':'years'} for you.`,line,
+      `<button class="link" id="why">Why?</button><button class="btn go" id="cont">Continue</button>`);
+    document.getElementById('why').onclick=()=>openWhy('Each morning Meera answered with whatever you said the night before. Talk on night 1 and she talks on night 2. Stay silent and she stays silent. Only the last night has no morning after it, so a talk there is never answered. Best total: <code>1 + 1 + 0 = 2</code>.');
+  }else{
+    const prev=S.prog[st.first.from]||{me:[]};const ptn=talkNights(prev);
+    const first=r.her[0];
+    const then=ptn.length?`In the first three nights you talked on night ${ptn.join(' and ')}.`:'In the first three nights you never talked.';
+    const now=tn.length?` This time you talked on night ${tn.join(', ')}.`:' This time you never talked.';
+    const open=first==='talk'?' She opened by talking, because your last answer before was a talk.':'';
+    const bestL=first==='talk'?8:4;
+    sheet(y<=bestL?'ok':'bad',`Five nights. ${y} ${y===1?'year':'years'} for you.`,then+now+open,
+      `<button class="link" id="why">Why?</button><button class="btn go" id="cont">Continue</button>`);
+    document.getElementById('why').onclick=()=>openWhy('Meera never forgot. She started these five nights with your last answer from the first three. If that was a talk, the only way back to one year a night was to stay silent and take one bad night. Best from a clean start: <code>1 + 1 + 1 + 1 + 0 = 4</code>. Starting after a talk, the best is <code>5 + 1 + 1 + 1 + 0 = 8</code>.');
+  }
+  if(!S.done[st.id]){S.done[st.id]=true;const bst=st.id==='run3'?2:(r.her[0]==='talk'?8:4);addXp(y<=bst?25:10);}
+  document.getElementById('cont').onclick=()=>{closeSheet();next();};
+}
+
 /* ---------- café play (chapter 2) ---------- */
 function cafeCard(side,price,total,multi,face){
   const who=side==='A'?'Ravi’s':'Meera’s';const img=side==='A'?A['ravi_'+(face||'cold')]:A['meera_'+(face||'friendly')];
@@ -874,18 +948,22 @@ function renderStrategy(st,b){
 }
 
 /* ---------- the tomorrow screen ---------- */
-function renderTomorrow(){
+function renderTomorrow(st){
   const G=GAMES.prison;
+  const own=(S.prog[(st&&st.src)||'run3']||{}).me;const mine=(own&&own.length===3)?own:['talk','silent','silent'];
+  const best=['silent','silent','talk'];const same=mine.join()===best.join();
+  const other=same?['talk','silent','silent']:best;
   const col=(title,prog,id)=>{let prev=null,tot=0;const rows=prog.map((me,k)=>{const her=k===0?'silent':prev;prev=me;const p=G.pay[me+'|'+her];tot+=p[0];
     return `<div class="tn"><span class="tnn">N${k+1}</span><span class="chip lock ${me==='talk'?'warn':''}">${G.chip[me]}</span><span class="tarr">${k<2?'<i>↓ she copies</i>':'<i class="none">no tomorrow</i>'}</span><span class="chip lock ${her==='talk'?'warn':''}">${G.chip[her]}</span><b>${p[0]}</b></div>`;}).join('');
-    return `<div class="tcol" id="${id}"><div class="tt">${title} <span class="tverdict"></span></div><div class="th"><span>Ravi</span><span></span><span>Meera</span><span>yrs</span></div>${rows}<div class="ttot"><span>Ravi total</span><b>${tot}</b><div class="tbar"><i style="width:${tot/6*100}%"></i></div></div></div>`;};
-  app.innerHTML=topbar()+`<div class="concept"><h1 class="lead"><strong>Your move tonight becomes her move tomorrow.</strong> Only the last night has no tomorrow.</h1>
-   <div class="tgrid">${col('Talk first',['talk','silent','silent'],'tc1')}${col('Talk last',['silent','silent','talk'],'tc2')}</div>
-   <p class="lm-s">Same three chips. The only difference is which night the talk lands on.</p>
+    return {html:`<div class="tcol" id="${id}"><div class="tt">${title} <span class="tverdict"></span></div><div class="th"><span>Ravi</span><span></span><span>Meera</span><span>yrs</span></div>${rows}<div class="ttot"><span>Ravi total</span><b>${tot}</b><div class="tbar"><i style="width:${tot/8*100}%"></i></div></div></div>`,tot};};
+  const a=col('Your three nights',mine,'tc1'),b=col(same?'Talk first':'Talk last',other,'tc2');
+  app.innerHTML=topbar()+`<div class="concept"><h1 class="lead"><strong>Your answer tonight became her answer tomorrow.</strong> Only the last night had no tomorrow.</h1>
+   <div class="tgrid">${a.html}${b.html}</div>
+   <p class="lm-s">${same?'You found it: the talk lands on the night nobody can answer.':'What moved the total is which night the talk landed on.'}</p>
   </div>
   <div class="foot"><div class="nrow">${fox('speaking')}${nudge('Talk on night one and she talks on night two. Talk on night three and nobody can answer it.')}</div><div class="brow"><button class="btn" id="cont">Continue</button></div></div>`;
   document.getElementById('cont').onclick=next;
-  setTimeout(()=>{document.getElementById('tc1').classList.add('bad');document.getElementById('tc2').classList.add('good');document.querySelector('#tc1 .tverdict').textContent='· worse';document.querySelector('#tc2 .tverdict').textContent='· better';},500);
+  setTimeout(()=>{const good=a.tot<=b.tot?'tc1':'tc2',bad=good==='tc1'?'tc2':'tc1';if(a.tot!==b.tot){document.getElementById(bad).classList.add('bad');document.querySelector('#'+bad+' .tverdict').textContent='· worse';}document.getElementById(good).classList.add('good');document.querySelector('#'+good+' .tverdict').textContent='· better';},500);
 }
 
 /* ---------- the trap screen: three slides over one table ---------- */
@@ -910,7 +988,7 @@ function renderTrap(st,b){
     {text:'Every night was one of the same four outcomes. Written as a table, they look like this. Big number: Ravi’s years. Small: Meera’s.',say:'Read it once. Then watch what happens to it.'},
     {text:'<strong>If Meera stays silent</strong>: 1 year for silence, 0 for talking. Talking is better.',say:'Left column only.'},
     {text:'<strong>If Meera talks</strong>: 5 years for silence, 3 for talking. Talking is better again.',say:'Right column too. Whatever she does, Ravi should talk.'},
-    {text:'So Ravi talks. Meera, reading the same table, talks too. Both get <strong>3</strong>. Both could have had <strong>1</strong>. That is the <strong>prisoner’s dilemma</strong>: each player’s best move leaves both worse off.',say:'The most studied situation in game theory. You just played it three ways.'}
+    {text:'So Ravi talks. Meera, reading the same table, talks too. Both get <strong>3</strong>. Both could have had <strong>1</strong>. That is the <strong>prisoner’s dilemma</strong>: each player’s best move leaves both worse off.',say:'The most studied situation in game theory. You just played it three nights running.'}
   ];
   const last=b===beats.length-1;
   app.innerHTML=topbar()+`<div class="concept fade"><div class="beats" aria-hidden="true">${beats.map((_,i)=>`<b class="${i<=b?'on':''}"></b>`).join('')}</div><h1 class="lead">${beats[b].text}</h1>${trapTable(b,false)}</div>
@@ -1101,7 +1179,7 @@ function renderEnd(){
 function render(){
   closeSheet();app.classList.remove('glow');
   const st=STEPS[S.i];
-  ({strategy:renderStrategy,tomorrow:renderTomorrow,trap:renderTrap,intro:renderIntro,play:renderPlay,cafe:renderCafe,concept:renderConcept,matrix:renderMatrix,text:renderText,splash:renderSplash,quiz:renderQuiz,street:renderStreet,fates:renderFates,applied:renderApplied,news3:renderNews3,chapter:renderChapter,end:renderEnd})[st.type](st);
+  ({nights:renderNights,strategy:renderStrategy,tomorrow:renderTomorrow,trap:renderTrap,intro:renderIntro,play:renderPlay,cafe:renderCafe,concept:renderConcept,matrix:renderMatrix,text:renderText,splash:renderSplash,quiz:renderQuiz,street:renderStreet,fates:renderFates,applied:renderApplied,news3:renderNews3,chapter:renderChapter,end:renderEnd})[st.type](st);
   app.querySelector('.x').onclick=()=>{if(S.i>0)go(S.i-1);};
 }
 window.addEventListener('message',e=>{if(e.data&&e.data.untangle==='xp'&&typeof e.data.xp==='number'&&S.xp===0){S.xp=e.data.xp;save();render();}});
