@@ -261,6 +261,32 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 @media(max-width:900px){.webview{justify-self:stretch;margin:10px 0 40px}}
 @media(max-width:560px){.ah-body{grid-template-columns:1fr}.ah-nav{display:none}.ah-body .ah-row{flex:none}}
 .replay{color:inherit;font-weight:700;margin-left:8px}
+/* chapters v2: one featured free chapter, three art cards, then the rest of the list */
+.chaps{grid-template-columns:repeat(3,1fr);gap:20px}
+.chap{padding:16px 16px 20px;text-decoration:none;color:inherit}
+.chap .art{position:relative;height:170px;margin-bottom:18px}
+.chap .art .tag{top:12px;left:12px;z-index:1}
+.chap .cnum{font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink2);margin:0 4px 8px;flex:none}
+.chap h3{font-size:24px;line-height:1.08;margin:0 4px;min-height:2.16em}
+.chap>p:not(.cnum){margin:10px 4px 0;font-size:16px;line-height:1.5}
+.chap .foot{margin:18px 4px 0;padding-top:14px;border-top:1.5px solid var(--line);font-size:13px;font-weight:600}
+.chap.feature{grid-column:1/-1;display:grid;grid-template-columns:1.05fr 1fr;gap:36px;align-items:center;padding:18px 36px 18px 18px;background:#FFF6D1;border-color:#F3DE8F;min-height:0;transition:transform .2s,box-shadow .2s}
+.chap.feature:hover{transform:translateY(-3px);box-shadow:0 18px 40px rgba(16,35,63,.10)}
+.chap.feature .art{height:340px;margin:0;background:#F6E7B0}
+.chap.feature .art img{padding:18px}
+.chap.feature h3{font-size:clamp(30px,3.4vw,44px);min-height:0;margin:0 0 12px}
+.chap.feature .cnum{margin:0 0 10px}
+.chap.feature .body>p:not(.cnum){color:var(--ink2);font-size:18px;line-height:1.5;margin:0 0 18px;max-width:46ch}
+.ideas{list-style:none;padding:0;margin:0 0 24px;display:flex;flex-wrap:wrap;gap:8px}
+.ideas li{background:#fff;border:1.5px solid #F0DE9C;border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700}
+.more{margin-top:22px;border:1.5px solid var(--line);border-radius:24px;background:#fff;padding:20px 24px}
+.more-t{font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ink2);margin:0 0 14px}
+.more ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.more li{display:flex;gap:12px;align-items:flex-start;font-weight:700;font-size:15px;line-height:1.3}
+.more li b{flex:none;width:30px;height:30px;border-radius:50%;background:var(--sand);display:grid;place-items:center;font-size:13px}
+.more small{display:block;font-weight:500;color:var(--ink2);font-size:13px;margin-top:4px}
+@media(max-width:1000px){.chaps{grid-template-columns:1fr 1fr}.more ol{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.chaps{grid-template-columns:1fr}.chap.feature{grid-template-columns:1fr;gap:20px;padding:14px 14px 24px}.chap.feature .art{height:230px}.chap.feature .body{padding:0 8px}.chap h3{min-height:0}.more ol{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -345,12 +371,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 <section id="chapters"><div class="wrap">
   <p class="kicker">Subject one: game theory</p>
   <h2>One game.<br>Many disguises.</h2>
-  <p class="lead">Chapter one is free, right here. Finish it and the next ones open in the app, one after another.</p>
+  <p class="lead">Eight chapters, each a game you play before you learn its name. Chapter one is free right here. The rest open in the app, one after another.</p>
   <div class="chaps">
-    <div class="chap reveal"><span class="tag">Free · play now</span><div class="art"><img src="__JEWEL__" alt=""></div><h3>1 · Should I talk first?</h3><p>Two suspects, one offer. Games, dominant strategy, the prisoner's dilemma, and why people still cooperate.</p><div class="foot"><span>10 min</span><a class="pill lime" href="lesson.html?web=1" style="padding:8px 14px;font-size:13px">Play</a></div></div>
-    <div class="chap lock reveal"><span class="tag">Unlocks after chapter one</span><div class="art"><img src="__CH_TV__" alt=""></div><h3>2 · Why did Jio give it away free?</h3><p>How free data started a price war, and why tobacco brands cheered a ban on their own ads.</p><div class="foot"><span>10 min</span><span>In the app</span></div></div>
-    <div class="chap lock reveal"><span class="tag">In the app</span><div class="art"><img src="__CH_TOURNAMENT__" alt=""></div><h3>3 · Why does everyone need coaching now?</h3><p>The arms race: when everyone runs faster, nobody gets ahead.</p><div class="foot"><span>10 min</span><span>In the app</span></div></div>
-    <div class="chap lock reveal"><span class="tag">In the app</span><div class="art"><img src="__CH_CAFE__" alt=""></div><h3>4 · Why do people overbid at auctions?</h3><p>The professor's coffee mug, and the auction where telling the truth is the best bid.</p><div class="foot"><span>10 min</span><span>In the app</span></div></div>
+    <a class="chap feature reveal" href="lesson.html?web=1">
+      <div class="art"><span class="tag">Free · play now</span><img src="__JEWEL__" alt=""></div>
+      <div class="body">
+        <p class="cnum">Chapter 1 · 10 min · 8 ideas</p>
+        <h3>Should I talk first?</h3>
+        <p>Two suspects, one offer from Inspector Sharma. Play the night yourself, then five more, and see why two smart people end up worse off.</p>
+        <ul class="ideas"><li>A game</li><li>Rational players</li><li>Dominant strategy</li><li>Prisoner's dilemma</li><li>Efficient outcome</li><li>Free-riding</li><li>Why people cooperate</li><li>Repeated games</li></ul>
+        <span class="pill ink">Play chapter one <span class="arr">→</span></span>
+      </div>
+    </a>
+    <div class="chap lock reveal"><div class="art"><span class="tag">Next · in the app</span><img src="__CH_TV__" alt=""></div><p class="cnum">Chapter 2 · 2 ideas</p><h3>Why did Jio give it away free?</h3><p>September 2016. Free data starts a price war, and you watch one newcomer change what every other network's best move is.</p><div class="foot"><span>Price wars · changing the payoffs</span></div></div>
+    <div class="chap lock reveal"><div class="art"><span class="tag">In the app</span><img src="__CH_TOURNAMENT__" alt=""></div><p class="cnum">Chapter 3</p><h3>Why does everyone need coaching now?</h3><p>The arms race: when everyone runs faster, nobody gets ahead, and nobody can stop first.</p><div class="foot"><span>Arms races</span></div></div>
+    <div class="chap lock reveal"><div class="art"><span class="tag">In the app</span><img src="__CH_CAFE__" alt=""></div><p class="cnum">Chapter 4</p><h3>Why do people overbid at auctions?</h3><p>The professor's coffee mug, and the auction where telling the truth is the best bid.</p><div class="foot"><span>Second-price auctions</span></div></div>
+  </div>
+  <div class="more reveal">
+    <p class="more-t">Also coming to the app</p>
+    <ol>
+      <li><b>5</b><span>Why do IPL teams like the purse cap?<small>A rule that rescues both sides</small></span></li>
+      <li><b>6</b><span>Why does the chemist hand you a different brand?<small>The middleman's dilemma</small></span></li>
+      <li><b>7</b><span>Where should the chaat cart stand?<small>Crossing out bad moves</small></span></li>
+      <li><b>8</b><span>When should you get out?<small>Thinking one step past the crowd</small></span></li>
+    </ol>
   </div>
   <p class="kicker" style="margin-top:40px">Next subjects</p>
   <div class="next reveal">
