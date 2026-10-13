@@ -117,10 +117,9 @@ nav .links a.cta{background:var(--lime);border-color:var(--lime);white-space:now
 .phone:before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:110px;height:28px;background:var(--ink);border-radius:0 0 18px 18px;z-index:2}
 .phone iframe{width:100%;height:100%;border:0;display:block}
 .sticker{position:absolute;background:var(--orange);color:#fff;font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase;padding:14px 10px;border-radius:50%;width:92px;height:92px;display:grid;place-items:center;text-align:center;transform:rotate(-12deg);clip-path:polygon(50% 0%,61% 12%,76% 6%,80% 21%,96% 24%,92% 39%,100% 50%,92% 61%,96% 76%,80% 79%,76% 94%,61% 88%,50% 100%,39% 88%,24% 94%,20% 79%,4% 76%,8% 61%,0% 50%,8% 39%,4% 24%,20% 21%,24% 6%,39% 12%)}
-.hero .sticker{right:-14px;top:calc(50% - 300px);z-index:3}
+.hero .sticker{right:calc(25% + 165px);top:16%;z-index:3}
 .hand{font-family:var(--font);font-weight:800;font-style:italic;color:var(--plum);font-size:18px;transform:rotate(-5deg);display:inline-block}
-.fox-hero{position:absolute;left:37%;bottom:-6px;width:190px;transform:rotate(-4deg)}
-@media(max-width:1240px){.fox-hero{display:none}}
+.fox-hero{position:absolute;left:46%;bottom:-6px;width:190px;transform:rotate(-4deg)}
 @media(max-width:900px){.hero .wrap{grid-template-columns:1fr;min-height:0}.phone{transform:none;margin:10px auto 0}.fox-hero{display:none}.hero .sticker{display:none}}
 /* sections */
 section{padding:92px 0}
@@ -295,22 +294,18 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
       <p class="note">No sign-up. About ten minutes.</p>
       <img class="fox-hero" src="__FOX_CELEB__" alt="">
     </div>
-    <div id="play" class="webview" aria-label="Untangle on the web">
-      <div class="wv-bar"><span class="wv-dots"><i></i><i></i><i></i></span><span class="wv-url">untangle.app/home</span></div>
-      <div class="apphome">
-        <div class="ah-top"><b>Untangle</b><span class="ah-nav"><span class="on">Home</span><span>Subjects</span><span>Me</span></span><span class="ah-xp">✦ <i id="ahxp">0</i> XP</span></div>
-        <p class="ah-hi">Good evening. Ready for one idea?</p>
-        <p class="ah-sub">Subject one · Game theory</p>
-        <div class="ah-body">
-          <a class="ah-hero" href="lesson.html?web=1"><img src="__JEWEL__" alt=""><span class="ah-tag">Free · chapter 1</span><strong>Should I talk first?</strong><span class="ah-meta">10 min · 8 ideas</span><span class="ah-play">Play <span class="arr">→</span></span></a>
-          <div class="ah-list">
-            <div class="ah-row"><span class="ah-n">2</span><span>Why did Jio give it away free?</span><em>In the app</em></div>
-            <div class="ah-row"><span class="ah-n">3</span><span>Why does everyone need coaching now?</span><em>In the app</em></div>
-            <div class="ah-row"><span class="ah-n">4</span><span>Why do people overbid at auctions?</span><em>In the app</em></div>
-          </div>
-        </div>
+    <div id="play" class="phone"><div class="apphome" aria-label="The Untangle app home screen">
+      <div class="ah-top"><b>Untangle</b><span class="ah-xp">✦ <i id="ahxp">0</i> XP</span></div>
+      <p class="ah-hi">Good evening. Ready for one idea?</p>
+      <p class="ah-sub">Subject one · Game theory</p>
+      <a class="ah-hero" href="lesson.html?web=1"><img src="__JEWEL__" alt=""><span class="ah-tag">Free · chapter 1</span><strong>Should I talk first?</strong><span class="ah-meta">10 min · 8 ideas</span><span class="ah-play">Play <span class="arr">→</span></span></a>
+      <div class="ah-list">
+        <div class="ah-row"><span class="ah-n">2</span><span>Why did Jio give it away free?</span><em>In the app</em></div>
+        <div class="ah-row"><span class="ah-n">3</span><span>Why does everyone need coaching now?</span><em>In the app</em></div>
+        <div class="ah-row"><span class="ah-n">4</span><span>Why do people overbid at auctions?</span><em>In the app</em></div>
       </div>
-    </div>
+      <div class="ah-tabs"><span class="on">Home</span><span>Subjects</span><span>Me</span></div>
+    </div></div>
     <div class="sticker">Free to play</div>
   </div>
 </header>

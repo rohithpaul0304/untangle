@@ -35,3 +35,4 @@ v19 (13 October 2026): explore first, play second. The opening drops the interro
 ## v20
 - The Leonardo opening (beats 1 to 3) plays once per browser. Passing or skipping it saves `ut_cine_done` in localStorage plus a one-year cookie, so return visits land straight on the page. Footer link "Watch the opening again" clears both and replays it from the top.
 - Hero phone replaced by a browser-window web view of the Untangle home (chapter 1 card plays `lesson.html?web=1`; chapters 2 to 4 marked "In the app"). Sticker moved to the window's corner; fox hidden under 1240px wide.
+- v20.1: web view reverted, the app home phone is back in the hero. Every "Play chapter one" (hero button, phone card, nav, chapter cards) opens `lesson.html?web=1` as its own page. Build that flow in `site/lesson.html` (source: the lesson template).
