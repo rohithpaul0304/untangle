@@ -830,6 +830,39 @@ html:has(#app.noir),body:has(#app.noir){background:#121419}
 .veil .cres{color:var(--ink2)}
 .cres.pop{animation:cpop .35s ease-out}
 @keyframes cpop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+
+/* ---- desktop: one framed lesson card under a full-width top bar (progress centred, close left, XP right) ---- */
+@media(min-width:900px){
+  html,body{background:#fff;height:100%;overflow:hidden}
+  html:has(#app.noir),body:has(#app.noir){background:#0d0f13}
+  #app{position:fixed;top:76px;left:44px;right:44px;bottom:28px;max-width:none;margin:0;min-height:0;overflow-y:auto;overscroll-behavior:contain;
+    border:1.5px solid #E8E4DC;border-radius:32px;box-shadow:0 2px 0 #F0ECE4;background:#fff;
+    padding:40px max(40px,calc((100vw - 88px - 720px)/2)) 0;scrollbar-width:thin}
+  /* the lesson is drawn for a ~420px phone column; on desktop it is scaled up as a whole so type, art and taps read at desktop size */
+  #app>*:not(.top){zoom:1.25}
+  #app.noir{border-color:#262a33;box-shadow:none}
+  #app>.top{position:fixed;top:0;left:0;right:0;height:76px;padding:0 64px;z-index:20;gap:16px}
+  #app>.top .bar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(780px,52vw);flex:none;height:12px}
+  #app>.top .dots{margin-left:auto}
+  #app>.top .x{border:0;background:none;width:36px;height:36px;font-size:22px;color:#555}
+  #app.noir>.top .x{color:#bbb}
+  #app>.top .xp{font-size:17px;gap:6px}
+  #app>.top .xp i{font-size:14px}
+  #app .foot{padding:18px 0 28px;box-shadow:none;background:linear-gradient(rgba(255,255,255,0),#fff 22px)}
+  #app.noir .foot{background:linear-gradient(rgba(18,20,25,0),var(--noir) 22px)}
+  #app .foot .btn{min-height:56px;font-size:17px}
+  #app.noir .scene{width:100%;margin:0;border-radius:22px}
+  #app.padded{padding-bottom:300px}
+  .sheet{left:46px;right:46px;bottom:30px;border-radius:26px 26px 30px 30px;padding:24px 24px 28px;transform:translateY(calc(100% + 60px))}
+  .sheet.on{transform:none}
+  .sheet .in{zoom:1.2}
+  .sheet .in{max-width:600px}
+  /* try-again bar sits inside the bottom of the card, same column as the lesson */
+  .fb{left:45.5px;right:45.5px;bottom:29.5px;border-radius:0 0 31px 31px;overflow:hidden;transform:translateY(calc(100% + 60px))}
+  .fb.on{transform:none}
+  .fb .in{padding:22px 40px 26px}
+  .fb .in>*{zoom:1.25;max-width:576px;margin-left:auto;margin-right:auto}
+}
 </style>
 </head>
 <body>
@@ -1100,6 +1133,7 @@ const S={i:0,prog:{},done:{},xp:0,miss:{}};
 try{const s=JSON.parse(localStorage.getItem('untangle-proto-v7'));if(s&&s.i<STEPS.length-1&&new URLSearchParams(location.search).get('fresh')===null){S.i=s.i;S.prog=s.prog||{};S.xp=s.xp||0;S.done=s.done||{};S.miss=s.miss||{};}}catch(e){}
 const hj=(location.hash.match(/^#ch(\d)$/)||[])[1];if(hj){const k=STEPS.findIndex(s=>s.ch===+hj);if(k>=0&&STEPS[S.i].ch!==+hj)S.i=k;}
 const jump=new URLSearchParams(location.search).get('ch');if(jump){const k=STEPS.findIndex(s=>s.ch===+jump);if(k>=0)S.i=k;}
+if(WEB&&S.xp===0){try{const x=+sessionStorage.getItem('ut_xp');if(x>0)S.xp=x;}catch(e){}}
 function save(){try{localStorage.setItem('untangle-proto-v7',JSON.stringify({i:S.i,prog:S.prog,xp:S.xp,done:S.done,miss:S.miss}))}catch(e){}}
 const app=document.getElementById('app');
 
@@ -1121,7 +1155,7 @@ function addXp(n){S.xp+=n;save();const x=app.querySelector('.xp');if(x)x.innerHT
 function openWhy(html){const s=document.getElementById('sheet');s.setAttribute('role','dialog');s.setAttribute('aria-modal','true');s.setAttribute('aria-label','Why');document.getElementById('whyText').innerHTML=html;s.classList.add('on');document.getElementById('scrim').classList.add('on');setTimeout(()=>document.getElementById('whyOk').focus(),250);}
 function closeWhy(){document.getElementById('sheet').classList.remove('on');document.getElementById('scrim').classList.remove('on');}
 document.getElementById('whyOk').onclick=()=>{closeWhy();setTimeout(()=>document.getElementById('whyOk').textContent='Got it',300);};document.getElementById('scrim').onclick=closeWhy;document.addEventListener('keydown',e=>{if(e.key==='Escape')closeWhy();});
-function go(i){S.i=i;save();closeSheet();render();window.scrollTo(0,0);const h=app.querySelector('h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}}
+function go(i){S.i=i;save();closeSheet();render();window.scrollTo(0,0);app.scrollTop=0;const h=app.querySelector('h1');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}}
 function next(){let i=S.i+1;while(i<STEPS.length-1&&STEPS[i].when&&!STEPS[i].when())i++;go(Math.min(i,STEPS.length-1));}
 function sheet(kind,title,line,buttons){
   const fb=document.getElementById('fb');fb.className='fb '+kind;fb.removeAttribute('aria-hidden');
@@ -1352,7 +1386,7 @@ function nightsSummary(st,r,tot){
     sheet(y<=bestL?'ok':'bad',`Five nights. ${y} ${y===1?'year':'years'} for you.`,then+open+now+how,
       y<=bestL?`<button class="link" id="why">Why?</button><button class="btn go" id="cont">Continue</button>`
       :`<button class="link" id="why">Why?</button><button class="btn ghost" id="cont">Continue</button><button class="btn try" id="again">Try for ${bestL} years</button>`);
-    setTimeout(()=>window.scrollTo(0,document.documentElement.scrollHeight),450);
+    setTimeout(()=>{window.scrollTo(0,document.documentElement.scrollHeight);app.scrollTop=app.scrollHeight;},450);
     if(y>bestL)document.getElementById('again').onclick=()=>{closeSheet();delete S.prog[st.id];save();render();};
     document.getElementById('why').onclick=()=>openWhy('Meera never forgot. She started these five nights with your answer from the first night. If that was a talk, the only way back to one year a night was to stay silent and take one bad night. Best from a clean start: <code>1 + 1 + 1 + 1 + 0 = 4</code>. Starting after a talk, the best is <code>5 + 1 + 1 + 1 + 0 = 8</code>.');
   }
@@ -2039,7 +2073,7 @@ function renderEnd(){
     app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:96px"><h1 style="margin:6px 0 4px;font-size:22px">You can see the game now.</h1><p style="color:var(--ink2);margin:0">Eight ideas from one police station. Jio’s price war and the next chapters are in the app.</p><p style="margin:6px 0 0;font-weight:700">✦ ${S.xp} XP earned</p></div>${chapList(2)}</div>
     <div class="foot"><div class="brow"><button class="btn ghost" id="again">Again</button><a class="btn go" id="appBtn" href="#app" target="_parent" style="display:grid;place-items:center;text-decoration:none">Continue in the app</a></div></div>`;
     document.getElementById('again').onclick=()=>{S.i=0;S.prog={};S.done={};S.xp=0;save();render();};
-    document.getElementById('appBtn').onclick=e=>{if(parent!==window){e.preventDefault();try{parent.postMessage({untangle:'app'},'*');}catch(_){}}};
+    document.getElementById('appBtn').onclick=e=>{e.preventDefault();if(parent!==window){try{parent.postMessage({untangle:'app'},'*');}catch(_){}}else location.href='index.html#app';};
     return;
   }
   app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:96px"><h1 style="margin:6px 0 4px;font-size:22px">You can see the game now.</h1><p style="color:var(--ink2);margin:0">Three worlds, one table, one opponent so far: tit for tat. The other opponents, and the tournament, are in the app. ✦ ${S.xp} XP.</p></div>${chapList(4)}</div>
@@ -2054,7 +2088,7 @@ function render(){
   const st=STEPS[S.i];
   ({question:renderQuestion,learn:renderLearn,recap:renderRecap,deal:renderDeal,quiz1:renderQuiz1,jiowatch:renderJioWatch,jio:renderJio,flip:renderFlip,seat:renderSeat,where:renderWhere,nights:renderNights,strategy:renderStrategy,tomorrow:renderTomorrow,trap:renderTrap,intro:renderIntro,play:renderPlay,cafe:renderCafe,concept:renderConcept,matrix:renderMatrix,text:renderText,splash:renderSplash,quiz:renderQuiz,street:renderStreet,fates:renderFates,applied:renderApplied,news3:renderNews3,chapter:renderChapter,end:renderEnd})[st.type](st);
   app.querySelector('.x').onclick=()=>{
-    openWhy('<strong>Start a chapter again?</strong> Your choices in that chapter are cleared.<span style="display:flex;flex-direction:column;gap:8px;margin-top:14px">'+CHAPS.filter(c=>c.built&&(!WEB||c.n===1)).map(c=>`<button class="btn ghost" style="width:100%;height:46px" data-restart="${c.n}">Chapter ${c.n}: ${c.t}</button>`).join('')+'</span>');
+    openWhy('<strong>Start a chapter again?</strong> Your choices in that chapter are cleared.<span style="display:flex;flex-direction:column;gap:8px;margin-top:14px">'+CHAPS.filter(c=>c.built&&(!WEB||c.n===1)).map(c=>`<button class="btn ghost" style="width:100%;height:46px" data-restart="${c.n}">Chapter ${c.n}: ${c.t}</button>`).join('')+(WEB&&parent===window?'<a class="btn ghost" style="width:100%;height:46px;display:grid;place-items:center;text-decoration:none" href="index.html">Back to the website</a>':'')+'</span>');
     document.getElementById('whyOk').textContent='Keep playing';
     document.querySelectorAll('[data-restart]').forEach(b=>b.onclick=()=>{closeWhy();document.getElementById('whyOk').textContent='Got it';if(+b.dataset.restart===1){S.xp=0;S.miss={};}jumpCh(+b.dataset.restart);});
   };
