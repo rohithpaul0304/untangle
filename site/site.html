@@ -233,6 +233,20 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}#intro{display:none}}
 .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s,transform .6s}
 .js .reveal.in{opacity:1;transform:none}
+.apphome{position:relative;height:100%;display:flex;flex-direction:column;padding:40px 16px 0;background:#FFFCF2;font-size:14px;color:var(--ink)}
+.ah-top{display:flex;justify-content:space-between;align-items:center}.ah-top b{font-size:18px;letter-spacing:-.02em}
+.ah-xp{background:#fff;border:1.5px solid #EDE6D6;border-radius:999px;padding:4px 10px;font-weight:700;font-size:12px}.ah-xp i{font-style:normal}
+.ah-hi{margin:14px 0 2px;font-weight:700;font-size:16px}.ah-sub{margin:0 0 12px;color:#6B6658;font-size:12px;font-weight:600}
+.ah-hero{display:grid;grid-template-columns:1fr;gap:4px;background:var(--butter,#FFD84D);border-radius:20px;padding:12px 14px;text-decoration:none;color:var(--ink);box-shadow:0 8px 20px rgba(16,35,63,.12)}
+.ah-hero img{width:100%;height:110px;object-fit:contain}
+.ah-tag{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.06em}
+.ah-hero strong{font-size:18px;line-height:1.15}.ah-meta{font-size:12px;opacity:.75}
+.ah-play{justify-self:start;margin-top:6px;background:var(--ink);color:#fff;border-radius:999px;padding:7px 14px;font-weight:700;font-size:13px}
+.ah-list{margin-top:12px;display:flex;flex-direction:column;gap:8px}
+.ah-row{display:grid;grid-template-columns:24px 1fr auto;gap:8px;align-items:center;background:#fff;border:1.5px solid #EDE6D6;border-radius:14px;padding:9px 10px;font-weight:600;font-size:12.5px;line-height:1.25}
+.ah-n{width:24px;height:24px;border-radius:50%;background:#F1ECDF;display:grid;place-items:center;font-size:12px}
+.ah-row em{font-style:normal;font-size:11px;color:#6B6658;font-weight:700}
+.ah-tabs{margin-top:auto;display:flex;justify-content:space-around;border-top:1.5px solid #EDE6D6;padding:10px 0 14px;font-size:11px;font-weight:700;color:#8A846F}.ah-tabs .on{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -247,14 +261,14 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <div id="cscenes"></div>
   <canvas id="cmotes" aria-hidden="true"></canvas>
   <div class="hint" id="chint"><span>Scroll</span><i></i></div>
-  <div class="unroll" id="cunroll"><a class="pill lime" href="#play" id="cplay">Play chapter one <span class="arr">→</span></a><span style="font-size:13px;color:rgba(255,255,255,.6)">About ten minutes. No sign-up.</span></div>
+  <div class="unroll" id="cunroll" hidden></div>
 </div></div>
 
 
 <nav><div class="wrap">
   <a class="logo" href="#">Untangle <small>learn anything through play</small></a>
   <div class="links">
-    <a href="#renaissance">Why play</a><a href="#how">How it works</a><a href="#chapters">Chapters</a><a href="#app">The app</a><a class="cta" href="#play">Play free</a>
+    <a href="#renaissance">Why play</a><a href="#how">How it works</a><a href="#chapters">Chapters</a><a href="#app">The app</a><a class="cta" href="lesson.html?web=1">Play free</a>
   </div>
 </div></nav>
 
@@ -263,12 +277,23 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <div class="wrap">
     <div>
       <h1>Learn things you'll <span class="tilt">actually</span> use. In the time you'd spend scrolling.</h1>
-      <p class="sub">Five-minute games that leave an idea behind. Start with game theory, the rules behind every deal, argument and group chat, and you will start seeing the game everywhere. Chapter one is free, right here.</p>
-      <div class="ctas"><a class="pill ink" href="#play">Play chapter one <span class="arr">→</span></a></div>
-      <p class="note">No sign-up. Works in this tab. About ten minutes.</p>
+      <p class="sub">Five-minute games that leave an idea behind. Start with game theory, the rules behind every deal, argument and group chat, and you will start seeing the game everywhere. Chapter one is free.</p>
+      <div class="ctas"><a class="pill ink" href="lesson.html?web=1">Play chapter one <span class="arr">→</span></a></div>
+      <p class="note">No sign-up. About ten minutes.</p>
       <img class="fox-hero" src="__FOX_CELEB__" alt="">
     </div>
-    <div id="play" class="phone"><iframe src="lesson.html?web=1" title="Untangle chapter one: Should I talk first?" loading="eager"></iframe></div>
+    <div id="play" class="phone"><div class="apphome" aria-label="The Untangle app home screen">
+      <div class="ah-top"><b>Untangle</b><span class="ah-xp">✦ <i id="ahxp">0</i> XP</span></div>
+      <p class="ah-hi">Good evening. Ready for one idea?</p>
+      <p class="ah-sub">Subject one · Game theory</p>
+      <a class="ah-hero" href="lesson.html?web=1"><img src="__JEWEL__" alt=""><span class="ah-tag">Free · chapter 1</span><strong>Should I talk first?</strong><span class="ah-meta">10 min · 8 ideas</span><span class="ah-play">Play <span class="arr">→</span></span></a>
+      <div class="ah-list">
+        <div class="ah-row"><span class="ah-n">2</span><span>Why did Jio give it away free?</span><em>In the app</em></div>
+        <div class="ah-row"><span class="ah-n">3</span><span>Why does everyone need coaching now?</span><em>In the app</em></div>
+        <div class="ah-row"><span class="ah-n">4</span><span>Why do people overbid at auctions?</span><em>In the app</em></div>
+      </div>
+      <div class="ah-tabs"><span class="on">Home</span><span>Subjects</span><span>Me</span></div>
+    </div></div>
     <div class="sticker">Free to play</div>
   </div>
 </header>
@@ -308,7 +333,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <h2>One game.<br>Many disguises.</h2>
   <p class="lead">Chapter one is free, right here. Finish it and the next ones open in the app, one after another.</p>
   <div class="chaps">
-    <div class="chap reveal"><span class="tag">Free · play now</span><div class="art"><img src="__JEWEL__" alt=""></div><h3>1 · Should I talk first?</h3><p>Two suspects, one offer. Games, dominant strategy, the prisoner's dilemma, and why people still cooperate.</p><div class="foot"><span>10 min</span><a class="pill lime" href="#play" style="padding:8px 14px;font-size:13px">Play</a></div></div>
+    <div class="chap reveal"><span class="tag">Free · play now</span><div class="art"><img src="__JEWEL__" alt=""></div><h3>1 · Should I talk first?</h3><p>Two suspects, one offer. Games, dominant strategy, the prisoner's dilemma, and why people still cooperate.</p><div class="foot"><span>10 min</span><a class="pill lime" href="lesson.html?web=1" style="padding:8px 14px;font-size:13px">Play</a></div></div>
     <div class="chap lock reveal"><span class="tag">Unlocks after chapter one</span><div class="art"><img src="__CH_TV__" alt=""></div><h3>2 · Why did Jio give it away free?</h3><p>How free data started a price war, and why tobacco brands cheered a ban on their own ads.</p><div class="foot"><span>10 min</span><span>In the app</span></div></div>
     <div class="chap lock reveal"><span class="tag">In the app</span><div class="art"><img src="__CH_TOURNAMENT__" alt=""></div><h3>3 · Why does everyone need coaching now?</h3><p>The arms race: when everyone runs faster, nobody gets ahead.</p><div class="foot"><span>10 min</span><span>In the app</span></div></div>
     <div class="chap lock reveal"><span class="tag">In the app</span><div class="art"><img src="__CH_CAFE__" alt=""></div><h3>4 · Why do people overbid at auctions?</h3><p>The professor's coffee mug, and the auction where telling the truth is the best bid.</p><div class="foot"><span>10 min</span><span>In the app</span></div></div>
@@ -363,8 +388,7 @@ document.documentElement.classList.add('js');
   const scenes=[
     {bg:'#0B1526',film:'beat1',pos:'62% 50%',mpos:'58% 40%',light:[82,30],words:'Leonardo never sat an exam.',big:true,xp:0},
     {bg:'#0B1526',film:'beat2',pos:'55% 50%',mpos:'72% 35%',light:[78,22],words:'He cut, built, played and drew. Curious people learned everything by <em>doing</em>. Then learning became reading about things.',xp:20},
-    {bg:'#0B1526',film:'beat3',pos:'60% 50%',mpos:'58% 42%',light:[62,45],words:'Untangle puts your hands back on the idea. Five minutes a day, and the world starts looking <em>rigged in your favour</em>.',xp:20},
-    {bg:'#0B1526',film:'beat4',pos:'55% 50%',mpos:'52% 45%',light:[66,18],flicker:true,words:'Three jewellery shops in Jayanagar. Inspector Sharma has two suspects: you, Ravi, and Meera. Separate rooms, same offer. What she says decides <em>your years</em>.',xp:20,last:true}
+    {bg:'#0B1526',film:'beat3',pos:'60% 50%',mpos:'58% 42%',light:[62,45],words:'Untangle puts your hands back on the idea. Five minutes a day, and the world starts looking <em>rigged in your favour</em>.',xp:20,last:true},
   ];
   const wrap=document.getElementById('cscenes');
   scenes.forEach((sc,i)=>{const d=document.createElement('div');d.className='scene';d.id='sc'+i;
@@ -379,7 +403,7 @@ document.documentElement.classList.add('js');
   let i=0,xp=0,local=0;C.style.setProperty('--n',scenes.length);const seen=new Set([0]);
   const bg=document.getElementById('cbg'),bar=document.getElementById('cbar'),xpEl=document.querySelector('#cxp span'),gain=document.getElementById('cgain'),unroll=document.getElementById('cunroll');
   function show(k){document.querySelectorAll('#cine .scene').forEach(s=>s.classList.remove('on'));const el=document.getElementById('sc'+k);el.classList.add('on');el._t0=(performance.now()-t0)/1000;bg.style.background=scenes[k].bg;bar.style.width=((k+1)/scenes.length*100)+'%';
-    unroll.classList.toggle('on',!!scenes[k].last);}
+    }
   /* parallax */
   let px=0,py=0,tx=0,ty=0;
   C.addEventListener('pointermove',e=>{tx=(e.clientX/innerWidth-.5);ty=(e.clientY/innerHeight-.5);},{passive:true});
@@ -410,10 +434,10 @@ document.documentElement.classList.add('js');
     const f=p*scenes.length;const k=Math.min(scenes.length-1,Math.floor(f));local=Math.min(1,f-k);
     if(k!==i){i=k;show(i);if(!seen.has(i)){seen.add(i);addXp(scenes[i].xp);}}}
   addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',onScroll);
-  function finish(){try{const f=document.querySelector('.phone iframe');f.contentWindow.postMessage({untangle:'xp',xp},'*');}catch(e){}}
+  function finish(){try{sessionStorage.setItem('ut_xp',String(xp));}catch(e){}const el=document.getElementById('ahxp');if(el)el.textContent=xp;}
   const toPlay=()=>document.getElementById('play').scrollIntoView({behavior:'smooth',block:'center'});
-  document.getElementById('cskip').onclick=()=>{retire();toPlay();};
-  document.getElementById('cplay').onclick=e=>{e.preventDefault();retire();toPlay();};
+  document.getElementById('cskip').onclick=()=>{retire();window.scrollTo(0,0);};
+
   show(0);onScroll();
 })();
 

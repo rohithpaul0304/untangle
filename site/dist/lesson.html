@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>One switch · Untangle</title>
+<title>Should I talk first? · Untangle</title>
 
 
 <style>
@@ -1100,6 +1100,7 @@ const S={i:0,prog:{},done:{},xp:0,miss:{}};
 try{const s=JSON.parse(localStorage.getItem('untangle-proto-v7'));if(s&&s.i<STEPS.length-1&&new URLSearchParams(location.search).get('fresh')===null){S.i=s.i;S.prog=s.prog||{};S.xp=s.xp||0;S.done=s.done||{};S.miss=s.miss||{};}}catch(e){}
 const hj=(location.hash.match(/^#ch(\d)$/)||[])[1];if(hj){const k=STEPS.findIndex(s=>s.ch===+hj);if(k>=0&&STEPS[S.i].ch!==+hj)S.i=k;}
 const jump=new URLSearchParams(location.search).get('ch');if(jump){const k=STEPS.findIndex(s=>s.ch===+jump);if(k>=0)S.i=k;}
+if(WEB&&S.xp===0){try{const x=+sessionStorage.getItem('ut_xp');if(x>0)S.xp=x;}catch(e){}}
 function save(){try{localStorage.setItem('untangle-proto-v7',JSON.stringify({i:S.i,prog:S.prog,xp:S.xp,done:S.done,miss:S.miss}))}catch(e){}}
 const app=document.getElementById('app');
 
@@ -2036,9 +2037,10 @@ function renderChapter(st){
 function renderEnd(){
   if(WEB){
     try{parent.postMessage({untangle:'done',xp:S.xp},'*');}catch(e){}
-    app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:96px"><h1 style="margin:6px 0 4px;font-size:22px">You can see the game now.</h1><p style="color:var(--ink2);margin:0">Eight ideas from one police station. Jio’s price war and the next chapters are in the app. ✦ ${S.xp} XP.</p></div>${chapList(2)}</div>
+    app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:96px"><h1 style="margin:6px 0 4px;font-size:22px">You can see the game now.</h1><p style="color:var(--ink2);margin:0">Eight ideas from one police station. Jio’s price war and the next chapters are in the app.</p><p style="margin:6px 0 0;font-weight:700">✦ ${S.xp} XP earned</p></div>${chapList(2)}</div>
     <div class="foot"><div class="brow"><button class="btn ghost" id="again">Again</button><a class="btn go" id="appBtn" href="#app" target="_parent" style="display:grid;place-items:center;text-decoration:none">Continue in the app</a></div></div>`;
     document.getElementById('again').onclick=()=>{S.i=0;S.prog={};S.done={};S.xp=0;save();render();};
+    document.getElementById('appBtn').onclick=e=>{e.preventDefault();if(parent!==window){try{parent.postMessage({untangle:'app'},'*');}catch(_){}}else location.href='index.html#app';};
     return;
   }
   app.innerHTML=topbar()+`<div class="concept" style="padding-top:14px"><div style="text-align:center;margin-bottom:14px"><img src="${A.fox_celebrating}" alt="" style="width:96px"><h1 style="margin:6px 0 4px;font-size:22px">You can see the game now.</h1><p style="color:var(--ink2);margin:0">Three worlds, one table, one opponent so far: tit for tat. The other opponents, and the tournament, are in the app. ✦ ${S.xp} XP.</p></div>${chapList(4)}</div>
@@ -2053,7 +2055,7 @@ function render(){
   const st=STEPS[S.i];
   ({question:renderQuestion,learn:renderLearn,recap:renderRecap,deal:renderDeal,quiz1:renderQuiz1,jiowatch:renderJioWatch,jio:renderJio,flip:renderFlip,seat:renderSeat,where:renderWhere,nights:renderNights,strategy:renderStrategy,tomorrow:renderTomorrow,trap:renderTrap,intro:renderIntro,play:renderPlay,cafe:renderCafe,concept:renderConcept,matrix:renderMatrix,text:renderText,splash:renderSplash,quiz:renderQuiz,street:renderStreet,fates:renderFates,applied:renderApplied,news3:renderNews3,chapter:renderChapter,end:renderEnd})[st.type](st);
   app.querySelector('.x').onclick=()=>{
-    openWhy('<strong>Start a chapter again?</strong> Your choices in that chapter are cleared.<span style="display:flex;flex-direction:column;gap:8px;margin-top:14px">'+CHAPS.filter(c=>c.built).map(c=>`<button class="btn ghost" style="width:100%;height:46px" data-restart="${c.n}">Chapter ${c.n}: ${c.t}</button>`).join('')+'</span>');
+    openWhy('<strong>Start a chapter again?</strong> Your choices in that chapter are cleared.<span style="display:flex;flex-direction:column;gap:8px;margin-top:14px">'+CHAPS.filter(c=>c.built&&(!WEB||c.n===1)).map(c=>`<button class="btn ghost" style="width:100%;height:46px" data-restart="${c.n}">Chapter ${c.n}: ${c.t}</button>`).join('')+(WEB&&parent===window?'<a class="btn ghost" style="width:100%;height:46px;display:grid;place-items:center;text-decoration:none" href="index.html">Back to the website</a>':'')+'</span>');
     document.getElementById('whyOk').textContent='Keep playing';
     document.querySelectorAll('[data-restart]').forEach(b=>b.onclick=()=>{closeWhy();document.getElementById('whyOk').textContent='Got it';if(+b.dataset.restart===1){S.xp=0;S.miss={};}jumpCh(+b.dataset.restart);});
   };
