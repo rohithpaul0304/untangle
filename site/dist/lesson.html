@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="description" content="Untangle chapter one: a free ten-minute game theory chapter you play in your browser. Be Ravi in Inspector Sharma's interrogation room and learn the prisoner's dilemma by playing it.">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Should I talk first? · Untangle</title>
 
@@ -831,6 +832,12 @@ html:has(#app.noir),body:has(#app.noir){background:#121419}
 .cres.pop{animation:cpop .35s ease-out}
 @keyframes cpop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
 
+
+/* first call */
+.room.dim{opacity:.45}
+/* tap targets: every tappable thing at least 44x44 */
+button,.btn,.opt,a.btn,[data-m],[data-a],[data-i],[data-pick],.chipbtn,.top .x{min-height:44px;min-width:44px}
+.top .x{width:44px;height:44px}
 /* ---- desktop: one framed lesson card under a full-width top bar (progress centred, close left, XP right) ---- */
 @media(min-width:900px){
   html,body{background:#fff;height:100%;overflow:hidden}
@@ -844,7 +851,7 @@ html:has(#app.noir),body:has(#app.noir){background:#121419}
   #app>.top{position:fixed;top:0;left:0;right:0;height:76px;padding:0 64px;z-index:20;gap:16px}
   #app>.top .bar{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(780px,52vw);flex:none;height:12px}
   #app>.top .dots{margin-left:auto}
-  #app>.top .x{border:0;background:none;width:36px;height:36px;font-size:22px;color:#555}
+  #app>.top .x{border:0;background:none;width:44px;height:44px;font-size:22px;color:#555}
   #app.noir>.top .x{color:#bbb}
   #app>.top .xp{font-size:17px;gap:6px}
   #app>.top .xp i{font-size:14px}
@@ -914,6 +921,7 @@ const STEPS=[
    {pair:['ravi_scared','meera_hard'],who:'Meera',av:'meera_hard',tail:'right',text:'Ravi. Whatever he offers you in there, we say nothing. <strong>Promise me.</strong>',reply:'I promise.'},
    {img:'inspector_offer',dark:true,who:'Inspector Sharma',text:'So. One deal, Ravi. <strong>Talk.</strong> Give me Meera... and you walk out of here tonight. Free. <strong>But she’s next door.</strong> Hearing the exact same deal.'},
    {cells:true,tail:'none',who:'Inspector Sharma',text:'Separate rooms. You both answer at the same time. What she says decides <strong>your</strong> years, Ravi. What you say decides <strong>hers</strong>.',btn:'Continue'}]},
+ {ch:1,id:'firstcall',type:'firstcall'},
  {ch:1,id:'l_game',type:'learn',coach:true,n:1,of:8,term:'A game',
   def:'A situation where <strong>your result depends on what others choose</strong>, not only on what you choose.',
   short:'Your result depends on others’ choices too.',
@@ -956,7 +964,7 @@ const STEPS=[
   partsTitle:'How to find it',numbered:true,
   parts:[['Fix their move','Pick your best reply to it'],['Repeat','Do it for every move they could make'],['Compare','Same answer every time? That move is dominant. For Ravi: talk.']],
   rule:'If you have a dominant strategy, <strong>play it</strong>.',
-  check:{kind:'cases',title:'Two chai stalls',setup:'You run one of two chai stalls on the same road. Both charge ₹15 a cup today. Tomorrow, each of you picks a price without telling the other.',
+  check:{kind:'cases',show:true,title:'Two chai stalls',setup:'You run one of two chai stalls on the same road. Both charge ₹15 a cup today. Tomorrow, each of you picks a price without telling the other.',
    them:'The other stall',themVerb:'charges',you:'You charge',label:m=>m,unit:'you earn a day',better:'more money',ask:'earns you more',moves:['₹12','₹15'],
    art:(m,C)=>shopArt('chai_l',m,{'₹900':4,'₹700':3,'₹500':2,'₹300':1}[C.res[m]]),themArt:C=>`<img class="thumb" src="${A.chai_r}" alt="">`,
    cases:[{them:'₹15',res:{'₹12':'₹900','₹15':'₹700'},best:'₹12',ok:'Cutting to ₹12 pulls their customers to you: ₹900 a day, not ₹700.'},
@@ -1543,6 +1551,25 @@ function renderDeal(st){
   if(ans!=null)document.getElementById('cont').onclick=()=>{r.picks.push(r.cur);r.cur=null;save();renderDeal(st);};
 }
 
+/* ---------- the first call: one real choice before any definition ---------- */
+function renderFirstCall(st){
+  let r=S.prog[st.id];if(!r){r={pick:null};S.prog[st.id]=r;save();}
+  const G=GAMES.prison;const c='silent';const ans=r.pick;
+  const head=t=>`<div class="dlg down" style="max-width:none"><div class="dwho"><img src="${A.inspector_offer}" alt="">Inspector Sharma</div><h1 class="lead dl2">${t}</h1></div>`;
+  const line=ans==null?'Meera hasn’t said a word next door. Your turn, Ravi. <strong>Talk, or stay silent?</strong>'
+    :ans==='talk'?'Meera kept her promise and said nothing. You talked. <strong>You walk out free tonight. She gets five years.</strong>'
+    :'Meera kept her promise, and so did you. <strong>One year each.</strong> Not bad, but you could have walked out free.';
+  const opt=m=>{const y=G.pay[m+'|'+c][0];const face=A['ravi_'+(ans==null?'scared':G.faceA(m,c))];const cls=['room','dopt'];if(ans!=null&&m!==ans)cls.push('dim');
+    return `<button class="${cls.join(' ')}" data-a="${m}" ${ans!=null?'disabled':''} aria-label="Ravi ${m==='talk'?'talks':'stays silent'}"><div class="cbars"></div><div class="bubble on">${G.chip[m]}</div><img class="face" src="${face}" alt=""><div class="nm">Ravi</div><div class="yrs">${ans===m?dealYrs(y):'&nbsp;'}</div></button>`;};
+  const her=ans==null?'':`<div class="dher"><img src="${A.meera_thawing}" alt=""><span>Meera</span><span class="chip lock">${G.chip.silent}</span><small>${ans==='talk'?'5 years':'1 year'}</small></div>`;
+  app.innerHTML=topbar()+`<div class="concept fade">${head(line)}
+   <div class="stage"><div class="hd"><span class="st">Your call</span><span class="tag">Tonight</span></div>
+    <div class="world">${her}<div class="dpick"><div class="rooms">${opt('silent')}${opt('talk')}</div></div></div></div></div>
+   <div class="foot">${ans!=null?`<div class="nrow">${fox('speaking')}${nudge('Your years depended on <strong>your</strong> answer and on <strong>Meera’s</strong>. That has a name. Next.')}</div>`:''}<div class="brow">${ans!=null?'<button class="btn go" id="cont">Continue</button>':''}</div></div>`;
+  app.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>{r.pick=b.dataset.a;save();renderFirstCall(st);});
+  if(ans!=null){document.getElementById('fox').classList.add('pop');document.getElementById('cont').onclick=next;}
+}
+
 /* ---------- one question, used for adaptive follow-ups ---------- */
 function renderQuiz1(st){
   const pick=S.prog[st.id];const done=pick!=null;const bad=st._bad;
@@ -1632,15 +1659,15 @@ function renderLearn(st){
   if(ck.kind==='cases'&&(r.ci||0)<ck.cases.length){
     r.ci=r.ci||0;const C=ck.cases[r.ci];const a=r.cp;const other=ck.moves.find(x=>x!==C.best);
     const why=C.ok||`${ck.label(C.best)} gets you ${C.res[C.best]}. ${ck.label(other)} gets you ${C.res[other]}.`;
-    const shown=a!=null||r.cbad!=null;
-    const card=m=>{const cls=['room','dopt','ccase'];if(!shown)cls.push('veil');if(a!=null&&m===C.best)cls.push('best');if(a==null&&r.cbad===m)cls.push('wrongp');
-      return `<button class="${cls.join(' ')} ${ck.art?'arty':''}" data-m="${m}" ${a!=null?'disabled':''}><div class="bubble on">${ck.you} ${ck.label(m)}</div>${ck.art?`<div class="cart">${ck.art(m,C)}</div>`:''}<div class="cres ${shown&&String(C.res[m]).length>5?'long':''} ${shown?'pop':''}">${shown?C.res[m]:'?'}</div><div class="nm">${shown?ck.unit:'tap to guess'}</div>${a!=null&&m===C.best?`<span class="dbest">${ck.better}</span>`:''}</button>`;};
+    const shown=a!=null||r.cbad!=null;const vis=shown||!!ck.show;
+    const card=m=>{const cls=['room','dopt','ccase'];if(!vis)cls.push('veil');if(a!=null&&m===C.best)cls.push('best');if(a==null&&r.cbad===m)cls.push('wrongp');
+      return `<button class="${cls.join(' ')} ${ck.art?'arty':''}" data-m="${m}" ${a!=null?'disabled':''}><div class="bubble on">${ck.you} ${ck.label(m)}</div>${ck.art?`<div class="cart">${ck.art(m,C)}</div>`:''}<div class="cres ${vis&&String(C.res[m]).length>5?'long':''} ${shown&&!ck.show?'pop':''}">${vis?C.res[m]:'?'}</div><div class="nm">${vis?ck.unit:'tap to guess'}</div>${a!=null&&m===C.best?`<span class="dbest">${ck.better}</span>`:''}</button>`;};
     const say=a==null?`${r.ci===0?`<span class="lset">${ck.setup}</span>`:''}Say ${ck.them.toLowerCase()} ${ck.themVerb} <strong>${C.them}</strong>. Which pick ${ck.ask}?`:`Right. ${why}`;
     app.innerHTML=topbar()+`<div class="concept learn fade"><span class="lchip">Check · ${st.term}</span><h1 class="lead lcq">${say}</h1>
      <div class="stage"><div class="hd"><span class="st">Case ${r.ci+1} of ${ck.cases.length}</span><span class="tag">${ck.title}</span></div>
       <div class="world"><div class="dher">${ck.themArt?ck.themArt(C):''}<span>${ck.them}</span><span class="chip lock">${C.them}</span><small>fixed</small></div>
        <div class="rooms">${ck.moves.map(card).join('')}</div></div></div></div>
-     <div class="foot"><div class="nrow">${fox(a==null?'thinking':'celebrating')}${nudge(a==null?(shown?'Now you can see both. Pick the better one.':'Think it through first. Then guess.'):r.ci===0?'Now the other case.':'Same pick both times?')}</div><div class="brow">${a!=null?'<button class="btn" id="cont">Continue</button>':''}</div></div>`;
+     <div class="foot"><div class="nrow">${fox(a==null?'thinking':'celebrating')}${nudge(a==null?(vis?'Compare the two. Pick the one that earns more.':'Think it through first. Then guess.'):r.ci===0?'Now the other case.':'Same pick both times?')}</div><div class="brow">${a!=null?'<button class="btn" id="cont">Continue</button>':''}</div></div>`;
     document.getElementById('fox').classList.add('pop');
     app.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{const m=b.dataset.m;
       if(m===C.best){r.cp=m;r.cbad=null;addXp(r.missed?2:5);save();renderLearn(st);}
@@ -2086,7 +2113,7 @@ function renderEnd(){
 function render(){
   closeSheet();app.classList.remove('glow','noir');
   const st=STEPS[S.i];
-  ({question:renderQuestion,learn:renderLearn,recap:renderRecap,deal:renderDeal,quiz1:renderQuiz1,jiowatch:renderJioWatch,jio:renderJio,flip:renderFlip,seat:renderSeat,where:renderWhere,nights:renderNights,strategy:renderStrategy,tomorrow:renderTomorrow,trap:renderTrap,intro:renderIntro,play:renderPlay,cafe:renderCafe,concept:renderConcept,matrix:renderMatrix,text:renderText,splash:renderSplash,quiz:renderQuiz,street:renderStreet,fates:renderFates,applied:renderApplied,news3:renderNews3,chapter:renderChapter,end:renderEnd})[st.type](st);
+  ({question:renderQuestion,learn:renderLearn,recap:renderRecap,deal:renderDeal,firstcall:renderFirstCall,quiz1:renderQuiz1,jiowatch:renderJioWatch,jio:renderJio,flip:renderFlip,seat:renderSeat,where:renderWhere,nights:renderNights,strategy:renderStrategy,tomorrow:renderTomorrow,trap:renderTrap,intro:renderIntro,play:renderPlay,cafe:renderCafe,concept:renderConcept,matrix:renderMatrix,text:renderText,splash:renderSplash,quiz:renderQuiz,street:renderStreet,fates:renderFates,applied:renderApplied,news3:renderNews3,chapter:renderChapter,end:renderEnd})[st.type](st);
   app.querySelector('.x').onclick=()=>{
     openWhy('<strong>Start a chapter again?</strong> Your choices in that chapter are cleared.<span style="display:flex;flex-direction:column;gap:8px;margin-top:14px">'+CHAPS.filter(c=>c.built&&(!WEB||c.n===1)).map(c=>`<button class="btn ghost" style="width:100%;height:46px" data-restart="${c.n}">Chapter ${c.n}: ${c.t}</button>`).join('')+(WEB&&parent===window?'<a class="btn ghost" style="width:100%;height:46px;display:grid;place-items:center;text-decoration:none" href="index.html">Back to the website</a>':'')+'</span>');
     document.getElementById('whyOk').textContent='Keep playing';

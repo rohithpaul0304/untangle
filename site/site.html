@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Untangle · Learn anything through play</title>
-<meta name="description" content="Five-minute lessons you play, not scroll. Big ideas as small games, starting with game theory. Chapter one is free in your browser.">
+<meta name="description" content="Ten-minute game chapters you play, not scroll. Big ideas as small games, starting with game theory. Chapter one is free in your browser.">
 <style>
 __FONTS__
 :root{
@@ -287,6 +287,30 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 .more small{display:block;font-weight:500;color:var(--ink2);font-size:13px;margin-top:4px}
 @media(max-width:1000px){.chaps{grid-template-columns:1fr 1fr}.more ol{grid-template-columns:1fr 1fr}}
 @media(max-width:760px){.chaps{grid-template-columns:1fr}.chap.feature{grid-template-columns:1fr;gap:20px;padding:14px 14px 24px}.chap.feature .art{height:230px}.chap.feature .body{padding:0 8px}.chap h3{min-height:0}.more ol{grid-template-columns:1fr}}
+/* waitlist (app not listed yet) */
+.boxcta .soon{margin:0;font-weight:800;font-size:22px;letter-spacing:-.02em}
+.wl{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;width:min(440px,92vw)}
+.wl input{flex:1 1 220px;min-height:48px;border:1.5px solid var(--line);border-radius:999px;padding:0 18px;font:500 16px var(--font);background:#fff;color:var(--ink)}
+.wl input:focus{outline:2px solid var(--ink);outline-offset:2px}
+.wl .pill{min-height:48px;justify-content:center}
+.wl.sent input,.wl.sent button{display:none}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.unbox:not(.done) .boxcta{pointer-events:none}
+/* phone first screen: say what this is and offer Play before the intro */
+#cine .mstart{display:none}
+@media(max-width:760px){
+  #cine .mstart{display:flex;position:absolute;top:70px;left:16px;right:16px;z-index:6;flex-direction:column;align-items:flex-start;gap:12px;padding:16px;border-radius:20px;background:rgba(11,21,38,.72);border:1.5px solid rgba(255,255,255,.14);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+  #cine .mstart p{margin:0;font-size:16px;line-height:1.35;font-weight:600;color:#fff}
+  #cine .mstart .pill{background:var(--lime);color:var(--ink)}
+  #cine .mstart small{font-size:13px;color:rgba(255,255,255,.7)}
+}
+/* tap targets: nothing tappable under 44x44 */
+.pill,nav .links a,#cine .skip,.replay{min-height:44px;min-width:44px}
+nav .links a{display:inline-flex;align-items:center}
+#cine .skip{display:inline-flex;align-items:center;padding:0 12px}
+.replay{display:inline-flex;align-items:center}
+nav .logo{min-height:44px;align-items:center}
+.chap .foot .pill{min-height:44px}
 </style>
 </head>
 <body>
@@ -296,6 +320,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <div class="bar" id="cbar"></div>
   <div class="brand">Untangle</div>
   <button class="skip" id="cskip">Skip intro</button>
+  <div class="mstart"><p>A free game theory chapter you play in your browser. Ten minutes, no sign-up.</p><a class="pill" href="lesson.html?web=1">Play chapter one <span class="arr">→</span></a><small>Or scroll to watch the one-minute intro.</small></div>
   <div class="xp" id="cxp"><i>✦</i><span>0</span> XP</div>
   <div class="gain" id="cgain">+20 XP</div>
   <div id="cscenes"></div>
@@ -317,9 +342,9 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
   <div class="wrap">
     <div>
       <h1>Learn things you'll <span class="tilt">actually</span> use. In the time you'd spend scrolling.</h1>
-      <p class="sub">Five-minute games that leave an idea behind. Start with game theory, the rules behind every deal, argument and group chat, and you will start seeing the game everywhere. Chapter one is free.</p>
+      <p class="sub">Ten-minute games that leave ideas behind. Start with game theory, the rules behind every deal, argument and group chat, and you will start seeing the game everywhere. Chapter one is free.</p>
       <div class="ctas"><a class="pill ink" href="lesson.html?web=1">Play chapter one <span class="arr">→</span></a></div>
-      <p class="note">No sign-up. About ten minutes.</p>
+      <p class="note">No sign-up. One chapter takes ten minutes.</p>
       <img class="fox-hero" src="__FOX_CELEB__" alt="">
     </div>
     <div id="play" class="phone"><div class="apphome" aria-label="The Untangle app home screen">
@@ -350,7 +375,7 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
     </div>
     <div class="vs reveal">
       <div class="col scroll"><div class="t">Forty minutes on Instagram</div><div class="big">0</div><div class="s">ideas you can use tonight</div></div>
-      <div class="col learn"><div class="t">Five minutes on Untangle</div><div class="big">1</div><div class="s">idea you can use tonight</div><img src="__FOX_THINK__" alt=""></div>
+      <div class="col learn"><div class="t">Ten minutes on Untangle</div><div class="big">8</div><div class="s">ideas you can use tonight</div><img src="__FOX_THINK__" alt=""></div>
     </div>
   </div>
 </div></section>
@@ -425,13 +450,13 @@ footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;
 <section id="app" class="unbox"><div class="pin">
   <div class="wrap top"><p class="kicker">The app</p><h2>Keep playing.<br>Keep learning.</h2><p class="lead" style="margin:10px auto 0;text-align:center">iPhone first. Keep scrolling to open the box.</p></div>
   <div class="scene"><canvas id="boxgl" aria-label="A board game box opening to show what is in the app" role="img"></canvas>
-    <div class="boxcta"><img class="storebadge" src="__APPSTORE__" alt="Download on the App Store (coming soon)"><small>Coming first to iPhone. Finish chapter one here; your progress carries over.</small></div>
+    <div class="boxcta"><p class="soon">App coming soon</p><form id="wl" class="wl" novalidate><label for="wlEmail" class="sr">Email address</label><input id="wlEmail" type="email" name="email" placeholder="you@email.com" autocomplete="email" inputmode="email" required><button class="pill ink" type="submit">Join the waitlist</button></form><small id="wlMsg" role="status">Coming first to iPhone. One email when it is out, nothing else.</small></div>
   </div>
 </div></section>
 
 <footer><div class="wrap"><span>© Untangle. Made in Bengaluru. <a href="#" id="replay" class="replay">Watch the opening again</a></span><span>Jio, Airtel, Vi and Reliance Communications are trademarks of their owners, used to describe a real event. 3D fox model: PixelMannen (CC0), rig and animation by tomkranis (CC BY 4.0), glTF conversion by AsoboStudio and scurest (CC BY 4.0).</span></div></footer>
 
-<a id="float" class="pill ink" href="#app" style="white-space:nowrap">Get the app <span class="arr">→</span></a>
+<a id="float" class="pill ink" href="#app" style="white-space:nowrap">App coming soon <span class="arr">→</span></a>
 
 <script>__BOXJS__</script>
 <script>
@@ -452,7 +477,7 @@ document.addEventListener('click',e=>{if(e.target&&e.target.id==='replay'){e.pre
   const scenes=[
     {bg:'#0B1526',film:'beat1',pos:'62% 50%',mpos:'58% 40%',light:[82,30],words:'Leonardo never sat an exam.',big:true,xp:0},
     {bg:'#0B1526',film:'beat2',pos:'55% 50%',mpos:'72% 35%',light:[78,22],words:'He cut, built, played and drew. Curious people learned everything by <em>doing</em>. Then learning became reading about things.',xp:20},
-    {bg:'#0B1526',film:'beat3',pos:'60% 50%',mpos:'58% 42%',light:[62,45],words:'Untangle puts your hands back on the idea. Five minutes a day, and the world starts looking <em>rigged in your favour</em>.',xp:20,last:true},
+    {bg:'#0B1526',film:'beat3',pos:'60% 50%',mpos:'58% 42%',light:[62,45],words:'Untangle puts your hands back on the idea. Ten minutes a day, and the world starts looking <em>rigged in your favour</em>.',xp:20,last:true},
   ];
   const wrap=document.getElementById('cscenes');
   scenes.forEach((sc,i)=>{const d=document.createElement('div');d.className='scene';d.id='sc'+i;
@@ -525,6 +550,13 @@ const fl=document.getElementById('float');const play=document.getElementById('pl
 const hero=document.querySelector('.hero');let heroOut=false,appIn=false,cineIn=false;const sync=()=>fl.classList.toggle('on',heroOut&&!appIn&&!cineIn);const cineEl=document.getElementById('cine');if(cineEl){new IntersectionObserver(es=>es.forEach(e=>{cineIn=e.isIntersecting;sync();}),{threshold:.01}).observe(cineEl);}const fo=new IntersectionObserver(es=>es.forEach(e=>{heroOut=!e.isIntersecting;sync();}));fo.observe(hero);const ao=new IntersectionObserver(es=>es.forEach(e=>{appIn=e.isIntersecting;sync();}),{threshold:.01});ao.observe(document.getElementById('app'));
 /* the floating pill tucks away while reading (scrolling down) and returns on scroll up, so it never sits on body copy */
 {let ly=scrollY;addEventListener('scroll',()=>{const y=scrollY;if(Math.abs(y-ly)<6)return;fl.classList.toggle('tuck',y>ly);ly=y;},{passive:true});}
+/* waitlist: posts the email to Convex (convex/http.ts, POST /waitlist) */
+{const f=document.getElementById('wl'),msg=document.getElementById('wlMsg');if(f){f.addEventListener('submit',async ev=>{ev.preventDefault();const em=f.email.value.trim();
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(em)){msg.textContent='That email does not look right. Try again?';f.email.focus();return;}
+  const b=f.querySelector('button');b.disabled=true;msg.textContent='Adding you…';
+  try{const r=await fetch('__WAITLIST_URL__',{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({email:em,source:'site'})});
+    if(!r.ok)throw new Error(r.status);f.classList.add('sent');msg.textContent='You are on the list. We will email you once, when the app is out.';}
+  catch(e){b.disabled=false;msg.textContent='Could not add you just now. Please try again in a minute.';}});}}
 window.addEventListener('message',e=>{if(e.data&&e.data.untangle==='done'){heroOut=true;sync();}if(e.data&&e.data.untangle==='app'){document.getElementById('app').scrollIntoView({behavior:'smooth'});}});
 </script>
 </body>

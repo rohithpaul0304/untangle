@@ -45,7 +45,10 @@ function lidUnderCanvas(badge) {
   x.font = `600 52px ${FONT}`; x.fillStyle = 'rgba(255,252,242,.86)'; x.fillText('A whole app full of \u201coh, now I get it.\u201d', W / 2, 600);
   // official badge (drawn when the image is supplied)
   if (badge) { const bw = 460, bh = bw * badge.height / badge.width; x.drawImage(badge, (W - bw) / 2, 720, bw, bh); }
-  x.fillStyle = 'rgba(255,252,242,.5)'; x.font = `500 28px ${FONT}`; x.textAlign = 'center'; x.fillText('Chapter one stays free on the web. Your progress carries over.', W / 2, 960);
+  else { /* no store listing yet: say so instead of showing a badge */
+    const pw = 520, ph = 110, px = (W - pw) / 2, py = 730; x.fillStyle = C.butter; x.beginPath(); x.roundRect(px, py, pw, ph, ph / 2); x.fill();
+    x.fillStyle = C.navy; x.font = `800 46px ${FONT}`; x.textAlign = 'center'; x.textBaseline = 'middle'; x.fillText('App coming soon', W / 2, py + ph / 2 + 2); x.textBaseline = 'alphabetic'; }
+  x.fillStyle = 'rgba(255,252,242,.5)'; x.font = `500 28px ${FONT}`; x.textAlign = 'center'; x.fillText('Chapter one is free on the web today. Join the waitlist below.', W / 2, 960);
   // flip vertically so it reads correctly on the underside after the lid opens
   return c;
 }
@@ -192,7 +195,7 @@ export function mount(el, opts = {}) {
   // fox textures arrive async
   Promise.all([loadImg(opts.foxLid), loadImg(opts.foxToken), loadImg(opts.badge)]).then(([fl, ft, bd]) => {
     if (fl) { topMat[2].map = tex(lidTopCanvas(fl)); topMat[2].needsUpdate = true; }
-    if (bd) { topMat[3].map = tex(lidUnderCanvas(bd)); topMat[3].needsUpdate = true; }
+    topMat[3].map = tex(lidUnderCanvas(bd)); topMat[3].needsUpdate = true;
     dirty = true;
   });
 
